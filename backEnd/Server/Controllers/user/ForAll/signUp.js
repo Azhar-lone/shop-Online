@@ -32,6 +32,7 @@ export default async function signUp(req, res) {
                 msg: "password did't matched"
             })
         }
+
         //if email is provided then search by email else by phoneNumber
         const alreadyUser = await userModel.findOne(email ? email : phoneNumber)
 
@@ -46,9 +47,17 @@ export default async function signUp(req, res) {
             req.body.isAdmin = false
         }
         const hashedPassword = await bcrypt.hash(password, 10)
+
+
+
         const user = await userModel.create({
             // Name, email, phoneNumber, password, password, from, livesIn
-            ...req.body
+            Name: Name,
+            email: email,
+            password: hashedPassword,
+            phoneNumber,
+            livesIn,
+            from
         })//create account conditionaly
 
         if (user) {

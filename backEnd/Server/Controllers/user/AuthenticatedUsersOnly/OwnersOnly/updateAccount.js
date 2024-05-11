@@ -17,10 +17,14 @@ export default async function updateAccount(req, res) {
             req.body.isAdmin = false;
         }
 
-        const user = await userModel.findByIdAndUpdate(id, {
-            ...req.body
-        })//very insecure i think
+
+
+        const user = await userModel.findById(id)
         if (user) {
+
+// change userObject here
+
+            await user.save()
             return res.status(200).json({
                 msg: "user account updated successfully",
             })

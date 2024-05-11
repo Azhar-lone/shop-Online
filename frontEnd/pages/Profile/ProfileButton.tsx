@@ -1,0 +1,53 @@
+import React from 'react'
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+
+
+} from "@/components/ui/dropdown-menu";
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage
+} from "@/components/ui/avatar"
+import { LogOut, Settings } from "lucide-react"
+
+// imoprting static Data for Testing 
+import { user } from "../../StaticData/userData"
+
+const ProfileButton: React.FC = () => {
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <Avatar>
+                    <AvatarFallback>{user.userName.charAt(0)}</AvatarFallback>
+                    <AvatarImage
+                        src={user.profileImg}
+                    />
+                </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuLabel>{user.userName}</DropdownMenuLabel>
+                <  DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                    className='gap-2 cursor-pointer'
+                >
+                    <Settings />   Account Settings
+
+                </DropdownMenuItem>
+                <  DropdownMenuSeparator />
+                <DropdownMenuItem
+                    className='gap-2 cursor-pointer'
+                ><LogOut /> Logout</DropdownMenuItem>
+
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
+
+export default ProfileButton

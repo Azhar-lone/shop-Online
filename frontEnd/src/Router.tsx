@@ -18,8 +18,13 @@ import {
 
 
     // importing full Pages
+    Home,
     ProfilePage,
-    AllProducts
+    AllProducts,
+    SettingsPage,
+    CartPage,
+    Dashboard
+
 } from "../pages/exportPages"
 
 let Router = createBrowserRouter(
@@ -28,13 +33,16 @@ let Router = createBrowserRouter(
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/dashboard" element={<Dashboard />} />
 
 
             <Route path="/" element={<RootLayout />}>
-                <Route path="home" element={<h1>Home</h1>} />
+                <Route path="" element={<Home />} />
                 <Route path="aboutus" element={<>aboutus</>} />
                 <Route path=":username" element={<ProfilePage />} />
-                <Route path="products" element={<AllProducts/>} />
+                <Route path="products" element={<AllProducts />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="cart" element={<CartPage />} />
 
             </Route>
         </>

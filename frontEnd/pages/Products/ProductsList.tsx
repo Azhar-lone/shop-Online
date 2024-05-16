@@ -11,7 +11,7 @@ const ProductsList: React.FC<props> = ({
     return (
         <div
             className={
-                `flex flex-wrap gap-4 justify-center `
+                `flex flex-wrap gap-4  `
             }        >
             {children}
         </div>
@@ -19,3 +19,5 @@ const ProductsList: React.FC<props> = ({
 }
 
 export default ProductsList
+
+// do pagination for this component

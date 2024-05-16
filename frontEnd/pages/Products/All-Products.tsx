@@ -1,10 +1,20 @@
 // dependencies
-import React from 'react'
+import React, { useEffect } from 'react'
 
 //Icons
-import { Sword } from "lucide-react"
+import { ListFilter } from "lucide-react"
 
 // components
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
 
 // custom components
 import Container from "@/components/myUi/Container"
@@ -16,7 +26,22 @@ import ProductsList from './ProductsList';
 import { products } from "/StaticData/productData"
 
 
+
+let Categories = [{ Name: "Mobile Phones", products: products }, { Name: "Mobile Phones", products: products },
+{ Name: "Mobile Phones", products: products },]
+
 const AllProducts = () => {
+
+    async function getCategories() {
+
+    }
+
+    useEffect(() => {
+        getCategories()
+
+    }, [])
+
+
     return (
         <Container>
             <div>
@@ -24,19 +49,59 @@ const AllProducts = () => {
                     <Hint
                         label="filters"
                     >
-                        <button><Sword /> </button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-7 gap-1 text-sm"
+                                >
+                                    <ListFilter className="h-3.5 w-3.5" />
+                                    <span className="sr-only sm:not-sr-only">Filter</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuCheckboxItem checked={true}>
+                                    Name
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                    Price
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                    Category
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </Hint>
                     <Search
-                    hidden="block"
+                        hidden="block"
                     />
                 </div>
-                <ProductsList >
-                    {products.map((product, index) => (
-                        <Product product={product} />
 
-                    ))}
+                {Categories.map((Category, i) => (
+                    <div className='w-[100%] border  p-5 text-xl flex items-center flex-col'>
+                        <h1 className='font-medium p-3 w-[100%] border-b text-center'>{Category.Name}</h1>
+                        <ProductsList >
+                            {Category.products.map((product, index) => (
+                                <Product product={product} key={index} />
 
-                </ProductsList>
+                            ))}
+
+                        </ProductsList>
+                    </div>))}
+                {/* <div className='w-[100%] border p-5 text-xl flex items-center flex-col'>
+                    <h1 className='font-medium p-3 w-[50%] border-b text-center'>Mobile Phones</h1>
+                    <ProductsList >
+                        {products.map((product, index) => (
+                            <Product product={product} key={index} />
+
+                        ))}
+
+                    </ProductsList> */}
+                {/* </div> */}
+
             </div>
         </Container>
     )

@@ -5,36 +5,37 @@ import { Link } from "react-router-dom"
 
 
 // importing components
-import { Input } from '@/components/ui/input';
+// import { input
+
 import { Button } from '@/components/ui/button';
-import { Select } from "@/components/ui/select"
+// import { Select  SelectContent,se } from "@/components/ui/select"
 
 
 interface user {
     email?: string;
-    phoneNumber?: Number;
+    phoneNumber?: number;
     password: string
     confirmPassword: string
     firstName: string
     lastName: string
-    birthDate: Number
+    country: string,
 }
 
 
 const Signup = () => {
     let [step, setStep] = useState<number>(0)
     const [user, setUser] = useState<user>({
-        email: '',
-        phoneNumber: 0,
+        email: undefined,
+        phoneNumber: undefined,
         password: '',
         confirmPassword: '',
         firstName: '',
         lastName: '',
-        birthDate: Date.now()
+        country: '',
     })
 
     function setValues(e: ChangeEvent<HTMLInputElement>) {
-        console.log(e.target.value)
+       
 
     }
 
@@ -47,32 +48,42 @@ const Signup = () => {
                 <div className='  flex flex-col gap-5  '>
 
                     {/* use Select to choose between phone or email */}
-                    <Input
-                        placeholder=' Email'
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='email'
+                        placeholder=' Email or Phone'
+                        type={"text" || "number"}
                         onChange={setValues}
-                        value={user.email}
+                        value={user.email ? user.email : user.phoneNumber}
 
                     />
 
 
-                    <Input
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='password'
                         placeholder=' Password'
-                    // value={user.email}
-
+                        value={user.password}
+                        onChange={setValues}
+                        type='password'
                     />
-                    <Input
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='confirmPassword'
                         placeholder=' Confirm password'
-                    // value={user.email}
+                        value={user.confirmPassword}
+                        onChange={setValues}
+                        type='password'
 
                     />
-                    <Button 
-className="mx-auto"
+                    <Button
+                        className="mx-auto"
 
-                      onClick={()=>{
-                        setStep((prev)=>(
-                            prev+1
-                        ))
-                    }}
+                        onClick={() => {
+                            setStep((prev) => (
+                                prev + 1
+                            ))
+                        }}
                     >Next </Button>
 
                 </div>
@@ -80,35 +91,43 @@ className="mx-auto"
                 <div className=' flex flex-col gap-5  '>
 
                     {/* use Select to choose between phone or email */}
-                    <Input
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='firstName'
                         placeholder=' First name'
                         onChange={setValues}
-                        value={user.email}
+                        value={user.firstName}
 
                     />
 
 
-                    <Input
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='lastName'
                         placeholder=' Last name'
-                    // value={user.email}
+                        value={user.lastName}
+                        onChange={setValues}
 
                     />
-                    <Input
-                        type="date"
-                        placeholder=' C'
-                    // value={user.email}
+                    <input
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id='country'
+                        type="text"
+                        placeholder=' Country'
+                        value={user.country}
+                        onChange={setValues}
 
                     />
-                    
+
                     <div className='flex '>
-                    <Button 
-                    onClick={()=>{
-                        setStep((prev)=>(
-                            prev-1
-                        ))
-                    }}
-                    > Back </Button>
-                     
+                        <Button
+                            onClick={() => {
+                                setStep((prev) => (
+                                    prev - 1
+                                ))
+                            }}
+                        > Back </Button>
+
                         <Button className="md:ml-[40%] ml-[30%]">SignUp </Button>
                     </div>
 

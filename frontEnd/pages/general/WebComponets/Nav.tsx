@@ -1,13 +1,13 @@
 // importing dependencies
 import React from "react";
 import {
-    HomeIcon, InfoIcon, ShoppingCart, ShoppingBasket, UserCircle2,
+    HomeIcon, ShoppingCart, ShoppingBasket, UserCircle2,
     Boxes
 } from "lucide-react";
 
 // importing Shadcn Components
 import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 // import { Skeleton } from "@/components/ui/skeleton";
 
 //My components 
@@ -21,7 +21,7 @@ import Search from "@/components/myUi/Search";
 
 
 let navItems = [{
-    To: "/home",
+    To: "/",
     Text: "Home",
     Icon: <HomeIcon />
 },
@@ -47,6 +47,7 @@ let navItems = [{
 
 const Nav: React.FC = () => {
 
+    let navigate = useNavigate()
 
     return (
         <>
@@ -86,6 +87,8 @@ const Nav: React.FC = () => {
                 <div className="flex gap-2 ">
                     <Button
                         variant="outline"
+
+                        onClick={() => navigate("/cart")}
                     >
                         <ShoppingCart />
                         <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
@@ -104,24 +107,23 @@ const Nav: React.FC = () => {
             </div >
             <div className="bottom-0 fixed border-t w-full h-[8vh] lg:hidden md:w-[10%] md:h-[88vh] bg-background border-r  md:left-0 md:top-[10vh] flex gap-4   justify-center backdrop-blur-sm ">
                 <ul
-                    className=" flex  md:flex-col justify-around md:justify-end md:gap-5 md:items-center md:p-8"
+                    className=" flex  md:flex-col justify-around md:justify-start md:gap-5 md:items-center md:p-8"
                 >
 
                     {navItems.map((element, index) => (
-                        <div
+                        <Button
+                            variant={"ghost"}
+                            className="  h-[8%] flex sm:flex-col  gap-1"
                             key={index}
+
                         >
-                            <Button variant={"ghost"}
-                                className="flex  flex-col"
+                            {element.Icon}
+                            <NavLink
+                                to={element.To}
                             >
-                                {element.Icon}
-                                <h1
-                                    className="h-[20%] "
-                                >
-                                    {element.Text}
-                                </h1 >
-                            </Button>
-                        </div>
+                                {element.Text}
+                            </NavLink >
+                        </Button>
 
                     ))}
                 </ul>

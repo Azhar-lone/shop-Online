@@ -5,14 +5,17 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 // icons
-import { Edit2 } from "lucide-react"
+import { Edit2, Plus } from "lucide-react"
 
 // custom components
 import Container from "@/components/myUi/Container"
+import ProductsList from '../Products/ProductsList'
+import Product from "@/components/myUi/Product"
 
 
 // imoprting static Data for Testing 
 import { user } from "../../StaticData/userData"
+import { products } from "/StaticData/productData"
 
 
 const ProfilePage = () => {
@@ -24,7 +27,7 @@ const ProfilePage = () => {
                 className=' w-[99%]  p-4 mx-auto flex flex-col gap-6 justify-center h-[100vh]'
             >
                 {!loading ? <>
-                    <div className='w-[100%]  flex items-center gap-3 md:gap-20 sm:gap-10'>
+                    <div className='w-[100%]  flex items-center gap-3  sm:gap-10'>
                         <img src={user.profileImg} alt="Profile image"
                             className='w-[60%] h-[60vh] rounded-xl '
 
@@ -41,12 +44,20 @@ const ProfilePage = () => {
                     <h1>{user.userName}</h1>
 
 
+                    <div className='flex gap-5'>
+                        <Button
+                            className='flex gap-3'
 
-                    <Button
-                        className='flex gap-3'
+                        >
+                            Add Product <Plus /> </Button>
+                        <Button
+                            className='flex gap-3'
 
-                    >
-                        Edit profile <Edit2 /> </Button>
+                        >
+                            Edit Profile <Edit2 /> </Button>
+
+                    </div>
+
                 </> : (
                     <>
                         <div className='w-[100%]  flex items-center gap-3 md:gap-24'>
@@ -64,6 +75,17 @@ const ProfilePage = () => {
                 )
                 }
             </div>
+            {/* users products */}
+            <h1 className='mx-auto text-center text-2xl border-b w-[50%] p-4'   >Users Products</h1>
+            <ProductsList 
+            
+            >
+                {products.map((product, index) => (
+                    <Product product={product} key={index} />
+
+                ))}
+
+            </ProductsList>
         </Container>
     )
 }
@@ -72,8 +94,5 @@ export default ProfilePage
 
 
 
-function ProfileSkeleton(params: type) {
-
-}
 
 

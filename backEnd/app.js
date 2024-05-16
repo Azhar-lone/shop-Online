@@ -1,11 +1,15 @@
 //importing dependencies
 import express from "express"
 import cookieParser from "cookie-parser"
-import sqlite3 from "sqlite3"
+import mongoose from "mongoose"
 import "dotenv/config"
 
 //importing Routers
-import { userRouter, productRouter, reviewRouter } from "./Server/Routes/exportRouters.js"
+import {
+  userRouter,
+  // productRouter,
+  // reviewRouter
+} from "./Server/routes/exportRouters.js"
 
 //initializing express app
 const app = express()
@@ -13,8 +17,12 @@ const port = process.env.PORT || 4000
 //listening
 app.listen(port, () => console.log(`listening on http://localhost:${port}`))
 
-// initializing sqlite3 database
-
+// connecting to database
+mongoose.connect(process.env.DB_URL).then(() => {
+  console.log("connected to db")
+}).catch((err) => {
+  console.log("error while connecting to db :", err.message)
+})
 
 
 //middlewares for parsing json,cookies and body data
@@ -23,8 +31,8 @@ app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 
 //Routers
-app.use("/user/", userRouter)
-app.use("/product/", productRouter)
+app.use("/users/", userRouter)
+// app.use("/products/", productRouter)
 // app.use("/reviews", reviewRouter)
 
 //404 page

@@ -1,4 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+
+
+//shadcn  components
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -7,8 +11,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 
-
 } from "@/components/ui/dropdown-menu";
+// Icons
 import {
     Avatar,
     AvatarFallback,
@@ -20,6 +24,8 @@ import { LogOut, Settings } from "lucide-react"
 import { user } from "../../StaticData/userData"
 
 const ProfileButton: React.FC = () => {
+    let navigate = useNavigate()
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
@@ -36,6 +42,7 @@ const ProfileButton: React.FC = () => {
 
                 <DropdownMenuItem
                     className='gap-2 cursor-pointer'
+                    onClick={() => navigate("/settings")}
                 >
                     <Settings />   Account Settings
 

@@ -1,146 +1,289 @@
 
-import React from 'react';
-import { ChangeEvent, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from "react-router-dom"
-
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { userSchema1, userSchema2 } from './schama';
 
 // importing components
-// import { input
-
 import { Button } from '@/components/ui/button';
-// import { Select  SelectContent,se } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 
-interface user {
-    email?: string;
-    phoneNumber?: number;
-    password: string
-    confirmPassword: string
-    firstName: string
-    lastName: string
-    country: string,
-}
+import {
+  Form,
+  FormControl,
+  // FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+
+
+
+
+
 
 
 const Signup = () => {
-    let [step, setStep] = useState<number>(0)
-    const [user, setUser] = useState<user>({
-        email: undefined,
-        phoneNumber: undefined,
-        password: '',
-        confirmPassword: '',
-        firstName: '',
-        lastName: '',
-        country: '',
-    })
 
-    function setValues(e: ChangeEvent<HTMLInputElement>) {
-       
+  let [step, setStep] = useState<boolean>(false)
+  let [countries, setCountries] = useState<Array<string>>(countriesArr)
+  let [formData, setFormData] = useState(
+    {
+      email: '',
+      phoneNumber: undefined,
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      country: '',
+      userName: ''
 
+    }
+  )
+  async function getContries() {
+    try {
+
+      let res = await fetch(import.meta.env.VITE_BackendUrl + "/general/countries", {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      if (res.ok) {
+
+        // Check if response is HTML (replace with your logic)
+        if (res.headers.get('Content-Type')?.includes('text/html')) {
+          // Handle HTML response (e.g., parse with cheerio)
+          console.error('API endpoint might be returning HTML instead of JSON');
+          console.log(res)
+          return;  // Exit the function if it's HTML
+        }
+
+        let arr = await res.json()
+
+        setCountries(arr.countries)
+        return
+      }
+      // call yourself until you don't get 200 ok
+      // getContries()
+
+
+    } catch (error) {
+      console.log(error)
     }
 
 
 
-    return (
+  }
 
-        <div className='md:w-[80%] mx-auto p-5 flex flex-col gap-5  bg-background md:border mt-10'>
-            {step === 0 ?
-                <div className='  flex flex-col gap-5  '>
-
-                    {/* use Select to choose between phone or email */}
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='email'
-                        placeholder=' Email or Phone'
-                        type={"text" || "number"}
-                        onChange={setValues}
-                        value={user.email ? user.email : user.phoneNumber}
-
-                    />
+  // 1. Define your form.
+  const form1 = useForm<z.infer<typeof userSchema1>>({
+    resolver: zodResolver(userSchema1),
+    defaultValues: {
+      email: '',
+      phoneNumber: undefined,
+      password: '',
+      confirmPassword: '',
 
 
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='password'
-                        placeholder=' Password'
-                        value={user.password}
-                        onChange={setValues}
-                        type='password'
-                    />
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='confirmPassword'
-                        placeholder=' Confirm password'
-                        value={user.confirmPassword}
-                        onChange={setValues}
-                        type='password'
+    },
+  })
 
-                    />
-                    <Button
-                        className="mx-auto"
-
-                        onClick={() => {
-                            setStep((prev) => (
-                                prev + 1
-                            ))
-                        }}
-                    >Next </Button>
-
-                </div>
-                :
-                <div className=' flex flex-col gap-5  '>
-
-                    {/* use Select to choose between phone or email */}
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='firstName'
-                        placeholder=' First name'
-                        onChange={setValues}
-                        value={user.firstName}
-
-                    />
+  const form2 = useForm<z.infer<typeof userSchema2>>({
+    resolver: zodResolver(userSchema2),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      country: '',
+      userName: ''
+    }
+  })
 
 
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='lastName'
-                        placeholder=' Last name'
-                        value={user.lastName}
-                        onChange={setValues}
+  useEffect(() => {
+    getContries()
+  }, [])
 
-                    />
-                    <input
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-6 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        id='country'
-                        type="text"
-                        placeholder=' Country'
-                        value={user.country}
-                        onChange={setValues}
 
-                    />
 
-                    <div className='flex '>
-                        <Button
-                            onClick={() => {
-                                setStep((prev) => (
-                                    prev - 1
-                                ))
-                            }}
-                        > Back </Button>
 
-                        <Button className="md:ml-[40%] ml-[30%]">SignUp </Button>
-                    </div>
 
-                </div>
-            }
-            {step === 0 && <div>already have account
-                <Link to={"/"}
-                    className='text-blue-500 p-2 hover:text-blue-400'
-                >login</Link></div>}
-        </div>
 
-    )
+
+  function handleFirstPageSubmit(values: z.infer<typeof userSchema1>) {
+    // setFormData()
+    console.log(values)
+    console.log(formData)
+    setStep(true)
+
+  }
+
+
+  // 3. Define a submit handler for the entire form (after completing both pages).
+  function handleFullFormSubmit(values: z.infer<typeof userSchema2>) {
+    console.log('Submitting full form data:', values); // Access complete user data
+
+    // Replace with your actual backend logic for data submission
+
+    // You can clear the form or redirect to a confirmation page after successful submission
+  }
+
+
+
+
+  return (
+
+
+    <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl md:border'>
+      <h3>Create An Account</h3>
+
+      {!step ?
+
+        <Form {...form1}>
+          <form onSubmit={form1.handleSubmit(handleFirstPageSubmit)} className="space-y-8">
+
+            {formArrayPage1.map((field1, i) => (
+              <FormField
+                key={i}
+                control={form1.control}
+                name={field1.name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{field1.name}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={field1.placeHolder} {...field} className="bg-input" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            <Button
+              type="submit"
+            // onClick={() => setStep(true)}
+            >
+              next
+            </Button>
+
+            <div>already have an account
+              <Link to={"/login"}
+                className='text-blue-500 p-2 hover:text-blue-400'
+              >login</Link></div>
+
+
+          </form>
+        </Form>
+        :
+        <Form {...form2}>
+          <form onSubmit={form2.handleSubmit(handleFullFormSubmit)} className="space-y-8">
+
+            {formArrayPage2.map((name, i) => (
+
+              <FormField
+                control={form2.control}
+                name={name}
+                key={i}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{name}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={name} {...field} className="bg-input" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            {step &&
+              <FormField
+                control={form2.control}
+                name={"country"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a Country" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {countries.map((country, i) => (
+                          <SelectItem value={country} key={i}>
+                            {country}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />}
+            <Button type="submit" className="w-[100%]" >Submit</Button>
+
+          </form>
+        </Form>}
+
+
+
+    </div >
+
+  )
 }
 
 export default Signup
+
+
+
+
+
+
+
+
+
+
+
+
+
+const formArrayPage1 = [
+  { name: "email", placeHolder: "email@domain.com " },
+  { name: "phoneNumber", placeHolder: "enter your phone number here" },
+  { name: "password", placeHolder: "*********" },
+  { name: "confirmPassword", placeHolder: "*********" },
+]
+const formArrayPage2 = [
+  "firstName", "lastName", "userName",
+]
+
+const countriesArr = [
+  "pakistan", "india", "usa", "Afghanistan",
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

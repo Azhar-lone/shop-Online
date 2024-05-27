@@ -9,8 +9,8 @@ import productModel from "../../../model/productModel.js"
 export default async function getAllProduct(req, res) {
     try {
 
-        const limit = req.query.limit
-        const pageNumber = req.query.pageNumber
+        const limit = req.query.limit||20
+        const pageNumber = req.query.page||1
 
         const products = await productModel
             .find()

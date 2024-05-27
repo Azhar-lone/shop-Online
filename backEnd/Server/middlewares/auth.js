@@ -4,7 +4,7 @@ import { validationResult } from "express-validator"
 import userModel from '../model/userModel.js'
 const { sign, verify } = jwt
 export function createToken(id) {
-  let token = sign(id, process.env.UserSecretKey,{expiresIn:"30d"})
+  let token = sign({ id }, process.env.UserSecretKey)
   return token
 }
 
@@ -53,8 +53,10 @@ export async function AdminAuthorized(req, res, next) {
 
 export function UserAuth(req, res, next) {
   try {
+
+
     if (req.cookies.login) {
-      let decoded = verify(req.cookies.login, process.env.SecretKey)
+      let decoded = verify(req.cookies.login, process.env.UserSecretKey)
 
       if (decoded) {
         //decode login cookies and extract user's Id and send it to frontEnd
@@ -73,8 +75,9 @@ export function UserAuth(req, res, next) {
     }
   }
   catch (error) {
+    console.log(error)
     res.status(500).json({
-      msg: "Authentication error :" + error.message,//developement only
+      msg: "Authentication error :",
 
     })
   }

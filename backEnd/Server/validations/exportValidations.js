@@ -1,40 +1,32 @@
 //User validations
-import signUpValidation from "./userValidations/signUpValidations.js";
-import userInfoValidation from "./userValidations/userInfoValidation.js";
-import loginValidation from "./userValidations/loginValidations.js";
+import signUpValidation from "./user/signUpValidations.js";
+import userInfoValidation from "./user/userInfoValidation.js";
+import loginValidation from "./user/loginValidations.js";
+import updateUserValidation from "./user/updateUserValidations.js";
 //database Validations
-import validateId from "./databaseValidations/mongoIdValidation.js";
+import validateId from "./database/mongoIdValidation.js";
 
-// book Validations
-// import validateGetAllBooks from "./bookValidations/validateGetAllBooks.js";
-// import validateUploadBook from "./bookValidations/validateUploadBook.js";
-
-// review Validations
-// import addReviewValidation from "./reviewValidations/addReviewValidation.js";
+// product Validations
+import updateProductValidation from "./product/updateProduct.js";
 
 
-// Search Validations
-// import queryValidations from "./searchValidations/    queryValidations.js";
 
+// general validations
+import paginationValidation from "./general/paginationValidation.js";
 
-// About Us Validations
-// import validateAboutUs from "./aboutUsValidations/validateAboutUs.js";
 export {
     //  user validations
     signUpValidation,
     userInfoValidation,
     loginValidation,
+    updateUserValidation,
 
     // database Validations
     validateId,
 
-    // book validations
-    // validateGetAllBooks,
-    // validateUploadBook,
-    // review Validations
-    // addReviewValidation,
-    // Search Validations
-    // queryValidations,
-    // About Us Validations
-// validateAboutUs,
+    // product validations
+    updateProductValidation,
+
+    // general validations
+    paginationValidation,
 }

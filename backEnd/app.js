@@ -7,7 +7,7 @@ import "dotenv/config"
 //importing Routers
 import {
   userRouter,
-  // productRouter,
+  productRouter,
   // reviewRouter
 } from "./Server/routes/exportRouters.js"
 
@@ -31,8 +31,8 @@ app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 
 //Routers
-app.use("/users/", userRouter)
-// app.use("/products/", productRouter)
+app.use("/users", userRouter)
+app.use("/products", productRouter)
 // app.use("/reviews", reviewRouter)
 
 //404 page

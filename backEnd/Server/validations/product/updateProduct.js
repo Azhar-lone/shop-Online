@@ -3,7 +3,7 @@ import { body } from "express-validator"
 
 
 
-const updateUserValidation = [
+const updateProductValidation = [
 
     // email
     body("email")
@@ -44,4 +44,4 @@ const updateUserValidation = [
 
     // .isDate().withMessage("not a valid date")
 ]
-export default updateUserValidation
+export default updateProductValidation

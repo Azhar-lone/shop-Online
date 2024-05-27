@@ -1,30 +1,62 @@
 import userModel from '../../../../model/userModel.js'
+import bcrypt from "bcrypt"
 //problems in this function
-export default function updateUser(req, res) {
-  let { email, password, name, DOB } = req.body
-  userModel
-    .findById(req.currentUserUd)
-    .then(user => {
-      // checking which feilds to update or not
+export default async function updateUser(req, res) {
+  try {
 
-      email = email === undefined ? user.email : email
-      password = password === undefined ? user.password : password
-      name = name === undefined ? user.name : name
-      DOB = DOB === undefined ? user.DOB : DOB
+    let { email, oldPassword, newPassoword, confirmNewPassword, firstName, lastName, userName } = req.body
 
-      user = { email, password, name, DOB }
-      user.save().then((user) => {
-        res.status(200).json({
-          msg: 'user updated successfully',
-          upadatedUser: user
-        })
+    // Find user by id and select password
+    // dont select id
+    const user = await userModel.findById(req.currentUserId).select("password -_id")
+    if (!user) {
+      return res.status(401).json({
+        msg: "failed to verify old password try again"
       })
-
-    })
-    .catch(err => {
-      return res.status(500).json({
-        msg: 'error while updating userInfo',
-        error: err.message,
+    }
+    let isMatched = await bcrypt.compare(oldPassword, user.password)
+    if (!isMatched) {
+      return res.status(401).json({
+        msg: "wrong old Password",
       })
+    }
+    let updatedUser = await userModel.findByIdAndUpdate(req.currentUserId,
+      {
+        email,
+        oldPassword,
+        newPassoword,
+        confirmNewPassword,
+        firstName,
+        lastName,
+        userName
+      },
+      { new: true })//return updated document
+    if (updateUser) {
+      return res.status(200).json({
+        msg: "user info updated",
+        updatedUser: updatedUser
+      })
+    }
+    return res.status(401).json({
+      msg: "failed to update user info"
     })
+
+
+  } catch (error) {
+
+    return res.status(500).json({
+      msg: "internal server error"
+    })
+
+  }
+
+
+
+
+
+
+
+
+
+
 }

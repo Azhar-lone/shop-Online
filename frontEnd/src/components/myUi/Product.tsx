@@ -20,7 +20,7 @@ const Product: React.FC<ProductProps> = ({
 }) => {
     return (
         <div
-            className="lg:h-[70vh] h-[40vh] mt-2 border rounded-2xl  shadow-2xl bg-card  sm:w-[48%] md:w-[30%] lg:w-[23%] w-[90%]"
+            className="lg:h-[70vh] h-[40vh] mt-2 border rounded-2xl  shadow-2xl bg-card  sm:w-[48%] md:w-[30%] lg:w-[23%] w-[90%] "
         >
             <img src={product.imgs[0]} alt=""
                 className=" w-[100%] h-[85%] rounded-2xl"

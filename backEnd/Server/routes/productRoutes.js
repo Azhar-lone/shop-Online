@@ -9,10 +9,10 @@ import { AdminAuthorized, UserAuth, validationError } from "../middlewares/auth.
 import {
     //for All
     getProduct,
+    getAllProducts,
 
     //Admins only
     deleteMultipleProducts,
-    getAllProducts,
     updateMultipleProducts,
 
     //authenticated users Only
@@ -27,7 +27,7 @@ import {
 } from "../controllers/product/productsExport.js"
 
 //importing Validations
-import { validateId } from "../validations/exportValidations.js"
+import { validateId,updateProductValidation } from "../validations/exportValidations.js"
 
 //initializing Router
 const productRouter = express.Router({ strict: true })
@@ -35,6 +35,7 @@ const productRouter = express.Router({ strict: true })
 //Routes that everyOne can access
 productRouter
     .get(":id", validateId, validationError, getProduct)
+    .get("", getAllProducts)
 
 //Routes Only authenticated user can access
 productRouter.use(UserAuth)
@@ -43,18 +44,17 @@ productRouter
     .post("", addProduct)
     .patch("like/:id", validateId, validationError, likeProduct)
     .patch("buy/:id", buyProduct)
-    .get("userproducts/:id", validateId, validationError, getUsersProducts)
+    .get("user/:id", validateId, validationError, getUsersProducts)
 
 //Routes only owners can access
 productRouter
     .route(":id", validateId, validationError)
     .delete(deleteProduct)
-    .put(updateProductValidations,updateProduct)
+    .put(updateProductValidation, validationError, updateProduct)//small problem here
 
 //Routes for admins of webSite only
 productRouter.use(AdminAuthorized)
 productRouter
-    .get("admin/all", getAllProducts)
     .delete("admin/multiple", deleteMultipleProducts)
     .put("admin/multiple", updateMultipleProducts)
 export default productRouter

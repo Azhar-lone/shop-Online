@@ -3,14 +3,18 @@
 
 // Importing Models
 import productModel from "../../../model/productModel.js"
-
+import userModel from "../../../model/userModel.js"
 
 
 export default async function likeProduct(req, res) {
     try {
 
         const id = req.params.id
+        // add id to likes 
         const product = await productModel.findByIdAndUpdate(id, { "$push": { likedBy: id } })
+        
+        const user = await userModel.findByIdAndUpdate(id, { "$push": { cartItems: id } })
+        
         if (product) {
             return res.status(200).json({
                 msg: "product fetched successfully",

@@ -15,17 +15,7 @@ export default async function deleteUser(req, res) {
       })
     }
 
-    //suspend here
-
-    // //timers here
-    // if ((Date.now() + 30, 'days' == true)) {
-    //   await user.delete() //or remove
-    //   res.status(200).json({
-    //     msg: 'user deleted sucessfully',
-    //   })
-    //   user.isSuspended = true
-    //   await user.save()
-    // }
+   
     res.cookie("login", "", {
       httpOnly: true,
       secure: true,

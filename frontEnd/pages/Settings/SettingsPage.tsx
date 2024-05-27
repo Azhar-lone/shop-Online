@@ -20,7 +20,7 @@ const SettingsPage = () => {
     return (
         <Container>
             <div
-                className='flex items-center flex-col p-10 gap-10'
+                className='flex items-center flex-col p-10 gap-10 '
             >
                 <h1
                     className='w-[100%] text-center text-3xl '

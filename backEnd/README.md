@@ -36,15 +36,16 @@ where username=slugString
 #### if status=200 ok returns{msg,user} 
 #### else returns{msg} 
 ### Users Only Routes
-<!-- **4** logout
+**4** logout
 ```javascript
 POST /user/logout
 ```
-#### returns{msg}  -->
+#### returns{msg} 
 **5** upload profile picture
 
 ***note:*** set  content-type:multipart/formdata
 ```javascript
+
 POST /user/upload/profilepic
 body={
     image:imageFile
@@ -52,16 +53,7 @@ body={
 ```
 #### if status=200 ok returns{msg,user} 
 #### else returns{msg}
-<!-- **6** follow/unfollow user 
-```javascript
-POST /user/follow
-body=
-{   id:RecipeintId
-    }
 
-```
-#### if status=200 ok returns{msg,recipient,sender} 
-#### else returns{msg} -->
 **7** chat With user
 
 ### Owners Only Routes
@@ -71,6 +63,11 @@ body=
 ```javascript
 DELETE /user/delete
 
+body={
+    password:passwordString,
+    email?:
+}
+
 ```
 #### returns{msg} 
 **9** update userAccount
@@ -79,9 +76,13 @@ DELETE /user/delete
 PUT /user/update
 body=
 {   email?:emailString,  
-    password:?String, 
-    DOB?:DateString, 
-    name?:String,
+    oldPassword:String, 
+    userName?:String,
+    firstName?:String,
+    lastName?:String,
+    newPassoword:string,
+confirmNewPassword:String,
+
     }
 ```
 #### if status=200 ok returns{msg,upadatedUser} 
@@ -89,13 +90,13 @@ body=
 **10** get users  cart
 
 ```javascript
-GET /user/getcart
+GET /user/cart?limit&page
 ```
 #### if status=200 ok returns{msg,cart} 
 #### returns{msg} 
 
 
-### Admins Routes
+<!-- ### Admins Routes
 **11** deleteMultipleUsers 
 ```javascript
 DELETE /user/admin/deletemultiple
@@ -103,33 +104,39 @@ body={
     arrayOfUsersIds:mongoIds[]
 }
 ```
-#### returns{msg} 
+#### returns{msg}  -->
 
-**12** get All Users Info
+<!-- **12** get All Users Info
 
 ```javascript
 GET /user/admin/allusers
 ```
 #### if status=200 ok returns{msg,user} 
-#### else returns{msg}
-# 2-Books features
+#### else returns{msg} -->
+# 2-products features
 ### PUBLIC Routes
-**1** get a Book
+**1** get a product
 
 ```javascript
-GET /book/getbook/:id
+GET /products/:id
 ```
-**2** get all Books
+#### if status=200 ok returns{msg,product} 
+#### else returns{msg} 
+
+**2** get all products
 
 ```javascript
-GET /book/getallbooks?page&limit
+GET /products?page&limit
 page=positive Number
 limit=positive Number
 ```
-**3** get user Books
+
+#### if status=200 ok returns{msg,products} 
+#### else returns{msg} 
+**3** get user Products
 
 ```javascript
-GET /book/getuserbooks?page&limit
+GET /products/user/:id?page&limit
 page=positive Number
 limit=positive Number
 body{

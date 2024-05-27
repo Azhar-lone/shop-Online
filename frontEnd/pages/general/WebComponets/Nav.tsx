@@ -51,7 +51,7 @@ const Nav: React.FC = () => {
 
     return (
         <>
-            <div className=" w-full shadow-2xl   top-0 fixed  border-b  flex justify-around items-center gap-2  backdrop-blur-md h-[10vh] "
+            <div className=" w-full shadow-2xl   top-0 fixed  border-b  flex justify-around items-center gap-2  backdrop-blur-md h-[10vh] bg-background"
             >
                 <div className="flex gap-5">
                     <Button className="flex gap-1">

@@ -17,23 +17,23 @@ export default async function login(req, res) {
     const { email, phoneNumber, password } = req.body
 
 
+    // Atleast one is required email or phone
     if (!email && !phoneNumber) {
       return res.status(401).json({
         msg: "email or phone is required"
       })
     }
 
-    // Check for unexpected fields
-    // if their is somthing unexpected then it is not what we need in the server
-    // if (Object.keys(unexpectedFields).length > 0) {
-    //   return res.status(400).json({
-    //     msg: "unexpected fields in the body"
-    //   })
-    // }
 
-    // Find user by email and select password and userName fields
-    // select everything except cartItems and products we don't need those two
-    const user = await userModel.findOne({ email }).select('* -cartItems -products')
+
+    // Find user by email or phoneNumber and select password
+    // dont select id
+    const user = await userModel.findOne({
+      $or: [
+        { email },
+        { phoneNumber }
+      ]
+    }).select('password -_id')
 
     // If user is not found, return a 401 Unauthorized response
     if (!user) {
@@ -51,15 +51,22 @@ export default async function login(req, res) {
         msg: "Password didn't match",
       })
     }
-    // exclude password include everything else
-    let sanitizedUser = {
-      name: user.name,
-      userName: user.userName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      country: user.country,
-      isAdmin: user.isAdmin,
-      timeStamp: user.timeStamp
+
+    let loggedInUser=undefined
+    // if matched bring user object from dataBase
+    // under user is not found cause it is present
+    while (1) {
+       loggedInUser = await userModel.findOne({
+        $or: [
+          { email },
+          { phoneNumber }
+        ]
+      })
+      if(loggedInUser)
+      {
+        break;
+      }
+
     }
 
     // If login is successful, create and send an authentication token
@@ -73,8 +80,7 @@ export default async function login(req, res) {
         sameOrigin: 'none'
       }).status(200).json({
         msg: 'Login successful',
-        userName: user,
-        user: sanitizedUser
+        user: loggedInUser
       }))
   } catch (error) {
     // Log the error for debugging purposes

@@ -8,9 +8,22 @@ const schema = mongoose.Schema({
     },
     discription: {
         type: String,
+        min: 30,
+        max: 250,
+        required: true,
+        
+
+
     },
     category: {
         type: String,
+
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userModel",
+        required: true,
+
 
     },
     likedBy: [{

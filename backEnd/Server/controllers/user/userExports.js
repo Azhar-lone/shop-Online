@@ -2,6 +2,7 @@
 import signUp from "./ForAll/signUp.js"
 import login from "./ForAll/login.js"
 import userInfo from "./ForAll/userInfo.js"
+import forgetPassword from "./ForAll/forgetPassword.js"
 
 // Autherized Users Only
 import logout from "./AutherizedUsers/logout.js"
@@ -22,6 +23,7 @@ export {
   signUp,
   login,
   userInfo,
+  forgetPassword,
   // Autherized Users Only
   logout,
   follow,

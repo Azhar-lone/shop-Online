@@ -27,6 +27,7 @@ import { products } from "/StaticData/productData"
 
 
 
+
 let Categories = [{ Name: "Mobile Phones", products: products }, { Name: "Mobile Phones", products: products },
 { Name: "Mobile Phones", products: products },]
 

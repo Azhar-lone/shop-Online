@@ -33,13 +33,14 @@ async function suggestRelatedUsername(originalUsername) {
 export default async function signUp(req, res) {
   try {
 
-    const { email, phoneNumber, password, confirmPassword, name, country } = req.body
+    const { email, firstName, lastName, phoneNumber, password, confirmPassword, country ,userName} = req.body
     // if both are missing return this message
     if (!phoneNumber && !email) {
       return res.status(401).json({
         msg: "phone or email is required"
       })
     }
+
 
     // Check for unexpected fields
     // // if their is somthing unexpected then it is not what we need in the server
@@ -51,29 +52,33 @@ export default async function signUp(req, res) {
     // }
 
 
+
     if (password !== confirmPassword) {
       return res.status(400).json({
         msg: 'password did not match',
       })
     }
 
-    const takenEmailOrPhone = await userModel.findOne({
-      $or: [
-        { email },
-        { phoneNumber }
-      ]
-    })
-    if (takenEmailOrPhone) {
-      return res.status(403).json({
-        msg: 'email or phone already registered',
-      })
+
+    if (email) {
+      const takenEmail = await userModel.findOne({ email })
+      if (takenEmail) {
+        return res.status(403).json({
+          msg: 'email already registered',
+        })
+      }
     }
-
-    const userName = generateUserName(name)
-
+    else {
+      const takenPhone = await userModel.findOne({ phoneNumber })
+      if (takenPhone) {
+        return res.status(403).json({
+          msg: 'phone already registered',
+        })
+      }
+    }
     const takenUserName = await userModel.findOne({ userName })
     if (takenUserName) {
-      const suggestedUserName = suggestRelatedUsername(userName)
+      const suggestedUserName = await suggestRelatedUsername(userName)
       return res.status(403).json({
         msg: 'userName already taken',
         suggestedUserName: suggestedUserName,
@@ -86,8 +91,10 @@ export default async function signUp(req, res) {
       phoneNumber,
       password: hashedPassword.toString(),
       userName,
-      name,
-      country
+      country,
+      lastName,
+      firstName
+
     })
 
     if (!user) {
@@ -113,8 +120,10 @@ export default async function signUp(req, res) {
         userName: savedUser,
       }))
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       msg: 'Internal server error',
+
     })
   }
 }

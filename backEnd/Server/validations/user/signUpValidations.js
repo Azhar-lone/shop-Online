@@ -38,20 +38,32 @@ const signUpValidation = [
         .trim()
         // .isLength({ max: 16 }).withMessage("not a valid length")
         .escape(),
-    // name
-    body("name")
-        .exists().withMessage("name is required")
+    // first name
+    body("firstName")
+        .exists().withMessage("last name is required")
         .isString().withMessage("not a valid string")
-        .isLength({ max: 20 }).withMessage("not a valid length")
-        .escape(),
+        .isLength({ max: 12 }).withMessage("not a valid length")
+        .escape().trim(),
 
+    // last name
+    body("lastName")
+        .exists().withMessage("last name is required")
+        .isString().withMessage("not a valid string")
+        .isLength({ max: 12 }).withMessage("not a valid length")
+        .escape(),
+    // user name
+    body("userName")
+    .exists().withMessage("userName is required")
+    .isString().withMessage("not a valid string")
+    .isLength({ max: 16 }).withMessage("not a valid length")
+    .isSlug().withMessage("not a valid userName")
+    .escape(),
     // Country
     body("country")
         .exists().withMessage("country is required")
         .isString().withMessage("not a valid string")
         .isLength({ max: 20 }).withMessage("not a valid length")
         .escape().trim(),
-    ,
 
 ]
 export default signUpValidation

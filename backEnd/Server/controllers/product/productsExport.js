@@ -1,9 +1,9 @@
 //importing for All
 import getProduct from "./ForAll/getProduct.js"
+import getAllProducts from "./ForAll/getAllProducts.js"
 
 //importing AdminsOnly
 import deleteMultipleProducts from "./AdminsOnly/deleteMultipleProducts.js"
-import getAllProducts from "./AdminsOnly/getAllProducts.js"
 import updateMultipleProducts from "./AdminsOnly/updateMultipleProducts.js"
 
 //importing authenticated Users only
@@ -19,10 +19,10 @@ import updateProduct from "./AuthenticatedUsersOnly/OwnersOnly/updateProduct.js"
 export {
     //for All
     getProduct,
+    getAllProducts,
 
     //Admins only
     deleteMultipleProducts,
-    getAllProducts,
     updateMultipleProducts,
 
     //authenticated users Only

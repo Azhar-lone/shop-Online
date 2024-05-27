@@ -1,11 +1,22 @@
 
-import React, { ChangeEvent, useState, useRef } from 'react';
+import React from "react"
 import { Link, useNavigate } from "react-router-dom"
-
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 // importing components
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+    Form,
+    FormControl,
+    // FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 
 
 
@@ -15,57 +26,65 @@ import { Button } from '@/components/ui/button';
 
 
 
-
-
-interface user {
-    email: string;
-    // phoneNumber?: Number ;
-    password: string
-}
 
 
 const Login = () => {
-    const [user, setUser] = useState<user>({
-        email: '',
-        // phoneNumber: 0,
-        password: ''
+
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            phoneNumber: undefined,
+            password: '',
+        }
     })
+
     const navigate = useNavigate()
-    function setValues(e: ChangeEvent<HTMLInputElement>) {
-        setUser({ email: e.target.value, password: user.password })
-        console.log(e.target.value)
-
-    }
-
+    console.log(import.meta.env.VITE_BackendUrl)
 
 
     return (
-        <div className='md:w-[80%] mx-auto p-5 flex flex-col gap-5 items-center bg-background md:border mt-10'>
-            <Input
-                placeholder=' Email'
-                onChange={setValues}
-                value={user.email}
+        // <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5 items-center bg-background shadow-2xl md:border  mt-[20vh]'>
+        <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl md:border mt-[5vh]'>
 
-            />
+            <h3>Log in to your Account</h3>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
+                    {loginFormArray.map((field1, i) => (
+                        <FormField
+                            control={form.control}
+                            name={field1.name}
+                            key={i}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{field1.name}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder={field1.placeHolder} {...field} className="bg-input" />
+                                    </FormControl>
 
-            <Input
-                placeholder=' Password'
-            // value={user.email}
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    ))}
 
-            />
-            <div className='flex justify-between w-[100%]'>
-                <p></p>
-                <Button
-                    className="md:ml-[10%] ml-[30%]"
-                >Login </Button>
-                <Button
-                    variant="ghost"
-                    onClick={()=>navigate("/forgot-password") }
-                >
-                    forgot password
-                </Button>
-            </div>
+                    <div className='flex justify-between w-[100%]'>
+                        <p></p>
+                        <Button
+                            type="submit"
+                            className="md:ml-[10%] ml-[30%]"
+                        >Login </Button>
+                        <Button
+                            variant="ghost"
+                            onClick={() => navigate("/forgot-password")}
+                        >
+                            Forgot Password
+                        </Button>
+                    </div>
+                </form>
+            </Form>
+
             <div>did'nt have an account
                 <Link to={"/signup"}
                     className='text-blue-500 p-2 hover:text-blue-400'
@@ -75,3 +94,43 @@ const Login = () => {
 }
 
 export default Login
+
+
+
+const loginSchema = z.object({
+    email: z.string().email({ message: 'Invalid email format' }).optional(), // Optional email with email format validation and message
+    phoneNumber: z
+        .number({ message: 'Invalid phone number (must be a number)' }).optional(), // Optional phone number (type safety) and message
+    password: z.string()
+        .min(8, { message: 'Password must be at least 8 characters long' })
+        .max(16, { message: 'Password cannot exceed 16 characters' })
+})
+
+
+
+
+async function onSubmit(values: z.infer<typeof loginSchema>) {
+    let response = await fetch(import.meta.env.VITE_BackendUrl+'/users/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values),
+        credentials: 'include'
+    })
+
+    if (response.ok) {
+        alert("loginSuccess")
+
+    }
+    else {
+        alert("failed to login")
+    }
+
+}
+
+const loginFormArray = [
+    { name: "email", placeHolder: "email@domain.com " },
+    { name: "phoneNumber", placeHolder: "enter your phone number here" },
+    { name: "password", placeHolder: "*********" }
+]

@@ -11,7 +11,7 @@ const loginValidation = [
         .isMobilePhone().withMessage("not a valid phone Number"),
 
     check("password")
-        .exists().withMessage("Email is required")
+        .exists().withMessage("password is required")
         .trim()
         .isStrongPassword().withMessage("not correct password")
         .escape()

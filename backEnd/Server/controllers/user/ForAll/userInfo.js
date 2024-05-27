@@ -6,8 +6,6 @@ export default async function userInfo(req, res) {
     //change it to slug
     let { username } = req.params
     let user = await userModel.findOne({ userName: username })
-      .populate("followers", "profilePicPath name userName")
-      .populate("following", "profilePicPath name userName")
 
     if (!user) {
       return res.status(404).json({

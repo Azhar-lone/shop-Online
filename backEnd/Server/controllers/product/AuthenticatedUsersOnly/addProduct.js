@@ -10,7 +10,7 @@ import productModel from "../../../model/productModel.js"
 
 export default async function addProduct(req, res) {
     try {
-
+// what ever we need from body
 
         const product = await productModel.create({
 // ...req.body

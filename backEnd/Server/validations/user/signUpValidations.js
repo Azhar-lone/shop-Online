@@ -40,7 +40,7 @@ const signUpValidation = [
         .escape(),
     // first name
     body("firstName")
-        .exists().withMessage("last name is required")
+        .exists().withMessage("first name is required")
         .isString().withMessage("not a valid string")
         .isLength({ max: 12 }).withMessage("not a valid length")
         .escape().trim(),
@@ -62,7 +62,7 @@ const signUpValidation = [
     body("country")
         .exists().withMessage("country is required")
         .isString().withMessage("not a valid string")
-        .isLength({ max: 20 }).withMessage("not a valid length")
+        .isLength({ max: 30 }).withMessage("not a valid length")
         .escape().trim(),
 
 ]

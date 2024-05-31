@@ -1,8 +1,8 @@
-import fs from 'fs'
+import {mkdir} from 'fs'
 import { createToken } from '../../../middlewares/auth.js'
 import bcrypt from 'bcrypt'
 import userModel from '../../../model/userModel.js'
-
+import {resolve} from "path"
 /**
  * Handles the login process.
  * @param {Object} req - The request object.
@@ -33,7 +33,7 @@ async function suggestRelatedUsername(originalUsername) {
 export default async function signUp(req, res) {
   try {
 
-    const { email, firstName, lastName, phoneNumber, password, confirmPassword, country ,userName} = req.body
+    const { email, firstName, lastName, phoneNumber, password, confirmPassword, country, userName } = req.body
     // if both are missing return this message
     if (!phoneNumber && !email) {
       return res.status(401).json({
@@ -102,12 +102,12 @@ export default async function signUp(req, res) {
         msg: 'error creating user',
       })
     }
-
-    fs.mkdir(`Files/${userName}`, { recursive: true }, err => {
+    const savedUser = await user.save()
+    
+    mkdir(resolve("Files/", userName), { recursive: true }, err => {
       if (err) console.log('error while creating folder')
       else console.log('Folder created successfully')
     })
-    const savedUser = await user.save()
 
     const token = createToken(user._id.toString())
     return (

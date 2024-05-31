@@ -1,8 +1,8 @@
 // importing dependencies
-import React from "react";
+import React, { useEffect } from "react";
 import {
     HomeIcon, ShoppingCart, ShoppingBasket, UserCircle2,
-    Boxes
+    Boxes, InfoIcon,
 } from "lucide-react";
 
 // importing Shadcn Components
@@ -16,38 +16,70 @@ import ProfileButton from "../../Profile/ProfileButton"
 import Hint from "@/components/myUi/Hint"
 import Search from "@/components/myUi/Search";
 
+// context
+import useUser from "@/components/context/user-provider"
 
+// import apis
+import getUserByUserName from "../../../api's/userInfo";
 
+let navItems = [
 
-
-let navItems = [{
-    To: "/",
-    Text: "Home",
-    Icon: <HomeIcon />
-},
-{
-    To: "/AzharLone",
-    Text: "Profile",
-    Icon: <UserCircle2 />
-},
-{
-    To: "/products",
-    Text: "Products",
-    Icon: <Boxes />
-},
-    // {
-    //     To: "/aboutus",
-    //     Text: "About Us",
-    //     Icon: <InfoIcon />
-    // },
-
+    {
+        To: "/",
+        Text: "Home",
+        Icon: <HomeIcon />
+    },
+    {
+        To: "/aboutus",
+        Text: "About Us",
+        Icon: <InfoIcon />
+    },
+    {
+        To: "/products",
+        Text: "Products",
+        Icon: <Boxes />
+    },
 
 ]
 
 
 const Nav: React.FC = () => {
-
+    let { isLogin, setIsLogin, setUser } = useUser()
     let navigate = useNavigate()
+
+    if (isLogin) {
+        navItems = [
+            {
+                To: "/",
+                Text: "Home",
+                Icon: <HomeIcon />
+            },
+            {
+                To: "/AzharLone",
+                Text: "Profile",
+                Icon: <UserCircle2 />
+            },
+            {
+                To: "/products",
+                Text: "Products",
+                Icon: <Boxes />
+            },
+
+        ]
+    }
+
+    useEffect(() => {
+
+        let userName = localStorage.getItem("userName")
+
+        if (userName && typeof id === "string") {
+            getUserByUserName(userName, setUser)
+            setIsLogin(true)
+        }
+    }, [])
+
+
+
 
     return (
         <>
@@ -84,30 +116,55 @@ const Nav: React.FC = () => {
 
                     ))}
                 </ul>
-                <div className="flex gap-2 ">
-                    <Button
-                        variant="outline"
+                {isLogin ?
+                    <div className="flex gap-2 ">
+                        <Button
+                            variant="outline"
 
-                        onClick={() => navigate("/cart")}
-                    >
-                        <ShoppingCart />
-                        <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
-                    </Button>
-                    <Hint
-                        label={"Change Theme"}
-                    >
-                        <ModeToggle />
+                            onClick={() => navigate("/cart")}
+                        >
+                            <ShoppingCart />
+                            <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
+                        </Button>
+                        <Hint
+                            label={"Change Theme"}
+                        >
+                            <ModeToggle />
 
-                    </Hint>
+                        </Hint>
 
-                    <ProfileButton />
+                        <ProfileButton />
 
-                </div>
+                    </div>
+                    : <div className="flex gap-2 ">
+                        <Button
+                            variant={"ghost"}
+                            className="flex gap-1"
 
+                        >
+                            <NavLink
+                                to={"/login"}
+                            >
+                                Login
+                            </NavLink >
+                        </Button>
+                        <Button
+                            variant={"ghost"}
+                            className="flex gap-1"
+
+                        >
+                            <NavLink
+                                to={"/signup"}
+                            >
+                                Signup
+                            </NavLink >
+                        </Button>
+
+                    </div>}
             </div >
-            <div className="bottom-0 fixed border-t w-full h-[8vh] lg:hidden md:w-[10%] md:h-[88vh] bg-background border-r  md:left-0 md:top-[10vh] flex gap-4   justify-center backdrop-blur-sm ">
+            <div className="bottom-0 fixed border-t w-full h-[8vh] lg:hidden md:w-[10%] md:h-[88vh] bg-background border-r  md:left-0 md:top-[10vh] flex gap-4   justify-center backdrop-blur-sm md:items-start items-center">
                 <ul
-                    className=" flex  md:flex-col justify-around md:justify-start md:gap-5 md:items-center md:p-8"
+                    className=" flex  md:flex-col justify-around md:justify-start md:gap-5  md:p-8"
                 >
 
                     {navItems.map((element, index) => (

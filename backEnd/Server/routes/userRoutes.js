@@ -28,11 +28,13 @@ import { AdminAuthorized, UserAuth, validationError } from '../middlewares/auth.
 // Importing Validations
 import {
     signUpValidation,
-    userInfoValidation,
     loginValidation,
     updateUserValidation,
+    userInfoValidation,
+
     // general validations
-    paginationValidation
+    paginationValidation,
+    // database Validations
 
 } from "../validations/exportValidations.js"
 
@@ -59,7 +61,7 @@ userRouter
 // Routes requiring user authentication
 // Autherized Users Only
 userRouter
-    // .use(UserAuth)
+    .use(UserAuth)
     .post('/logout', logout)
     .post('/upload/profilepic',
         uploadProfile_multer.single("profileImg"),
@@ -71,7 +73,6 @@ userRouter
     .get("/cart", paginationValidation, validationError, getUsersCart)
 
 // Routes accessible only to admins
-userRouter.use(AdminAuthorized)
 userRouter
     .use(AdminAuthorized)
     .delete('admin/deletemultiple', deleteMultipleUsers)

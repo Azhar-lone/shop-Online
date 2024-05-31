@@ -1,6 +1,6 @@
 
 import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -18,30 +18,31 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+// importing context
 
+// apis
 
-
-
-
-
-
+import login from "../../api's/login"
 
 
 
 const Login = () => {
 
+    const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email: '',
-            phoneNumber: undefined,
             password: '',
         }
     })
 
-    const navigate = useNavigate()
-    console.log(import.meta.env.VITE_BackendUrl)
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
 
+        login(values)
+
+    }
 
     return (
         // <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5 items-center bg-background shadow-2xl md:border  mt-[20vh]'>
@@ -98,9 +99,7 @@ export default Login
 
 
 const loginSchema = z.object({
-    email: z.string().email({ message: 'Invalid email format' }).optional(), // Optional email with email format validation and message
-    phoneNumber: z
-        .number({ message: 'Invalid phone number (must be a number)' }).optional(), // Optional phone number (type safety) and message
+    email: z.string().email({ message: 'Invalid email format' }),
     password: z.string()
         .min(8, { message: 'Password must be at least 8 characters long' })
         .max(16, { message: 'Password cannot exceed 16 characters' })
@@ -109,28 +108,9 @@ const loginSchema = z.object({
 
 
 
-async function onSubmit(values: z.infer<typeof loginSchema>) {
-    let response = await fetch(import.meta.env.VITE_BackendUrl+'/users/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values),
-        credentials: 'include'
-    })
 
-    if (response.ok) {
-        alert("loginSuccess")
-
-    }
-    else {
-        alert("failed to login")
-    }
-
-}
 
 const loginFormArray = [
     { name: "email", placeHolder: "email@domain.com " },
-    { name: "phoneNumber", placeHolder: "enter your phone number here" },
     { name: "password", placeHolder: "*********" }
 ]

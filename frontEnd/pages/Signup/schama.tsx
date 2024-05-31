@@ -1,18 +1,8 @@
 import { z } from 'zod';
 
 
-
-
-function toNumber(val) {
-    if (typeof val === "string") {
-        val = Number(val)
-    }
-}
-
 const userSchema1 = z.object({
     email: z.string().email({ message: 'Invalid email format' }).optional(), // Optional email with email format validation and message
-    phoneNumber: z
-        .number({ message: 'Invalid phone number (must be a number)' }).optional(), // Optional phone number (type safety) and message
     password: z.string()
         .min(8, { message: 'Password must be at least 8 characters long' })
         .max(16, { message: 'Password cannot exceed 16 characters' }),

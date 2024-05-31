@@ -31,7 +31,6 @@ phoneNumber?:phoneNumber,
 **3** getUserInfo
 ```javascript
 GET /user/:username
-where username=slugString
 ```
 #### if status=200 ok returns{msg,user} 
 #### else returns{msg} 

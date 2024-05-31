@@ -11,21 +11,50 @@ export default async function likeProduct(req, res) {
 
         const id = req.params.id
         // add id to likes 
-        const product = await productModel.findByIdAndUpdate(id, { "$push": { likedBy: id } })
-        
-        const user = await userModel.findByIdAndUpdate(id, { "$push": { cartItems: id } })
-        
-        if (product) {
-            return res.status(200).json({
-                msg: "product fetched successfully",
-                product: product
-            })
+
+
+        // if not iside product
+        const user = await userModel.findById(req.currentUserId).select("-_id cartItems")
+        // if not likes already add like
+        if (!user.cartItems.contain(id)) {
+            const product = await productModel.findByIdAndUpdate(id, { "$push": { likedBy: req.currentUserId } }, { new: true })
+                .select("-_id likedBy")
+            if (product) {
+                user.cartItems.push(id)
+                let savedUser = await user.save().select("-_id cartItems")
+                return res.status(200).json({
+                    msg: "product liked  successfully",
+                    product: product,
+                    user: savedUser
+                })
+            }
+            else {
+                return res.status(404).json({
+                    msg: "failed to create product"
+                })
+            }
         }
-        else {
-            return res.status(404).json({
-                msg: "failed to create product"
-            })
+        // if liked already then remove like
+
+        if (user.cartItems.contain(id)) {
+            const product = await productModel.findByIdAndUpdate(id, { "$pop": { likedBy: req.currentUserId } }, { new: true })
+                .select("-_id likedBy")
+            if (product) {
+                user.cartItems.pop(id)
+                let savedUser = await user.save().select("-_id cartItems")
+                return res.status(200).json({
+                    msg: "product liked  successfully",
+                    product: product,
+                    user: savedUser
+                })
+            }
+            else {
+                return res.status(404).json({
+                    msg: "failed to create product"
+                })
+            }
         }
+
 
     } catch (err) {
         return res.status(500).json({

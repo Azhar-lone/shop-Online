@@ -11,12 +11,13 @@ const schema = mongoose.Schema({
         min: 30,
         max: 250,
         required: true,
-        
+
 
 
     },
     category: {
         type: String,
+        required: true
 
     },
     owner: {
@@ -29,7 +30,7 @@ const schema = mongoose.Schema({
     likedBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "userModel",
-        unique: true,
+        unique: [true, "alreadyLiked"],
     }],
 
     price: {
@@ -37,20 +38,20 @@ const schema = mongoose.Schema({
         default: 0,
     },
     images: [{
-        type: String
+        type: String,
+        required: true
     }],
     timeStamp: {
         type: Date,
         default: Date.now()
     },
+    // if inStock =0 then outOfStock
     inStock: {
         type: Number,
+        default: 1,
+
     },
-    //if stockstatus=false then outofstock
-    stockStatus: {
-        type: Boolean,
-        default: true,
-    },
+
 
 
 })

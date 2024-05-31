@@ -29,6 +29,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+// Api's
+import signUp, { getContries } from '../../api\'s/signUp';
+
 
 
 
@@ -43,7 +46,6 @@ const Signup = () => {
   let [formData, setFormData] = useState(
     {
       email: '',
-      phoneNumber: undefined,
       password: '',
       confirmPassword: '',
       firstName: '',
@@ -53,51 +55,14 @@ const Signup = () => {
 
     }
   )
-  async function getContries() {
-    try {
-
-      let res = await fetch(import.meta.env.VITE_BackendUrl + "/general/countries", {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      if (res.ok) {
-
-        // Check if response is HTML (replace with your logic)
-        if (res.headers.get('Content-Type')?.includes('text/html')) {
-          // Handle HTML response (e.g., parse with cheerio)
-          console.error('API endpoint might be returning HTML instead of JSON');
-          console.log(res)
-          return;  // Exit the function if it's HTML
-        }
-
-        let arr = await res.json()
-
-        setCountries(arr.countries)
-        return
-      }
-      // call yourself until you don't get 200 ok
-      // getContries()
-
-
-    } catch (error) {
-      console.log(error)
-    }
-
-
-
-  }
 
   // 1. Define your form.
   const form1 = useForm<z.infer<typeof userSchema1>>({
     resolver: zodResolver(userSchema1),
     defaultValues: {
       email: '',
-      phoneNumber: undefined,
       password: '',
       confirmPassword: '',
-
-
     },
   })
 
@@ -113,7 +78,7 @@ const Signup = () => {
 
 
   useEffect(() => {
-    getContries()
+    getContries(setCountries)
   }, [])
 
 
@@ -123,9 +88,7 @@ const Signup = () => {
 
 
   function handleFirstPageSubmit(values: z.infer<typeof userSchema1>) {
-    // setFormData()
-    console.log(values)
-    console.log(formData)
+
     setStep(true)
 
   }
@@ -135,6 +98,8 @@ const Signup = () => {
   function handleFullFormSubmit(values: z.infer<typeof userSchema2>) {
     console.log('Submitting full form data:', values); // Access complete user data
 
+
+    signUp(formData)
     // Replace with your actual backend logic for data submission
 
     // You can clear the form or redirect to a confirmation page after successful submission
@@ -260,7 +225,6 @@ export default Signup
 
 const formArrayPage1 = [
   { name: "email", placeHolder: "email@domain.com " },
-  { name: "phoneNumber", placeHolder: "enter your phone number here" },
   { name: "password", placeHolder: "*********" },
   { name: "confirmPassword", placeHolder: "*********" },
 ]

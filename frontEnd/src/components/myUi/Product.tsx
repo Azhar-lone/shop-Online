@@ -1,21 +1,10 @@
 import React from "react";
 
+// Types
+import productType from "/types/product"
 
-interface ProductProps {
-    product: {
-        name: String;
-        discription?: String;
-        category: String;
-        price: Number;
-        owner?: String;
-        likes?: String[];
-        inStock?: Number;
-        imgs: string[];
-    }
 
-}
-
-const Product: React.FC<ProductProps> = ({
+const Product: React.FC<productType> = ({
     product
 }) => {
     return (

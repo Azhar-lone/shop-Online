@@ -7,7 +7,7 @@ import deleteMultipleProducts from "./AdminsOnly/deleteMultipleProducts.js"
 import updateMultipleProducts from "./AdminsOnly/updateMultipleProducts.js"
 
 //importing authenticated Users only
-import addProduct from "./AuthenticatedUsersOnly/addProduct.js"
+import addProduct, { uploadProduct_multer } from "./AuthenticatedUsersOnly/addProduct.js"
 import buyProduct from "./AuthenticatedUsersOnly/buyProduct.js"
 import getUsersProducts from "./AuthenticatedUsersOnly/getUsersProducts.js"
 import likeProduct from "./AuthenticatedUsersOnly/likeProduct.js"
@@ -26,7 +26,7 @@ export {
     updateMultipleProducts,
 
     //authenticated users Only
-    addProduct,
+    addProduct, uploadProduct_multer,
     buyProduct,
     getUsersProducts,
     likeProduct,

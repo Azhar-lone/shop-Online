@@ -2,7 +2,7 @@
 
 
 // import userModel from "../../Models/userModel"
-
+import productModel from "../../../../model/productModel.js"
 
 // import Models
 // import userModel from "../../Models/userModel.js"
@@ -14,7 +14,7 @@ export default async function deleteProduct(req, res) {
     try {
         const id = req.params.id
 
-        const product = await productModel.findById(id)
+        const product = await productModel.findById(id).select("owner -_id")
         if (req.currentUserId !== product.owner) {
             return res.status(401).json({
                 msg: "not autherized to perform operation"

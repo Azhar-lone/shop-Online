@@ -25,7 +25,6 @@ export default async function login(req, res) {
     }
 
 
-
     // Find user by email or phoneNumber and select password
     // dont select id
     const user = await userModel.findOne({
@@ -37,40 +36,38 @@ export default async function login(req, res) {
 
     // If user is not found, return a 401 Unauthorized response
     if (!user) {
-      return res.status(401).json({
+      return res.status(404).json({
         msg: 'User not found',
       })
     }
-
     // Compare the provided password with the hashed password in the database
     const isMatched = await bcrypt.compare(password, user.password)
 
     // If passwords don't match, return a 401 Unauthorized response
     if (!isMatched) {
       return res.status(401).json({
-        msg: "Password didn't match",
+        msg: "Incorrect Password",
       })
     }
 
-    let loggedInUser=undefined
+    let loggedInUser = undefined
     // if matched bring user object from dataBase
-    // under user is not found cause it is present
+    // until user is not found cause it is present
     while (1) {
-       loggedInUser = await userModel.findOne({
+      loggedInUser = await userModel.findOne({
         $or: [
           { email },
           { phoneNumber }
         ]
       })
-      if(loggedInUser)
-      {
+      if (loggedInUser) {
         break;
       }
 
     }
-
+    console.log(loggedInUser)
     // If login is successful, create and send an authentication token
-    const token = createToken(user._id.toString())
+    const token = createToken(loggedInUser._id.toString())
 
     // Return a 200 OK response with a success message and the user's name and Id
     return (

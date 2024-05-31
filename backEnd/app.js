@@ -5,11 +5,9 @@ import mongoose from "mongoose"
 import "dotenv/config"
 
 //importing Routers
-import {
-  userRouter,
-  productRouter,
-  // reviewRouter
-} from "./Server/routes/exportRouters.js"
+import userRouter from "./Server/routes/userRoutes.js"
+import productRouter from "./Server/routes/productRoutes.js"
+// import reviewRouter from "./Server/routes/reviewRoutes"
 
 //initializing express app
 const app = express()

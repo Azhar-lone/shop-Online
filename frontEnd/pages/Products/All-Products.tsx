@@ -24,8 +24,12 @@ import Product from "@/components/myUi/Product"
 import ProductsList from './ProductsList';
 //static data for testing frontEnd
 import { products } from "/StaticData/productData"
+// api's 
+import { getCategories } from '../../api\'s/All-products'
 
 
+// types
+import { CategorizedProducts } from '../../types/product'
 
 
 let Categories = [{ Name: "Mobile Phones", products: products }, { Name: "Mobile Phones", products: products },
@@ -33,9 +37,7 @@ let Categories = [{ Name: "Mobile Phones", products: products }, { Name: "Mobile
 
 const AllProducts = () => {
 
-    async function getCategories() {
 
-    }
 
     useEffect(() => {
         getCategories()
@@ -109,3 +111,9 @@ const AllProducts = () => {
 }
 
 export default AllProducts
+
+
+
+
+
+

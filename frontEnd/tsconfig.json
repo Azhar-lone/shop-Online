@@ -33,7 +33,7 @@
   },
   "include": [
     "src"
-  ],
+, "src/components/context", "myUi"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

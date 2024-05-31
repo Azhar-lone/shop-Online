@@ -11,7 +11,11 @@ export function createToken(id) {
 export async function AdminAuthorized(req, res, next) {
   try {
     const admin = await userModel.findById(req.currentUserId)
-
+    if (!admin) {
+      return res.status(401).json({
+        msg: "unautherized request"
+      })
+    }
     if (admin.isAdmin) {
       // req.user=admin
       return next()
@@ -20,6 +24,7 @@ export async function AdminAuthorized(req, res, next) {
         msg: 'only admins can perform this operation'
       })
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       msg: 'internal server errors'
     })
@@ -61,7 +66,7 @@ export function UserAuth(req, res, next) {
       if (decoded) {
         //decode login cookies and extract user's Id and send it to frontEnd
         //as currentUserId which will be used to specify OwnerShip and ...
-        req.currentUserId = decoded
+        req.currentUserId = decoded.id
         return (next())
       } else {
         return res.status(401).json({

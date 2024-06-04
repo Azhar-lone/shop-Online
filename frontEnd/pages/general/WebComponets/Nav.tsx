@@ -137,6 +137,8 @@ const Nav: React.FC = () => {
 
                     </div>
                     : <div className="flex gap-2 ">
+                        <ModeToggle />
+
                         <Button
                             variant={"ghost"}
                             className="flex gap-1"
@@ -159,7 +161,6 @@ const Nav: React.FC = () => {
                                 Signup
                             </NavLink >
                         </Button>
-
                     </div>}
             </div >
             <div className="bottom-0 fixed border-t w-full h-[8vh] lg:hidden md:w-[10%] md:h-[88vh] bg-background border-r  md:left-0 md:top-[10vh] flex gap-4   justify-center backdrop-blur-sm md:items-start items-center">

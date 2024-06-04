@@ -4,8 +4,8 @@ import express from "express"
 
 //importing middleWares
 import { AdminAuthorized, UserAuth, validationError } from "../middlewares/auth.js"
-//importing Controllers
 
+//importing Controllers
 import {
     //for All
     getProduct,
@@ -35,7 +35,7 @@ const productRouter = express.Router({ strict: true })
 //Routes that everyOne can access
 productRouter
     .get(":id", validateId, validationError, getProduct)
-    .get("", paginationValidation, validationError, getAllProducts)
+    .get("/", paginationValidation, validationError, getAllProducts)
 
 //Routes Only authenticated user can access
 // productRouter.use(UserAuth)

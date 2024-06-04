@@ -1,8 +1,10 @@
-import {mkdir} from 'fs'
+import { mkdir } from 'fs'
 import { createToken } from '../../../middlewares/auth.js'
 import bcrypt from 'bcrypt'
+import { resolve } from "path"
+
 import userModel from '../../../model/userModel.js'
-import {resolve} from "path"
+import countriesModel from '../../../model/generalModels/countriesModel.js'
 /**
  * Handles the login process.
  * @param {Object} req - The request object.
@@ -33,55 +35,30 @@ async function suggestRelatedUsername(originalUsername) {
 export default async function signUp(req, res) {
   try {
 
-    const { email, firstName, lastName, phoneNumber, password, confirmPassword, country, userName } = req.body
-    // if both are missing return this message
-    if (!phoneNumber && !email) {
+    const { email, firstName, lastName, phoneNumber, password, country, userName } = req.body
+
+
+
+    let validCountry = await countriesModel.findOne({ country }).select("-country")
+    console.log(validCountry)
+    if (!validCountry) {
       return res.status(401).json({
-        msg: "phone or email is required"
+        msg: "invalid requesd"
       })
     }
 
 
-    // Check for unexpected fields
-    // // if their is somthing unexpected then it is not what we need in the server
-    // if (Object.keys(unexpectedFields).length > 0) {
-    //   return res.status(400).json({
-    //     msg: 'Unexpected fields in request body',
-    //   }
-    //   )
-    // }
-
-
-
-    if (password !== confirmPassword) {
-      return res.status(400).json({
-        msg: 'password did not match',
-      })
-    }
-
-
-    if (email) {
-      const takenEmail = await userModel.findOne({ email })
-      if (takenEmail) {
+    const taken = await userModel.findOne({ "$or": [{ email }, { userName }] }).select("userName -_id")
+    if (taken) {
+      if (userName === taken.userName) {
+        const suggestedUserName = await suggestRelatedUsername(userName)
         return res.status(403).json({
-          msg: 'email already registered',
+          msg: 'userName already taken',
+          suggestedUserName: suggestedUserName,
         })
       }
-    }
-    else {
-      const takenPhone = await userModel.findOne({ phoneNumber })
-      if (takenPhone) {
-        return res.status(403).json({
-          msg: 'phone already registered',
-        })
-      }
-    }
-    const takenUserName = await userModel.findOne({ userName })
-    if (takenUserName) {
-      const suggestedUserName = await suggestRelatedUsername(userName)
       return res.status(403).json({
-        msg: 'userName already taken',
-        suggestedUserName: suggestedUserName,
+        msg: 'email already registered',
       })
     }
 
@@ -103,7 +80,7 @@ export default async function signUp(req, res) {
       })
     }
     const savedUser = await user.save()
-    
+
     mkdir(resolve("Files/", userName), { recursive: true }, err => {
       if (err) console.log('error while creating folder')
       else console.log('Folder created successfully')
@@ -117,7 +94,7 @@ export default async function signUp(req, res) {
         sameOrigin: 'none'
       }).status(200).json({
         msg: 'user Created Successfully',
-        userName: savedUser,
+        user: savedUser,
       }))
   } catch (error) {
     console.log(error)
@@ -127,25 +104,3 @@ export default async function signUp(req, res) {
     })
   }
 }
-
-// middleware for cleaning signUp Body
-// no other feilds are allowed except which are allowed by this middleware
-// export function cleanSignUp(req, res, next) {
-//   try {
-//     const allowedFields = ['email', 'password', 'confirmPassword', "DOB", "name"];
-
-//     const cleanBody = {};
-//     for (const key of Object.keys(req.body)) {
-//       if (allowedFields.includes(key)) {
-//         cleanBody[key] = req.body[key];
-//       }
-//     }
-//     req.body = cleanBody;
-//     return next();
-//   } catch (error) {
-//     res.status(500).json({
-//       msg: 'Internal server error',
-//       error: error.message,
-//     })
-//   }
-// }

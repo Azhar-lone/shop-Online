@@ -1,20 +1,22 @@
 // importing Models
-import categoryModel from "../../../model/categoryModel.js"
+import countriesModel from "../../../model/generalModels/countriesModel.js"
 
-export default async function getCategories(req, res) {
+export default async function getCountries(req, res) {
     try {
 
-        let categories = await categoryModel
+        let countries = await countriesModel
             .find()
-            .select("categories")
-        if (categories) {
+            .select("country -_id")
+        console.log(req.url,"sdgone")
+
+        if (countries) {
             return res.status(200).json({
-                msg: "categories fetched successfully",
-                categories: categories
+                msg: "countries fetched successfully",
+                countries: countries
             })
         }
         return res.status(404).json({
-            msg: "error while fetching categories"
+            msg: "error while fetching coutries"
         })
 
 

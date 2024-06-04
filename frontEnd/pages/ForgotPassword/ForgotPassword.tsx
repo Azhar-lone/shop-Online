@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -26,7 +25,6 @@ const ForgotPassword = () => {
         resolver: zodResolver(Schema),
         defaultValues: {
             email: '',
-            phoneNumber: undefined,
         }
     })
 
@@ -42,9 +40,9 @@ const ForgotPassword = () => {
                         name={"email"}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email or phone</FormLabel>
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={"enter phone number or email"} {...field} className="bg-input" />
+                                    <Input placeholder={"enter Your email"} {...field} className="bg-input" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -58,38 +56,6 @@ const ForgotPassword = () => {
             </Form>
 
 
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
-                    <FormField
-                        control={form.control}
-                        name={"email"}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>code</FormLabel>
-                                <FormControl>
-                                    <Input placeholder={"enter code you received here"} {...field} className="bg-input" disabled />
-                                </FormControl>
-
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <div className='flex justify-between w-[100%]'>
-                        <p></p>
-                        <Button
-                            type="submit"
-                            className="md:ml-[10%] ml-[30%]"
-                        >Verify Code </Button>
-                        <Link
-                            to={"/login"}
-                        >
-                            go to login page
-                        </Link>
-                    </div>
-                </form>
-            </Form>
 
         </div>
     )
@@ -99,14 +65,28 @@ export default ForgotPassword
 
 
 const Schema = z.object({
-    email: z.string().email({ message: 'Invalid email format' }).optional(), // Optional email with email format validation and message
-    phoneNumber: z
-        .number({ message: 'Invalid phone number (must be a number)' }).optional(), // Optional phone number (type safety) and message
+    email: z.string().email({ message: 'Invalid email address' }) // email format validation and message
 
 })
 
 
 
 async function onSubmit(values: z.infer<typeof Schema>) {
+    try {
 
+        let res = await fetch("", {
+            body: JSON.stringify({
+                email: values.email,
+            }),
+            credentials: "include",
+            method: "POST"
+        })
+        if (res.ok) {
+            return 200
+        }
+
+
+    } catch (error) {
+        console.log(error)
+    }
 }

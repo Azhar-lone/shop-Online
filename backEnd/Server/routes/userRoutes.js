@@ -7,7 +7,7 @@ import {
     signUp,
     login,
     userInfo,
-    forgetPassword,
+    sendOTP,
     // Autherized Users Only
     logout,
     // follow,
@@ -51,8 +51,7 @@ userRouter
         loginValidation,
         validationError,
         login)
-    .post("/forget-password", forgetPassword)//TODO
-
+    .post("/send-otp", sendOTP)//TODO
     .get("/:username",
         userInfoValidation,
         validationError,

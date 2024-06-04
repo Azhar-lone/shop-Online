@@ -2,12 +2,12 @@
 import signUp from "./ForAll/signUp.js"
 import login from "./ForAll/login.js"
 import userInfo from "./ForAll/userInfo.js"
-import forgetPassword from "./ForAll/forgetPassword.js"
+import sendOTP from "./ForAll/sendOTP.js"
 
 // Autherized Users Only
 import logout from "./AutherizedUsers/logout.js"
 import follow from "./AutherizedUsers/follow.js"
-import uploadProfile,{uploadProfile_multer} from "./AutherizedUsers/uploadProfile.js"
+import uploadProfile, { uploadProfile_multer } from "./AutherizedUsers/uploadProfile.js"
 
 // Owners Only
 import deleteUser from "./AutherizedUsers/OwnersOnly/deleteUser.js"
@@ -23,7 +23,7 @@ export {
   signUp,
   login,
   userInfo,
-  forgetPassword,
+  sendOTP,
   // Autherized Users Only
   logout,
   follow,

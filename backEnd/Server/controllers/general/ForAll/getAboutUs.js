@@ -4,7 +4,7 @@
 // Importing Models
 import AboutUsModel from "../../../model/aboutUsModel.js"
 
-export default async function getAboutUs(req, res) {
+export default async function getAboutus(req, res) {
 
     try {
 
@@ -12,7 +12,7 @@ export default async function getAboutUs(req, res) {
         if (aboutUs) {
             return res.status(200).json({
                 msg: "about us fetched successfully",
-                aboutUs: aboutUs
+                aboutus: aboutUs
             })
         }
         return res.status(404).json({

@@ -1,5 +1,5 @@
 // dependencies
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 //Icons
 import { ListFilter } from "lucide-react"
@@ -25,22 +25,29 @@ import ProductsList from './ProductsList';
 //static data for testing frontEnd
 import { products } from "/StaticData/productData"
 // api's 
-import { getCategories } from '../../api\'s/All-products'
-
+import { getCategories } from '../../api\'s/products/All-products'
 
 // types
 import { CategorizedProducts } from '../../types/product'
 
 
-let Categories = [{ Name: "Mobile Phones", products: products }, { Name: "Mobile Phones", products: products },
-{ Name: "Mobile Phones", products: products },]
+let Categories: CategorizedProducts[] = [{ category: "Mobile Phones", products: products }, { category: "Mobile Phones", products: products },
+{ category: "Mobile Phones", products: products },]
 
 const AllProducts = () => {
 
-
-
+    const [categories, setCategories] = useState<string>()
+    const [CategorizedProducts, setCategorizedProducts] = useState<CategorizedProducts[]>([])
     useEffect(() => {
-        getCategories()
+        getCategories().then((cate) => {
+            if (cate !== 1) {
+                setCategories(cate)
+                return
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+        setCategorizedProducts(Categories)
 
     }, [])
 
@@ -83,9 +90,9 @@ const AllProducts = () => {
                     />
                 </div>
 
-                {Categories.map((Category, i) => (
+                {CategorizedProducts.map((Category, i) => (
                     <div className='w-[100%] border  p-5 text-xl flex items-center flex-col'>
-                        <h1 className='font-medium p-3 w-[100%] border-b text-center'>{Category.Name}</h1>
+                        <h1 className='font-medium p-3 w-[100%] border-b text-center'>{Category.category}</h1>
                         <ProductsList >
                             {Category.products.map((product, index) => (
                                 <Product product={product} key={index} />

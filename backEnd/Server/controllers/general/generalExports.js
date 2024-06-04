@@ -1,8 +1,6 @@
 // For All
-import getAboutUs from "./ForAll/getAboutUs.js"
-import getCategories from "./ForAll/getCategories.js"
-
-
+import getCountries from "./ForAll/getCountries.js"
+import getAboutus from "./ForAll/getAboutUs.js"
 // // Autherized Users Only
 // import { } from "./AutherizedUsersOnly"
 
@@ -12,18 +10,24 @@ import getCategories from "./ForAll/getCategories.js"
 
 
 // Admins Only
-import editAboutUs from "./AdminsOnly/editAboutUs.js"
-import updateCategories from "./AdminsOnly/updateCategories.js"
+import { updateCountries, addCountries } from "./AdminsOnly/countries.js"
+import { updateAboutus, addAboutus } from "./AdminsOnly/AboutUs.js"
 
 export {
     // For All
-    getAboutUs,
-    getCategories,
+
+    getCountries,
+    getAboutus,
     // Autherized Users Only
 
     // Owners Only
 
     // Admins Only
-    editAboutUs,
-    updateCategories,
+
+    // countries
+    updateCountries,
+    addCountries,
+    addAboutus,
+    updateAboutus,
+
 }

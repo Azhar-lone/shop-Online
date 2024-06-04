@@ -6,7 +6,7 @@ const schema = mongoose.Schema({
     //     type: String,
     //     default: "About us"
     // },
-    features: [],
+    features: [String],
     ourTeam: [{
         memberName: {
             type: String
@@ -19,12 +19,7 @@ const schema = mongoose.Schema({
             type: String,
             default: "member"
         },
-        links:[
-            {
-             type:String,   
-            },
-
-        ]
+        links: [String]
         // } || {
         //     type: Mongoose.Schema.Types.ObjectId,
         //     ref: "userModel",

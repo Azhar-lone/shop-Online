@@ -19,15 +19,16 @@ import {
 import { Input } from "@/components/ui/input"
 
 // importing context
+import useUser from "@/components/context/user-provider"
 
 // apis
 
-import login from "../../api's/login"
+import login from "../../api's/auth/login"
 
 
 
 const Login = () => {
-
+    const { setUser, setIsLogin } = useUser()
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof loginSchema>>({
@@ -40,7 +41,12 @@ const Login = () => {
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
 
-        login(values)
+        let ret = await login(values)
+        if (ret !== 1) {
+            setUser(ret)
+            setIsLogin(true)
+            navigate("/")
+        }
 
     }
 

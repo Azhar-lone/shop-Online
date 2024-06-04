@@ -20,11 +20,19 @@ import {
 } from "@/components/ui/avatar"
 import { LogOut, Settings } from "lucide-react"
 
+
+// api's 
+import logout from '../../api\'s/auth/logout';
+
 // imoprting static Data for Testing 
-import { user } from "../../StaticData/userData"
+import { user as staticD } from "../../StaticData/userData"
+
+// context
+import useUser from "@/components/context/user-provider"
 
 const ProfileButton: React.FC = () => {
     let navigate = useNavigate()
+    const { user } = useUser()
 
     return (
         <DropdownMenu>
@@ -32,7 +40,7 @@ const ProfileButton: React.FC = () => {
                 <Avatar>
                     <AvatarFallback>{user.userName.charAt(0)}</AvatarFallback>
                     <AvatarImage
-                        src={user.profileImg}
+                        src={user.profilePic}
                     />
                 </Avatar>
             </DropdownMenuTrigger>
@@ -50,6 +58,7 @@ const ProfileButton: React.FC = () => {
                 <  DropdownMenuSeparator />
                 <DropdownMenuItem
                     className='gap-2 cursor-pointer'
+                    onClick={() => logout()}
                 ><LogOut /> Logout</DropdownMenuItem>
 
             </DropdownMenuContent>

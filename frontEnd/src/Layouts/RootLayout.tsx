@@ -19,7 +19,7 @@ const RootLayout: React.FC = () => {
         <>
             <Nav />
             <Outlet />
-            {/* <Footer /> */}
+            <Footer />
             </>
     )
 }

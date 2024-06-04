@@ -16,7 +16,7 @@ const signUpValidation = [
 
     // email
     body("email")
-        .optional()
+        .exists().withMessage("email is required")
         .isEmail().withMessage("not a valid email"),
     // .isWhitelisted(allowedDomains).withMessage("not allowed domain"),
     // password
@@ -29,15 +29,20 @@ const signUpValidation = [
         .exists().withMessage("password is required")
         .trim()
         .isStrongPassword().withMessage("not A strong password")
-        // .isLength({ max: 16 }).withMessage("not a valid length")
+        .isLength({ max: 16, min: 8 }).withMessage("not a valid length")
         .escape(),
 
     // confirm passowrd
     body("confirmPassword")
         .exists().withMessage("confirm password is required")
         .trim()
-        // .isLength({ max: 16 }).withMessage("not a valid length")
-        .escape(),
+        .escape()
+        .custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error("password did'nt match")
+            }
+            return true
+        }),
     // first name
     body("firstName")
         .exists().withMessage("first name is required")
@@ -53,11 +58,11 @@ const signUpValidation = [
         .escape(),
     // user name
     body("userName")
-    .exists().withMessage("userName is required")
-    .isString().withMessage("not a valid string")
-    .isLength({ max: 16 }).withMessage("not a valid length")
-    .isSlug().withMessage("not a valid userName")
-    .escape(),
+        .exists().withMessage("userName is required")
+        .isString().withMessage("not a valid string")
+        .isLength({ max: 16 }).withMessage("not a valid length")
+        .isSlug().withMessage("not a valid userName")
+        .escape(),
     // Country
     body("country")
         .exists().withMessage("country is required")

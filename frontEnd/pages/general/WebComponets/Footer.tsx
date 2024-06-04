@@ -3,11 +3,12 @@ import React from 'react'
 const Footer = () => {
   return (
     <div
-    className='relative bottom-0 w-full h-10 border-t-2 bg-background items-center flex justify-center mt-[14vh]'
+      className='f relative bottom-0 w-full h-10 border-t-2 bg-background items-center flex justify-center md:mb-1 mb-[10vh] mt-[10vh] p-5'
     >
-Footer        
-        
-        </div>
+      Developed by Azhar-lone
+
+
+    </div>
   )
 }
 

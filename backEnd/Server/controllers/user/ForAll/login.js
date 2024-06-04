@@ -65,7 +65,6 @@ export default async function login(req, res) {
       }
 
     }
-    console.log(loggedInUser)
     // If login is successful, create and send an authentication token
     const token = createToken(loggedInUser._id.toString())
 

@@ -11,11 +11,8 @@ export function createToken(id) {
 export async function AdminAuthorized(req, res, next) {
   try {
     const admin = await userModel.findById(req.currentUserId)
-    if (!admin) {
-      return res.status(401).json({
-        msg: "unautherized request"
-      })
-    }
+      .select("isAdmin -_id")
+    console.log(admin)
     if (admin.isAdmin) {
       // req.user=admin
       return next()
@@ -107,3 +104,33 @@ export function validationError(req, res, next) {
     })
   }
 }
+
+export async function verifyOTP(req, res, next) {
+
+  try {
+
+    const { email, otp } = req.body
+
+    let user = await userModel.findOne({ email }).select("email -_id")
+
+    const isValid = false
+    // find otp with 
+
+
+    if (isValid) {
+      return next()
+    }
+    res.status(401).json({
+      msg: "invalid OTP"
+    })
+
+  }
+  catch (error) {
+    console.log(error)
+    res.status(500).json({
+      msg: "internel server error",
+
+    })
+  }
+
+} 

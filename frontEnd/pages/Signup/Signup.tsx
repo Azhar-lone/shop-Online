@@ -38,17 +38,15 @@ import signUp, { getContries } from '../../api\'s/auth/signUp';
 
 
 
+import { ObjectString } from '../../types/General';
 
-interface countries {
-  country: string
-}
 
 
 
 const Signup = () => {
   const { setUser } = useUser()
   const navigate = useNavigate()
-  let [countries, setCountries] = useState<Array<countries>>([{ country: "test" }])
+  let [countries, setCountries] = useState<Array<ObjectString>>([{ value: "test" }])
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -125,8 +123,8 @@ const Signup = () => {
                   </FormControl>
                   <SelectContent>
                     {countries.map((country, i) => (
-                      <SelectItem value={country.country} key={i}>
-                        {country.country}
+                      <SelectItem value={country.value} key={i}>
+                        {country.value}
                       </SelectItem>
                     ))}
                   </SelectContent>

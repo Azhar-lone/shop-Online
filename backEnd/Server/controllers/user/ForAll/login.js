@@ -1,6 +1,6 @@
-import bcrypt from 'bcrypt'
-import userModel from '../../../model/userModel.js'
+
 import { createToken } from '../../../middlewares/auth.js'
+import userModel from '../../../model/userModel.js'
 
 // STEP 2
 // TODO: Cancel account deletion process scheduled on login
@@ -13,60 +13,25 @@ import { createToken } from '../../../middlewares/auth.js'
  */
 export default async function login(req, res) {
   try {
-    // Extract email and password from the request body
-    const { email, phoneNumber, password } = req.body
 
+    const { email } = req.body
 
-    // Atleast one is required email or phone
-    if (!email && !phoneNumber) {
-      return res.status(401).json({
-        msg: "email or phone is required"
-      })
-    }
-
-
-    // Find user by email or phoneNumber and select password
-    // dont select id
-    const user = await userModel.findOne({
-      $or: [
-        { email },
-        { phoneNumber }
-      ]
-    }).select('password -_id')
-
-    // If user is not found, return a 401 Unauthorized response
-    if (!user) {
-      return res.status(404).json({
-        msg: 'User not found',
-      })
-    }
-    // Compare the provided password with the hashed password in the database
-    const isMatched = await bcrypt.compare(password, user.password)
-
-    // If passwords don't match, return a 401 Unauthorized response
-    if (!isMatched) {
-      return res.status(401).json({
-        msg: "Incorrect Password",
-      })
-    }
-
-    let loggedInUser = undefined
     // if matched bring user object from dataBase
     // until user is not found cause it is present
+    let user = undefined
     while (1) {
-      loggedInUser = await userModel.findOne({
-        $or: [
-          { email },
-          { phoneNumber }
-        ]
-      })
-      if (loggedInUser) {
+      user = await userModel.findOne({ email })
+      if (user) {
         break;
       }
 
     }
+
+
+
+    // let { user } = req.user
     // If login is successful, create and send an authentication token
-    const token = createToken(loggedInUser._id.toString())
+    const token = createToken(user._id.toString())
 
     // Return a 200 OK response with a success message and the user's name and Id
     return (
@@ -76,8 +41,10 @@ export default async function login(req, res) {
         sameOrigin: 'none'
       }).status(200).json({
         msg: 'Login successful',
-        user: loggedInUser
+        user: user
       }))
+
+
   } catch (error) {
     // Log the error for debugging purposes
     console.error('Login Error:', error)

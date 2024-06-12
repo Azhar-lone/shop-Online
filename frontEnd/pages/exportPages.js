@@ -13,7 +13,15 @@ import ProfilePage from "./Profile/ProfilePage"
 import AllProducts from "./Products/All-Products"
 import SettingsPage from "./Settings/SettingsPage"
 import CartPage from "./Cart/CartPage"
-import { Dashboard } from "./AdminPanel/Panel"
+import AboutUs from "./Aboutus/AboutUs"
+
+// Admins 
+import SideBar from "./AdminPanel/components/sideBar"
+import TopBar from "./AdminPanel/components/TopBar"
+// Pages
+import { AdminHome } from "./AdminPanel/Pages/Home"
+import General from "./AdminPanel/Pages/general"
+
 export {
     // exporting Auth pages
     Login,
@@ -30,6 +38,14 @@ export {
     AllProducts,
     SettingsPage,
     CartPage,
-    Dashboard
+    AboutUs,
+    // Admin
+    TopBar,
+    SideBar,
+    // pages
+    AdminHome,
+    General
+
+
 
 }

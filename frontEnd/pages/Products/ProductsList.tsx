@@ -11,7 +11,7 @@ const ProductsList: React.FC<props> = ({
     return (
         <div
             className={
-                `flex flex-wrap gap-4  `
+                `flex flex-wrap gap-4 px-1  `
             }        >
             {children}
         </div>

@@ -53,19 +53,19 @@ const ProfilePage = () => {
     useEffect(() => {
 
         //    check if it is current user
-        if (loggedInUser.userName === params.userName) {
-            setIsSelf(true)
-        }
+        // if (loggedInUser.userName === params.userName) {
+            // setIsSelf(true)
+        // }
         // Check the following array of loggedIn user
         // if user is not following this user then 
         // show follow button else show unfollow button
 
-        else if (!isFollowing) {
+        // else if (!isFollowing) {
 
-            setIsFollowing(true)
-        }
+            // setIsFollowing(true)
+        // }
 
-        getUserByUserName((params.userName), setUser)
+        // getUserByUserName((params.userName), setUser)
 
         // userProducts(setProducts, 1)
     }, [])

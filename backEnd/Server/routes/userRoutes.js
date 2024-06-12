@@ -17,13 +17,20 @@ import {
     deleteUser,
     updateUser,
     getUsersCart,
+    changePassword,
     // Admins Only
     allUsersInfo,
     deleteMultipleUsers
 } from '../controllers/user/userExports.js'
 
 //Importing Middlewares 
-import { AdminAuthorized, UserAuth, validationError } from '../middlewares/auth.js'
+import {
+    AdminAuthorized,
+    UserAuth,
+    validationError,
+    verifyOTP,
+    verifyPassword
+} from '../middlewares/auth.js'
 
 // Importing Validations
 import {
@@ -31,7 +38,9 @@ import {
     loginValidation,
     updateUserValidation,
     userInfoValidation,
-
+    emailValidation,
+    OTPValidations,
+    changePasswordValidation,
     // general validations
     paginationValidation,
     // database Validations
@@ -43,33 +52,25 @@ const userRouter = express.Router({ strict: true })
 
 // Public routes=For All
 userRouter
-    .post('/signup',
-        signUpValidation,
-        validationError,
-        signUp)
-    .post('/login',
-        loginValidation,
-        validationError,
-        login)
-    .post("/send-otp", sendOTP)//TODO
-    .get("/:username",
-        userInfoValidation,
-        validationError,
-        userInfo)
+    .post('/signup', signUpValidation, validationError, signUp)
+    .post('/login', loginValidation, validationError, verifyPassword, login)
+    .post("/send-otp", emailValidation, validationError, sendOTP)//TODO
+    .post("/forgot-password", OTPValidations, emailValidation, validationError, verifyOTP, login)
+    .get("/:username", userInfoValidation, validationError, userInfo)
 
 // Routes requiring user authentication
 // Autherized Users Only
 userRouter
     .use(UserAuth)
     .post('/logout', logout)
-    .post('/upload/profilepic',
-        uploadProfile_multer.single("profileImg"),
-        uploadProfile)//TODO:90% done 10% remain
+    //TODO:90% done 10% remain
+    .post('/upload/profilepic', uploadProfile_multer.single("profileImg"), uploadProfile)
 
     // Owners Only
-    .delete("/delete", deleteUser)
-    .put("/update", updateUserValidation, validationError, updateUser)
+    .delete("/delete", OTPValidations, emailValidation, validationError, verifyOTP, deleteUser)
+    .put("/update", OTPValidations, updateUserValidation, validationError, updateUser)
     .get("/cart", paginationValidation, validationError, getUsersCart)
+    .post("/change-password", changePasswordValidation, validationError, changePassword)
 
 // Routes accessible only to admins
 userRouter

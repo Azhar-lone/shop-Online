@@ -2,13 +2,13 @@
 
 
 // Importing Models
-import AboutUsModel from "../../../model/aboutUsModel.js"
+import generalModel from "../../../model/generalModel.js"
 
 export default async function getAboutus(req, res) {
 
     try {
 
-        const aboutUs = await AboutUsModel.find()
+        const aboutUs = await generalModel.find().select("aboutUs -_id")
         if (aboutUs) {
             return res.status(200).json({
                 msg: "about us fetched successfully",

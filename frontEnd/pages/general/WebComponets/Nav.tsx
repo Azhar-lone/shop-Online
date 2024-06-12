@@ -15,6 +15,7 @@ import { ModeToggle } from "@/components/myUi/mode-toggle";
 import ProfileButton from "../../Profile/ProfileButton"
 import Hint from "@/components/myUi/Hint"
 import Search from "@/components/myUi/Search";
+import Slider from "@/components/myUi/Slider"
 
 // context
 import useUser from "@/components/context/user-provider"
@@ -72,8 +73,8 @@ const Nav: React.FC = () => {
 
         let userName = localStorage.getItem("userName")
 
-        if (userName && typeof id === "string") {
-            getUserByUserName(userName, setUser)
+        if (userName && typeof userName === "string") {
+            // getUserByUserName(userName, setUser)
             setIsLogin(true)
         }
     }, [])
@@ -82,16 +83,26 @@ const Nav: React.FC = () => {
 
 
     return (
-        <>
-            <div className=" w-full shadow-2xl   top-0 fixed  border-b  flex justify-around items-center gap-2  backdrop-blur-md h-[10vh] bg-background"
+        <div className=" bg-background w-full h-[10vh]  border-b flex gap-2 flex-col shadow-2xl  top-0 fixed sm:justify-start justify-around pt-2" >
+
+
+            {/* <Search
+                className="sm:hidden  h-[4vh] ml-[30%] px-2 "
+            /> */}
+
+            <div className="     flex justify-around items-center gap-2  sm:h-[100%] "
             >
+
                 <div className="flex gap-5">
-                    <Button className="flex gap-1">
+                    <Button className="sm:flex hidden gap-1">
                         <ShoppingBasket />
                         <h1>Shop-Online</h1>
 
                     </Button>
                     <Search
+                        // className="hidden sm:flex"
+                        onClickSearch={() => alert("im clicked search")}
+
                     />
                 </div>
 
@@ -115,23 +126,29 @@ const Nav: React.FC = () => {
                         </Button>
 
                     ))}
+
+
                 </ul>
                 {isLogin ?
-                    <div className="flex gap-2 ">
-                        <Button
-                            variant="outline"
+                    <div className="flex gap-2">
+                        <div className="hidden sm:flex  gap-2 ">
+                            <Button
+                                variant="outline"
 
-                            onClick={() => navigate("/cart")}
-                        >
-                            <ShoppingCart />
-                            <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
-                        </Button>
-                        <Hint
-                            label={"Change Theme"}
-                        >
-                            <ModeToggle />
+                                onClick={() => navigate("/cart")}
+                            >
+                                <ShoppingCart />
+                                <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
+                            </Button>
+                            <Hint
+                                label={"Change Theme"}
+                            >
 
-                        </Hint>
+                            </Hint>
+
+
+                        </div>
+                        <ModeToggle />
 
                         <ProfileButton />
 
@@ -151,7 +168,7 @@ const Nav: React.FC = () => {
                             </NavLink >
                         </Button>
                         <Button
-                            variant={"ghost"}
+                            // variant={"ghost"}
                             className="flex gap-1"
 
                         >
@@ -162,33 +179,72 @@ const Nav: React.FC = () => {
                             </NavLink >
                         </Button>
                     </div>}
+                <Slider side="right">
+                    <div className="flex items-center flex-col gap-5">
+                        {navItems.map((element, index) => (
+                            <Button
+                                variant={"ghost"}
+                                className="  h-[8%] flex flex-col  gap-1"
+                                key={index}
+
+                            >
+                                {element.Icon}
+                                <NavLink
+                                    to={element.To}
+                                >
+
+                                    {element.Text}
+                                </NavLink >
+
+                            </Button>))}
+                        <div className="flex  gap-2 ">
+                            <div
+                                onClick={() => navigate("/cart")}
+                                className="flex flex-col h-[20%]"
+                            >
+                                <h1 className="bg-red-500 px-2 rounded-full  text-white">1</h1>
+                                <ShoppingCart />
+                                <h1 className="mt-2">Cart</h1>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </Slider>
             </div >
-            <div className="bottom-0 fixed border-t w-full h-[8vh] lg:hidden md:w-[10%] md:h-[88vh] bg-background border-r  md:left-0 md:top-[10vh] flex gap-4   justify-center backdrop-blur-sm md:items-start items-center">
+            <div className=" fixed   hidden sm:flex lg:hidden w-[8%] h-[88vh] bg-background border-r  left-0 top-[10vh]  gap-4   justify-center backdrop-blur-sm items-start">
                 <ul
-                    className=" flex  md:flex-col justify-around md:justify-start md:gap-5  md:p-8"
+                    className=" flex  flex-col justify-start gap-5  p-8"
                 >
 
                     {navItems.map((element, index) => (
                         <Button
                             variant={"ghost"}
-                            className="  h-[8%] flex sm:flex-col  gap-1"
+                            className="  h-[8%] flex flex-col  gap-1"
                             key={index}
 
                         >
                             {element.Icon}
                             <NavLink
                                 to={element.To}
+                                className="md:block hidden"
                             >
+
                                 {element.Text}
                             </NavLink >
+
                         </Button>
 
                     ))}
+
+
                 </ul>
 
             </div>
 
-        </>
+
+        </div>
     )
 }
 

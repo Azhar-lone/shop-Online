@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import { resolve } from "path"
 
 import userModel from '../../../model/userModel.js'
-import countriesModel from '../../../model/generalModels/countriesModel.js'
+import generalModel from '../../../model/generalModel.js'
 /**
  * Handles the login process.
  * @param {Object} req - The request object.
@@ -38,9 +38,14 @@ export default async function signUp(req, res) {
     const { email, firstName, lastName, phoneNumber, password, country, userName } = req.body
 
 
-
-    let validCountry = await countriesModel.findOne({ country }).select("-country")
-    console.log(validCountry)
+    // check if country feild exist on db 
+    // if yes it is validCountry else not valid
+    let countries = await generalModel.find().select("countries -_id")
+    let validCountry = countries[0].countries.find((value) => {
+      if (country === value) {
+        return true
+      }
+    })
     if (!validCountry) {
       return res.status(401).json({
         msg: "invalid requesd"

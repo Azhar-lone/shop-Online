@@ -3,7 +3,13 @@ import express from "express"
 
 
 //importing middleWares
-import { AdminAuthorized, UserAuth, validationError } from "../middlewares/auth.js"
+import {
+    AdminAuthorized,
+    UserAuth,
+    isSeller,
+    isBuyer,
+    validationError
+} from "../middlewares/auth.js"
 
 //importing Controllers
 import {
@@ -36,18 +42,20 @@ const productRouter = express.Router({ strict: true })
 productRouter
     .get(":id", validateId, validationError, getProduct)
     .get("/", paginationValidation, validationError, getAllProducts)
+    .get("user/:id", validateId, paginationValidation, validationError, getUsersProducts)
 
 //Routes Only authenticated user can access
-// productRouter.use(UserAuth)
+productRouter.use(UserAuth)
 
 productRouter
-    .post("/",
+    .patch("like/:id", validateId, validationError, likeProduct)
+    .patch("buy/:id", isBuyer, buyProduct)
+
+    .post("/", isSeller,
         uploadProduct_multer.array("images", 5),
         addProductValidation, validationError,
         addProduct)//TODO
-    .patch("like/:id", validateId, validationError, likeProduct)
-    .patch("buy/:id", buyProduct)
-    .get("user/:id", validateId, paginationValidation, validationError, getUsersProducts)
+
 
 //Routes only owners can access
 productRouter

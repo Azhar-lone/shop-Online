@@ -3,11 +3,13 @@ import React from 'react'
 
 interface ContainerProps {
     children: React.ReactNode;
+    className: string
 
 }
 
 const Container: React.FC<ContainerProps> = ({
-    children
+    children,
+    className
 }) => {
     return (
 
@@ -18,12 +20,12 @@ const Container: React.FC<ContainerProps> = ({
         // second is for medium screen
         // third is for small screen 
         <div
-            className='
-            mt-[11vh] mb-[11vh] mx-auto border
+            className={`
+            mt-[11vh] mb-[3vh] mx-auto border
             lg:w-[94%] lg:ml-auto
-            md:w-[88%] md:ml-[11%]  
-            w-[99%] 
-            '
+            sm:w-[92%] sm:ml-[8%]
+            ${className}
+            `}
         >{children}</div>
     )
 }

@@ -23,21 +23,20 @@ import Hint from "@/components/myUi/Hint"
 import Product from "@/components/myUi/Product"
 import ProductsList from './ProductsList';
 //static data for testing frontEnd
-import { products } from "/StaticData/productData"
+import { products as staticPr } from "/StaticData/productData"
 // api's 
 import { getCategories } from '../../api\'s/products/All-products'
 
 // types
-import { CategorizedProducts } from '../../types/product'
+import productType from '../../types/product'
 
 
-let Categories: CategorizedProducts[] = [{ category: "Mobile Phones", products: products }, { category: "Mobile Phones", products: products },
-{ category: "Mobile Phones", products: products },]
+
 
 const AllProducts = () => {
 
     const [categories, setCategories] = useState<string>()
-    const [CategorizedProducts, setCategorizedProducts] = useState<CategorizedProducts[]>([])
+    const [products, setProducts] = useState<productType[]>(staticPr)
     useEffect(() => {
         getCategories().then((cate) => {
             if (cate !== 1) {
@@ -47,7 +46,7 @@ const AllProducts = () => {
         }).catch((err) => {
             console.log(err)
         })
-        setCategorizedProducts(Categories)
+        setProducts(staticPr)
 
     }, [])
 
@@ -85,32 +84,19 @@ const AllProducts = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </Hint>
-                    <Search
-                        hidden="block"
-                    />
+                    <Search />
                 </div>
 
-                {CategorizedProducts.map((Category, i) => (
-                    <div className='w-[100%] border  p-5 text-xl flex items-center flex-col'>
-                        <h1 className='font-medium p-3 w-[100%] border-b text-center'>{Category.category}</h1>
-                        <ProductsList >
-                            {Category.products.map((product, index) => (
-                                <Product product={product} key={index} />
-
-                            ))}
-
-                        </ProductsList>
-                    </div>))}
-                {/* <div className='w-[100%] border p-5 text-xl flex items-center flex-col'>
-                    <h1 className='font-medium p-3 w-[50%] border-b text-center'>Mobile Phones</h1>
+                <div className='w-[100%] border  md:p-4 text-xl flex items-center flex-col'>
                     <ProductsList >
                         {products.map((product, index) => (
                             <Product product={product} key={index} />
 
                         ))}
 
-                    </ProductsList> */}
-                {/* </div> */}
+                    </ProductsList>
+
+                </div>
 
             </div>
         </Container>

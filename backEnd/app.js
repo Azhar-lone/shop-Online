@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 import "dotenv/config"
 import cors from "cors"
+import redis from "redis"
 
 //importing Routers
 import userRouter from "./Server/routes/userRoutes.js"
@@ -17,7 +18,12 @@ const port = process.env.PORT || 4000
 //listening
 app.listen(port, () => console.log(`listening on http://localhost:${port}`))
 
-// connecting to database
+
+// connnecting to redis db
+// let redisClient = redis.createClient({  })
+// redisClient.on("error", err => console.log("redis Error :", err))
+// await redisClient.connect()
+// connecting to mongo database
 mongoose.connect(process.env.DB_URL).then(() => {
   console.log("connected to db")
 }).catch((err) => {

@@ -21,7 +21,7 @@ const schema = mongoose.Schema({
         min: 5,
         max: 14,
         required: true,
-        unique:true
+        unique: true
 
     },
     email: {
@@ -62,23 +62,18 @@ const schema = mongoose.Schema({
 
     }
     ,
-    isAdmin: {
-        type: Boolean,
-        default: false,
-        select: false,
+    role: {
+        type: String,
+        default: "user",
 
         // required:false,//only dataBase admin can change this feild
         //only admins should be able to change this feild
     },
-    timeStamp: {
-        type: Date,
-        default: Date.now(),
-        required: false
-    },
 
 
 
-})
+
+}, { timestamps: true })
 
 const userModel = mongoose.model("userModel", schema)
 export default userModel

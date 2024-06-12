@@ -6,7 +6,7 @@ import { resolve } from 'path'
 export default async function updateUser(req, res) {
   try {
 
-    let { email, oldPassword, newPassoword, confirmNewPassword, firstName, lastName, userName } = req.body
+    let { email, oldPassword, newPassoword, firstName, lastName, userName } = req.body
 
     // Find user by id and select password
     // dont select id
@@ -34,9 +34,7 @@ export default async function updateUser(req, res) {
     let updatedUser = await userModel.findByIdAndUpdate(req.currentUserId,
       {
         email,
-        oldPassword,
-        newPassoword,
-        confirmNewPassword,
+        password: newPassoword,
         firstName,
         lastName,
         userName
@@ -49,7 +47,7 @@ export default async function updateUser(req, res) {
       }
     })
 
-    if (updateUser) {
+    if (updatedUser) {
       return res.status(200).json({
         msg: "user info updated",
         updatedUser: updatedUser

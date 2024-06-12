@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.blog {
+    @apply md:p-5 flex flex-col gap-4  p-2
+}
+
+.blog h1 {
+    @apply text-4xl font-extrabold;
+}
+
+.blog h2 {
+    @apply text-3xl font-bold;
+}
+.blog h5 {
+    @apply text-xl font-bold;
+}
+.blog p {
+    @apply text-xl
+}
+
+.blog img {
+    @apply   mx-auto rounded-lg
+}

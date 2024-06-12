@@ -25,14 +25,14 @@ import { LogOut, Settings } from "lucide-react"
 import logout from '../../api\'s/auth/logout';
 
 // imoprting static Data for Testing 
-import { user as staticD } from "../../StaticData/userData"
+import { user  } from "../../StaticData/userData"
 
 // context
 import useUser from "@/components/context/user-provider"
 
 const ProfileButton: React.FC = () => {
     let navigate = useNavigate()
-    const { user } = useUser()
+    // const { user } = useUser()
 
     return (
         <DropdownMenu>

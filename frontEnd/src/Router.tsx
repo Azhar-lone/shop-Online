@@ -7,7 +7,7 @@ import {
 
 // importing Layouts
 import RootLayout from "./Layouts/RootLayout"
-
+import AdminLayout from "./Layouts/AdminLayout"
 
 // importing Pages
 import {
@@ -23,7 +23,11 @@ import {
     AllProducts,
     SettingsPage,
     CartPage,
-    Dashboard
+    General,
+    AboutUs,
+
+    // Admin
+    AdminHome
 
 } from "../pages/exportPages"
 
@@ -33,12 +37,16 @@ let Router = createBrowserRouter(
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/dashboard" element={<Dashboard />} />
 
+            <Route path="/admin" element={<AdminLayout />}>
+                <Route path="" element={<AdminHome />} />
+                <Route path="general" element={<General />} />
+
+            </Route>
 
             <Route path="/" element={<RootLayout />}>
                 <Route path="" element={<Home />} />
-                <Route path="aboutus" element={<>aboutus</>} />
+                <Route path="aboutus" element={<AboutUs />} />
                 <Route path=":username" element={<ProfilePage />} />
                 <Route path="products" element={<AllProducts />} />
                 <Route path="settings" element={<SettingsPage />} />

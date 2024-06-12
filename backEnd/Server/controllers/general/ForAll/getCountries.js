@@ -1,13 +1,11 @@
 // importing Models
-import countriesModel from "../../../model/generalModels/countriesModel.js"
-
+import generalModel from "../../../model/generalModel.js"
 export default async function getCountries(req, res) {
     try {
 
-        let countries = await countriesModel
+        let countries = await generalModel
             .find()
-            .select("country -_id")
-        console.log(req.url,"sdgone")
+            .select("countries -_id")
 
         if (countries) {
             return res.status(200).json({

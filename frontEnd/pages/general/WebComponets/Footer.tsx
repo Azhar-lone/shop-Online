@@ -3,7 +3,8 @@ import React from 'react'
 const Footer = () => {
   return (
     <div
-      className='f relative bottom-0 w-full h-10 border-t-2 bg-background items-center flex justify-center md:mb-1 mb-[10vh] mt-[10vh] p-5'
+      className='relative bottom-0  h-10  bg-background items-center flex justify-center   p-5  lg:w-full lg:ml-auto
+      sm:w-[92%] sm:ml-[8%] border-t'
     >
       Developed by Azhar-lone
 

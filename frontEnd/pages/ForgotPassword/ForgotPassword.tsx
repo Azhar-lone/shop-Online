@@ -73,12 +73,11 @@ const Schema = z.object({
 
 async function onSubmit(values: z.infer<typeof Schema>) {
     try {
-
-        let res = await fetch("", {
+        const baseUrl = import.meta.env.VITE_BaseUrl
+        let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/users/send-otp", {
             body: JSON.stringify({
                 email: values.email,
             }),
-            credentials: "include",
             method: "POST"
         })
         if (res.ok) {

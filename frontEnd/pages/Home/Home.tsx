@@ -37,7 +37,9 @@ const Home = () => {
     useEffect(() => { }, [])
 
     return (
-        <Container>
+        <Container
+            className="p-2"
+        >
             <Hero />
             <ProductsList>
                 {products.map((product: productType, index: number) => (
@@ -51,16 +53,14 @@ const Home = () => {
 
 
 
-            <Pagination className="p-10">
+            {/* <Pagination className="p-10">
                 <PaginationContent className="flex-wrap justify-center">
                     <PaginationItem>
                         <PaginationPrevious onClick={() => getAllProducts(currentPage + 1)} />
                     </PaginationItem>
                     {Array(Math.ceil(count / 8)).fill(0).map((ele, i) => (
-                        <>
-                            {i < 19 &&
 
-                                <PaginationItem>
+                                <PaginationItem key={i}>
                                     <Button onClick={() => {
                                         getAllProducts(i + 1)
                                         setCurrentPage(i + 1)
@@ -71,8 +71,6 @@ const Home = () => {
 
                                     >{i + 1}</Button>
                                 </PaginationItem >
-                            }
-                        </>
 
                     ))}
                     <PaginationItem>
@@ -84,7 +82,7 @@ const Home = () => {
                     </PaginationItem>
 
                 </PaginationContent>
-            </Pagination>
+            </Pagination> */}
 
 
 

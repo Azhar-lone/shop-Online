@@ -11,7 +11,3 @@ export default interface productType {
     inStock?: Number;
     imgs: string[];
 }
-export interface CategorizedProducts {
-    category: string,
-    products: productType[]
-}

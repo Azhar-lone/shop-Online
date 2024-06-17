@@ -14,7 +14,6 @@ export default async function userInfo(req, res) {
     }
     res.status(200).json({
       user: user,
-      msg: "user info retrevied successfully",
     })
   } catch (error) {
     return res.status(500).json({

@@ -12,7 +12,6 @@ export default async function getProduct(req, res) {
         const product = await productModel.findById(id)
         if (product) {
             return res.status(200).json({
-                msg: "product fetched successfully",
                 product: product
             })
         }

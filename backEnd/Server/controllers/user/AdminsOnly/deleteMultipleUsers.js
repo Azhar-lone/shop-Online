@@ -6,9 +6,7 @@ export default function deleteMultipleUsers(req, res) {
     arrayOfUsersId.forEach(async userId => {
       await userModel.findByIdAndDelete(userId)
     })
-    res.status(200).json({
-      msg: 'users Deleted successfully',
-    })
+    res.status(200).end()
   } catch (error) {
     res.status(500).json({
       msg: 'internal server error',

@@ -15,7 +15,6 @@ export default async function getUsersCart(req, res) {
 
         if (cart) {
             return res.status(200).json({
-                msg: "user cart data fetched successfully",
                 cart: cart
             })
         }

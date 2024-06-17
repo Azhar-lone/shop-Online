@@ -1,7 +1,7 @@
 //importing for All
 import getProduct from "./ForAll/getProduct.js"
 import getAllProducts from "./ForAll/getAllProducts.js"
-
+import getProductsCount from "./ForAll/getProductsCount.js"
 //importing AdminsOnly
 import deleteMultipleProducts from "./AdminsOnly/deleteMultipleProducts.js"
 import updateMultipleProducts from "./AdminsOnly/updateMultipleProducts.js"
@@ -20,7 +20,8 @@ export {
     //for All
     getProduct,
     getAllProducts,
-
+    getProductsCount,
+    
     //Admins only
     deleteMultipleProducts,
     updateMultipleProducts,

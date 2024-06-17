@@ -29,7 +29,6 @@ export default async function getUsersProducts(req, res) {
 
         if (products) {
             return res.status(200).json({
-                msg: "product fetched successfully",
                 products: products
             })
         }

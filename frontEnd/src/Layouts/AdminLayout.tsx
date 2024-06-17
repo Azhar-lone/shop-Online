@@ -8,7 +8,7 @@ import {
     TopBar,
     SideBar,
 
-} from "../../pages/exportPages.js";
+} from "@/pages/exportPages";
 
 
 

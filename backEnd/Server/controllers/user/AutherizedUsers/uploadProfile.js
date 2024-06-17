@@ -83,7 +83,6 @@ export default async function uploadProfile(req, res) {
       .select("profilePath -_id")
 
     res.status(200).json({
-      msg: 'image uploaded successfully',
       newProfile: user.profilePath
     })
   } catch (error) {

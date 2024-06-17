@@ -24,9 +24,7 @@ export default async function deleteUser(req, res) {
       httpOnly: true,
       secure: true,
       sameOrigin: 'none'
-    }).status(200).json({
-      msg: "acount deleted successfully",
-    })
+    }).status(200).end()
 
     //delete here
   } catch (error) {

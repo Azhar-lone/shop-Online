@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
 import { validationResult } from "express-validator"
-
+import { redisClient } from '../../app.js'
 import userModel from '../model/userModel.js'
 const { sign, verify } = jwt
 export function createToken(id) {
@@ -155,15 +155,21 @@ export async function verifyOTP(req, res, next) {
   try {
 
     const { email, otp } = req.body
-
-
     // find otp with  this email in redis database
-    const isValid = false
+    let found = await redisClient.hGet("user:otp", email)
+    if (!found) {
+      return res.status(401).json({
+        msg: "invalid OTP"
+      })
+    }
 
-    if (isValid) {
+
+    if (found.email === email && found.otp === otp) {
+      const user = await userModel.findOne({ email }).select('userName')
+      req.user = user
       return next()
     }
-    res.status(401).json({
+    return res.status(401).json({
       msg: "invalid OTP"
     })
 
@@ -188,7 +194,7 @@ export async function verifyPassword(req, res, next) {
 
     // Find user by email or phoneNumber and select password
     // dont select id
-    const user = await userModel.findOne({ email }).select('password -_id')
+    const user = await userModel.findOne({ email }).select('password userName')
 
     // If user is not found, return a 401 Unauthorized response
     if (!user) {
@@ -205,7 +211,13 @@ export async function verifyPassword(req, res, next) {
         msg: "Incorrect Password",
       })
     }
+    //     only send userName and user id to next route
+    user = {
+      userName: user.userName,
+      _id: user._id
+    }
 
+    req.user = user
     return next()
 
 

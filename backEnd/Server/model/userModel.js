@@ -64,6 +64,7 @@ const schema = mongoose.Schema({
     ,
     role: {
         type: String,
+    enum:["user","seller","buyer","admin","moderator"],
         default: "user",
 
         // required:false,//only dataBase admin can change this feild

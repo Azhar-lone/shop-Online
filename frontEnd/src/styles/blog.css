@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.blog {
+    @apply  flex flex-col 
+}
+
+.blog h1 {
+    @apply text-6xl;
+}
+.blog h2 {
+    @apply text-5xl ;
+}
+.blog h3 {
+    @apply text-4xl ;
+}
+.blog h4 {
+    @apply text-3xl ;
+}
+
+.blog h5 {
+    @apply text-2xl ;
+}
+.blog h6 {
+    @apply text-xl
+}
+.blog img {
+    @apply   mx-auto rounded-lg
+}

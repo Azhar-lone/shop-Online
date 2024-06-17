@@ -98,8 +98,7 @@ export default async function signUp(req, res) {
         secure: true,
         sameOrigin: 'none'
       }).status(200).json({
-        msg: 'user Created Successfully',
-        user: savedUser,
+        user: savedUser.userName,
       }))
   } catch (error) {
     console.log(error)

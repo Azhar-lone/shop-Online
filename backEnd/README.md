@@ -4,245 +4,221 @@
 
 ### Features
 # 1-user features
-### Public Routes
-**1** signUp aka *createAccount*
+## Public Routes
+### 1-signUp aka *createAccount*
 ```javascript
-POST /user/signup
+POST /users/signup
 body=
-{   email?:emailString,
-    phoneNumber?:mobileNumber,  
-    password:String, 
+{   email:emailString,
+    password:String,
     confirmPassword:String,
-    name:String,
+    firstName:String,
+    lastName:String,
+    userName:String,
+    country:String
     }   
 ```
-#### if status=200 ok returns{msg,user,token} 
+#### if status=200 ok returns{userName}
 #### else returns{msg} 
 
-**2** login 
+### 2-login 
 ```javascript
-POST /user/login
-body={ email?:emailString,
-phoneNumber?:phoneNumber,  
+POST /users/login
+body={ email:emailString,
     password:String,}
 ```
-#### if status=200 ok returns{msg,user,token} 
+#### if status=200 ok returns{userName}
 #### else returns{msg} 
-**3** getUserInfo
+### 3-getUserInfo
 ```javascript
-GET /user/:username
+GET /users/:username
 ```
-#### if status=200 ok returns{msg,user} 
+#### if status=200 ok returns{user} 
 #### else returns{msg} 
-### Users Only Routes
-**4** logout
+
+### 4-Send OTP
 ```javascript
-POST /user/logout
+POST /users/send-otp
+body={ email:emailString}
 ```
-#### returns{msg} 
-**5** upload profile picture
+
+#### if status=200 ok returns{otp} 
+#### else returns{msg}
+
+### 5-forgot Password
+```javascript
+POST /users/forgot-password
+body={ email:emailString,otp}
+```
+#### if status=200 ok returns{userName} 
+#### else returns{msg}
+
+
+<!-- // Public routes Done -->
+
+
+
+## Users Only Routes
+### 6-logout
+```javascript
+POST /users/logout
+```
+#### if status 200 returns  
+#### else returns{msg} 
+
+### 7-upload profile picture
 
 ***note:*** set  content-type:multipart/formdata
 ```javascript
 
-POST /user/upload/profilepic
+POST /users/upload-profile
 body={
     image:imageFile
 }
 ```
-#### if status=200 ok returns{msg,user} 
+#### if status=200 ok returns{newProfile} 
 #### else returns{msg}
 
-**7** chat With user
+<!-- // User routes Done -->
 
-### Owners Only Routes
 
-**8** delete userAccount
+
+
+
+## Owners Only Routes
+
+### 8-delete userAccount
 
 ```javascript
-DELETE /user/delete
+DELETE /users/delete
 
 body={
     password:passwordString,
-    email?:
+    email:emailString, 
+    otp:OTP 
 }
 
 ```
-#### returns{msg} 
-**9** update userAccount
+#### if status=200 ok returns
+#### else returns{msg}
+
+### 9-update userAccount
 
 ```javascript
-PUT /user/update
+PUT /users/update
 body=
 {   email?:emailString,  
-    oldPassword:String, 
     userName?:String,
     firstName?:String,
     lastName?:String,
+    oldPassword:String, 
     newPassoword:string,
-confirmNewPassword:String,
+    confirmNewPassword:String,
 
     }
 ```
-#### if status=200 ok returns{msg,upadatedUser} 
+#### if status=200 ok returns{upadatedUser} 
 #### returns{msg} 
-**10** get users  cart
+
+### 10-get users  cart
 
 ```javascript
-GET /user/cart?limit&page
+GET /users/cart?limit&page
 ```
-#### if status=200 ok returns{msg,cart} 
+#### if status=200 ok returns{cart} 
 #### returns{msg} 
 
 
-<!-- ### Admins Routes
-**11** deleteMultipleUsers 
+### 11-get users  cart
+
 ```javascript
-DELETE /user/admin/deletemultiple
+PUT /users/change-password
+body= {
+    oldPassword:String, 
+    newPassoword:string,
+    confirmNewPassword:String,
+    }
+```
+#### if status=200 ok returns
+#### returns{msg} 
+
+
+
+<!-- // owners routes Done -->
+
+
+
+<!-- <!-- ### Admins Routes -->
+<!-- **11** deleteMultipleUsers 
+```javascript
+DELETE /users/admin/multiple
 body={
     arrayOfUsersIds:mongoIds[]
 }
 ```
-#### returns{msg}  -->
+#### returns{msg}  --> -->
 
 <!-- **12** get All Users Info
 
 ```javascript
-GET /user/admin/allusers
+GET /users/admin/users
 ```
 #### if status=200 ok returns{msg,user} 
 #### else returns{msg} -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- PRODUCT ROUTES -->
 # 2-products features
-### PUBLIC Routes
-**1** get a product
+## PUBLIC Routes
+### 1-get a product
 
 ```javascript
 GET /products/:id
 ```
-#### if status=200 ok returns{msg,product} 
+#### if status=200 ok returns{product} 
 #### else returns{msg} 
 
-**2** get all products
+### 2-get all products
 
 ```javascript
-GET /products?page&limit
+GET /products/?page&limit
 page=positive Number
 limit=positive Number
 ```
 
-#### if status=200 ok returns{msg,products} 
+#### if status=200 ok returns{products} 
 #### else returns{msg} 
-**3** get user Products
+
+### 3-get user Products
 
 ```javascript
 GET /products/user/:id?page&limit
 page=positive Number
 limit=positive Number
-body{
-    id:userId
-}
+id:userId
 ```
-**4** get featured Book
+#### if status=200 ok returns{products} 
+#### else returns{msg} 
+### 4-get Products Count 
 
 ```javascript
-GET /book/featured
+GET /products/count
 ```
-**5** get following Books
-
-```javascript
-GET /book/following?page&limit
-page=positive Number
-limit=positive Number
-```
-**6** get Related Books
-
-```javascript
-GET /book/related?id
-id=bookId
-```
-### USERS ONLY Routes
-**7** upload Book
-
-```javascript
-POST /book/upload
-body={
-    lots of things
-}
-```
-**8** download Book
-
-```javascript
-GET /book/download/:id
-
-```
-**9** Like Book
-
-```javascript
-PATCH /book/like
-body={
-    id:bookId
-}
-```
-### OWNERS Routes
-**10** delete Book
-
-```javascript
-POST /book/delete
-body={
-    id:bookId
-}
-```
-**11** update Book
-
-```javascript
-PUT /book/update
-not implimented yet
-```
-### Admins Routes
-**12** deleteMultipleBooks 
-```javascript
-DELETE /book/admin/deletemultiple
-body={
-    arrayOfBookIds:mongoIds[]
-}
-```
-
-# 3-Reviews feature
-### Public Routes
-**1** get all Revews of a Book
-```javascript
-GET /review/getall?id
-id =bookId
-```
-**2** get top range Revews of a Book
-```javascript
-GET /review/gettop?id&range
-id =bookId
-range=positive number
-```
-### USERS ONLY Routes
-**3** add review to book
-```javascript
-POST /review/add
-body={
-review:String(10-300),
-ratings:int(1-5),
-reviewOfBook:monogId
-}
-```
-#### if status=200 ok returns{msg,review} 
-#### else returns{msg}
-**4** like review 
-```javascript
-POST /review/like
-body={
-id:monogId=reviewId
-}
-```
-#### returns{msg}
+#### if status=200 ok returns{count} 
+#### else returns{msg} 
 
 
-
+<!-- Public Product routes end here -->
 
 
 
@@ -263,14 +239,14 @@ id:monogId=reviewId
 GET /search/?query
 query=Search String
 ```
-#### if status=200 ok returns{msg,users,books}
+#### if status=200 ok returns{users,books}
 #### else returns{msg}
-**2** search from books 
+**2** search from products
 ```javascript
-GET /search/books/?query
+GET /search/products/?query
 query=Search String
 ```
-#### if status=200 ok returns{msg,books}
+#### if status=200 ok returns{books}
 #### else returns{msg}
 **1** search from Users
 #### Canceled feature
@@ -279,23 +255,24 @@ query=Search String
 GET /search/users/?query
 query=Search String
 ```
-#### if status=200 ok returns{msg,users}
+#### if status=200 ok returns{users}
 #### else returns{msg}
 
-# 4-AboutUs feature
+
+# 4-General feature
 ### Public Routes
 **1** get AboutUs Info
 ```javascript
-GET /aboutus/
+GET /general/aboutus/
 
 ```
-#### if status=200 ok returns{msg,aboutus}
+#### if status=200 ok returns{aboutus}
 #### else returns{msg}
 ### Admins Routes
 **1** Edit AboutUs Info
 ```javascript
-PUT /aboutus/edit
+PUT  /general/aboutus/
 
 ```
-#### if status=200 ok returns{msg,aboutus}
+#### if status=200 ok returns{aboutus}
 #### else returns{msg}

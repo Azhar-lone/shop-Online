@@ -28,9 +28,7 @@ export default async function changePassword(req, res) {
             }).select("_id")
 
         if (updatedUser) {
-            return res.status(200).json({
-                msg: "password updated",
-            })
+            return res.status(200).end()
         }
         return res.status(401).json({
             msg: "failed to update user password"

@@ -14,8 +14,8 @@ export default async function likeProduct(req, res) {
 
 
         // if not iside product
-        const user = await userModel.findById(req.currentUserId).select("-_id cartItems")
-        // if not likes already add like
+        const user = await userModel.findById(req.currentUserId).select("cartItems")
+        // if not liked already add like
         if (!user.cartItems.contain(id)) {
             const product = await productModel.findByIdAndUpdate(id, { "$push": { likedBy: req.currentUserId } }, { new: true })
                 .select("-_id likedBy")
@@ -23,7 +23,6 @@ export default async function likeProduct(req, res) {
                 user.cartItems.push(id)
                 let savedUser = await user.save().select("-_id cartItems")
                 return res.status(200).json({
-                    msg: "product liked  successfully",
                     product: product,
                     user: savedUser
                 })

@@ -20,7 +20,6 @@ export default async function getAllProduct(req, res) {
 
         if (products) {
             return res.status(200).json({
-                msg: "products fetched successfully",
                 products: products
             })
         }
@@ -36,3 +35,4 @@ export default async function getAllProduct(req, res) {
         })
     }
 }
+

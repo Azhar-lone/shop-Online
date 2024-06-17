@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 import "dotenv/config"
 import cors from "cors"
 import redis from "redis"
+import rateLimit from "express-rate-limit"
 
 //importing Routers
 import userRouter from "./Server/routes/userRoutes.js"
@@ -20,9 +21,10 @@ app.listen(port, () => console.log(`listening on http://localhost:${port}`))
 
 
 // connnecting to redis db
-// let redisClient = redis.createClient({  })
-// redisClient.on("error", err => console.log("redis Error :", err))
-// await redisClient.connect()
+export let redisClient = redis.createClient({})
+redisClient.on("error", err => console.log("redis Error :", err))
+await redisClient.connect().then(() => console.log("connected to redis db"))
+
 // connecting to mongo database
 mongoose.connect(process.env.DB_URL).then(() => {
   console.log("connected to db")
@@ -34,9 +36,11 @@ app.use(cors({
   credentials: true,
   origin: process.env.FrontEndUrl
 }))
-
+// rate limiter for 
+app.use(rateLimit())
 
 //middlewares for parsing json,cookies and body data
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
@@ -48,8 +52,6 @@ const baseUrl = process.env.BaseUrl
 app.use(baseUrl + "/users", userRouter)
 app.use(baseUrl + "/products", productRouter)
 app.use(baseUrl + "/general", generalRouter)
-
-// app.use("/reviews", reviewRouter)
 
 //404 page
 app.use((req, res) => {

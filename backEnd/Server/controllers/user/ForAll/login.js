@@ -14,24 +14,13 @@ import userModel from '../../../model/userModel.js'
 export default async function login(req, res) {
   try {
 
-    const { email } = req.body
 
-    // if matched bring user object from dataBase
-    // until user is not found cause it is present
-    let user = undefined
-    while (1) {
-      user = await userModel.findOne({ email })
-      if (user) {
-        break;
-      }
-
-    }
 
 
 
     // let { user } = req.user
     // If login is successful, create and send an authentication token
-    const token = createToken(user._id.toString())
+    const token = createToken(req.user._id.toString())
 
     // Return a 200 OK response with a success message and the user's name and Id
     return (
@@ -40,8 +29,7 @@ export default async function login(req, res) {
         secure: true,
         sameOrigin: 'none'
       }).status(200).json({
-        msg: 'Login successful',
-        user: user
+        user: req.user.userName
       }))
 
 

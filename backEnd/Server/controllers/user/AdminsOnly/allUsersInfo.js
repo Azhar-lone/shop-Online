@@ -16,7 +16,6 @@ export default async function allUsersInfo(req, res) {
     }
     res.status(200).json({
       users: users,
-      msg: "user fetched successfully"
     })
   } catch (error) {
     res.status(500).json({

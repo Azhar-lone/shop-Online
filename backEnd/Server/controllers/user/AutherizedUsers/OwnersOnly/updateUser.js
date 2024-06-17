@@ -49,7 +49,6 @@ export default async function updateUser(req, res) {
 
     if (updatedUser) {
       return res.status(200).json({
-        msg: "user info updated",
         updatedUser: updatedUser
       })
     }

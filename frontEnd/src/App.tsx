@@ -60,7 +60,9 @@ const App = () => {
     }
 
     return (
-        <div>{parse(data)}</div>
+        <div>{parse(data)}
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum doloribus unde autem fuga praesentium non corrupti dignissimos tempore soluta dolore.
+        </div>
     )
 }
 

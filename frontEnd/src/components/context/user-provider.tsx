@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 // Types
-import User from "../../types/user"
+import User, { CartType } from "../../types/user"
 
 
 
@@ -10,6 +10,8 @@ interface UserProviderState {
     setUser: (user: User) => void;
     isLogin: boolean;
     setIsLogin: (isLogin: boolean) => void
+    cart: CartType[],
+    setCart: (cart: CartType[]) => void
 }
 const initialState: UserProviderState = {
     user: {
@@ -21,11 +23,19 @@ const initialState: UserProviderState = {
         timeStamp: '',
         products: [],
         cartItems: [],
+        followers: [],
+        following: [],
         role: "admin",
+        _id: ""
     },
     setUser: () => { }, // Implement setUser logic here
     isLogin: false,
-    setIsLogin: () => { }
+    setIsLogin: () => { },
+    cart: []
+    ,
+    setCart: () => { }
+
+
 };
 
 const UserContext = createContext<UserProviderState>(initialState); // Initial value is null
@@ -42,9 +52,9 @@ interface UserProps {
 export function UserProvider({ children }: UserProps) {
     const [user, setUser] = useState<User>(initialState.user);
     const [isLogin, setIsLogin] = useState<boolean>(initialState.isLogin)
-
+    const [cart, setCart] = useState<CartType[]>(initialState.cart)
     return (
-        <UserContext.Provider value={{ user, setUser, isLogin, setIsLogin }}>
+        <UserContext.Provider value={{ user, setUser, isLogin, setIsLogin, cart, setCart }}>
             {children}
         </UserContext.Provider>
     );

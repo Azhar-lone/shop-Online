@@ -67,7 +67,7 @@ userRouter
     .post('/upload-profile', uploadProfile_multer.single("image"), uploadProfile)
 
     // Owners Only
-    .delete("/delete", OTPValidations, emailValidation, validationError, verifyOTP, deleteUser)
+    .delete("/delete", loginValidation, OTPValidations, validationError, verifyPassword, verifyOTP, deleteUser)
     .put("/update", updateUserValidation, validationError, updateUser)
     .get("/cart", paginationValidation, validationError, getUsersCart)
     .put("/change-password", changePasswordValidation, validationError, changePassword)

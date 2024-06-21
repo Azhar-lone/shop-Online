@@ -1,8 +1,11 @@
-### [githubLink](https://github.com/Azhar-lone/shop-online)
+### [GitHub-Link](https://github.com/Azhar-lone/shop-online)
 
-<!-- ### [livePreview](https://) will be available after one commit -->
+<!-- # [Live-Preview](https://) will be available after one commit -->
 # shop-online
-#### this is full stack ecommerce website, will contain all the features that one should have, i will try my best keep to this site secure and performant .i will also try my best to make its design beutiful and pleasant.
+#### 1-this is full stack ecommerce website, it contain all the features that one should have. 
+#### 2-fully secure and Performance Oriented Site with Authetication,Autherizetion And Validtions.
+#### 3-Completely Responsive in All Sizes of Devices with Differenct Layouts for laptop/destop or larger screens ,Tablets or medium size screens and mobile or smaller screens.
+.
 
 # Core Technologies used :
 ### 1-React js
@@ -86,4 +89,11 @@ and more ...
 
 
 
+# Screen Shots of Latest Version (version 1)
 
+## login LighMode
+![Login](./Images/login-Light.png)
+### 2-Aboutus page OurTeam Section in DarkMode
+![AboutUspage](./Images/aboutus-Ourteam.png)
+### 3-products page in LightMode
+![Productspage](./Images/products-Light.png)

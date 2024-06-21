@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom"
@@ -9,7 +9,8 @@ import { z } from "zod"
 import userSchema from './schama';
 import { ColorRing } from "react-loader-spinner"
 
-
+// Icons
+import { Eye, EyeOff } from "lucide-react"
 
 // importing components
 import { useToast } from "@/components/ui/use-toast"
@@ -44,6 +45,9 @@ const Signup = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { toast } = useToast()
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+
   let [countries, setCountries] = useState<Array<ObjectString>>([{ value: "test" }])
 
   const form = useForm<z.infer<typeof userSchema>>({
@@ -90,7 +94,7 @@ const Signup = () => {
 
 
 
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "error",
         description: error.message,
@@ -126,7 +130,7 @@ const Signup = () => {
       setIsLoading(false)
 
       if (response.ok) {
-        localStorage.setItem("userName", json.user.userName)
+        localStorage.setItem("userName", json.userName)
         navigate("/")
       }
       return toast({
@@ -151,28 +155,129 @@ const Signup = () => {
 
 
     <div className='md:w-[60%] w-[100%] mx-auto mt-5 p-5 flex flex-col gap-5  bg-background shadow-2xl md:border'>
-      <h3>Create An Account</h3>
+      <h3 className='text-3xl  text-center '>Create An Account</h3>
 
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name={"email"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="YourEmail@domain.com" {...field} className="bg-input" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          {formArrayPage.map((field1, i) => (
-            <FormField
-              key={i}
-              control={form.control}
-              name={field1.name}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{field1.name}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={field1.placeHolder} {...field} className="bg-input" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
+          {/* Password */}
+
+          <FormField
+            control={form.control}
+            name={"password"}
+            render={({ field }) => (
+              <FormItem
+              className='relative'
+              >
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <input placeholder="*********" {...field} className="bg-input px-2 py-6"
+                    type={!showPassword ? "password" : "text"}
+                  />
+                </FormControl>
+                <div
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className='absolute right-3 bottom-3'
+                >
+                  {!showPassword ? <Eye /> : <EyeOff />}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+
+
+
+          {/* confirmPassword */}
+
+          <FormField
+            control={form.control}
+            name={"confirmPassword"}
+            render={({ field }) => (
+              <FormItem
+                className='relative'
+              >
+                <FormLabel>Confirm Password </FormLabel>
+                <FormControl>
+                  <input placeholder="*********" {...field} className="bg-input px-2 py-6 "
+                    type={!showConfirmPassword ? "password" : "text"}
+                  />
+                </FormControl>
+                <div
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className='absolute right-3 bottom-3'
+                >
+                  {!showConfirmPassword ? <Eye /> : <EyeOff />}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+
+          {/* firstName */}
+
+          <FormField
+            control={form.control}
+            name={"firstName"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name </FormLabel>
+                <FormControl>
+                  <Input placeholder="john" {...field} className="bg-input" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* lastName */}
+
+          <FormField
+            control={form.control}
+            name={"lastName"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name </FormLabel>
+                <FormControl>
+                  <Input placeholder="doe" {...field} className="bg-input" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* userName */}
+
+          <FormField
+            control={form.control}
+            name={"userName"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>User Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="john-doe" {...field} className="bg-input" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+
 
           <FormField
             control={form.control}
@@ -228,44 +333,3 @@ const Signup = () => {
 }
 
 export default Signup
-
-
-
-
-
-
-
-
-
-
-
-
-
-const formArrayPage = [
-  { name: "email", placeHolder: "email@domain.com " },
-  { name: "password", placeHolder: "*********" },
-  { name: "confirmPassword", placeHolder: "*********" },
-  { name: "firstName", placeHolder: "Your First Name  " },
-  { name: "lastName", placeHolder: "Your Last Name" },
-  { name: "userName", placeHolder: "userName should be slug" },
-]
-
-const countriesArr = [
-  "pakistan", "india", "usa", "Afghanistan",
-
-]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -19,9 +19,12 @@ import Slider from "@/components/myUi/Slider"
 
 // context
 import useUser from "@/components/context/user-provider"
+import useLoading from "@/components/context/loading-provider";
+import { useToast } from "@/components/ui/use-toast";
 
-// import apis
-// import getUserByUserName from "../../../../api's/userInfo";
+// types
+import User from "@/types/user";
+
 
 let navItems = [
 
@@ -45,39 +48,76 @@ let navItems = [
 
 
 const Nav: React.FC = () => {
-    let { isLogin, setIsLogin, setUser } = useUser()
+    let { isLogin, setIsLogin, setUser, cart, user } = useUser()
     let navigate = useNavigate()
+    const { toast } = useToast()
+    const { setIsLoading } = useLoading()
 
-    if (isLogin) {
-        navItems = [
-            {
-                To: "/",
-                Text: "Home",
-                Icon: <HomeIcon />
-            },
-            {
-                To: "/AzharLone",
-                Text: "Profile",
-                Icon: <UserCircle2 />
-            },
-            {
-                To: "/products",
-                Text: "Products",
-                Icon: <Boxes />
-            },
-
-        ]
-    }
 
     useEffect(() => {
 
         let userName = localStorage.getItem("userName")
 
         if (userName && typeof userName === "string") {
-            // getUserByUserName(userName, setUser)
+            getProfile(userName)
             setIsLogin(true)
         }
+
+        if (isLogin) {
+            navItems = [
+                {
+                    To: "/",
+                    Text: "Home",
+                    Icon: <HomeIcon />
+                },
+                {
+                    To: `/${userName}`,
+                    Text: "Profile",
+                    Icon: <UserCircle2 />
+                },
+                {
+                    To: "/products",
+                    Text: "Products",
+                    Icon: <Boxes />
+                },
+
+            ]
+        }
+
     }, [])
+    async function getProfile(username: string) {
+        try {
+            setIsLoading(true)
+            const baseUrl = import.meta.env.VITE_BaseUrl
+            interface JsonType {
+                msg: string,
+                user: User
+            }
+
+            let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/' + username)
+            let json: JsonType = await response.json()
+            setIsLoading(false)
+
+            if (response.ok) {
+                return setUser(json.user)
+            }
+
+
+            return toast({
+                title: " error",
+                description: json.msg,
+                variant: "destructive"
+            })
+
+        } catch (error: any) {
+            setIsLoading(false)
+            toast({
+                title: "error",
+                description: error.message,
+                variant: "destructive"
+            })
+        }
+    }
 
 
 
@@ -107,23 +147,21 @@ const Nav: React.FC = () => {
                 </div>
 
                 <ul
-                    className=" lg:flex hidden justify-around"
+                    className=" lg:flex hidden justify-around gap-5"
                 >
                     {navItems.map((element, index) => (
 
-                        <Button
-                            variant={"ghost"}
-                            className="flex gap-1"
+
+                        <NavLink
+                            className="flex gap-2 items-center    hover:pb-2 "
                             key={index}
 
+                            to={element.To}
                         >
                             {element.Icon}
-                            <NavLink
-                                to={element.To}
-                            >
-                                {element.Text}
-                            </NavLink >
-                        </Button>
+
+                            {element.Text}
+                        </NavLink >
 
                     ))}
 
@@ -138,17 +176,17 @@ const Nav: React.FC = () => {
                                 onClick={() => navigate("/cart")}
                             >
                                 <ShoppingCart />
-                                <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">1</h1>
+                                <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">{cart.length}</h1>
                             </Button>
                             <Hint
                                 label={"Change Theme"}
                             >
+                                <ModeToggle />
 
                             </Hint>
 
 
                         </div>
-                        <ModeToggle />
 
                         <ProfileButton />
 
@@ -182,34 +220,30 @@ const Nav: React.FC = () => {
                 <Slider side="right">
                     <div className="flex items-center flex-col gap-5">
                         {navItems.map((element, index) => (
-                            <Button
-                                variant={"ghost"}
-                                className="  h-[8%] flex flex-col  gap-1"
+                            <NavLink
+                                className="flex gap-2 items-center    hover:pb-2 "
                                 key={index}
 
+                                to={element.To}
                             >
                                 {element.Icon}
-                                <NavLink
-                                    to={element.To}
-                                >
 
-                                    {element.Text}
-                                </NavLink >
+                                {element.Text}
+                            </NavLink >
+                        ))}
 
-                            </Button>))}
-                        <div className="flex  gap-2 ">
+                        {isLogin && <div className="flex  gap-2 ">
                             <div
                                 onClick={() => navigate("/cart")}
                                 className="flex flex-col h-[20%]"
                             >
-                                <h1 className="bg-red-500 px-2 rounded-full  text-white">1</h1>
+                                <h1 className="bg-red-500 px-2 rounded-full  text-white">{cart.length}</h1>
                                 <ShoppingCart />
                                 <h1 className="mt-2">Cart</h1>
                             </div>
 
 
-
-                        </div>
+                        </div>}
                     </div>
                 </Slider>
             </div >
@@ -225,13 +259,12 @@ const Nav: React.FC = () => {
                             key={index}
 
                         >
-                            {element.Icon}
                             <NavLink
                                 to={element.To}
-                                className="md:block hidden"
                             >
+                                {element.Icon}
 
-                                {element.Text}
+                                <div className="md:block hidden"> {element.Text}</div>
                             </NavLink >
 
                         </Button>

@@ -1,4 +1,3 @@
-import React from 'react'
 
 // Icons
 
@@ -17,10 +16,10 @@ import { Button } from '@/components/ui/button';
 const EditPersonalInfo = () => {
     return (
         <Accordion type="single" collapsible
-            className=" mx-auto w-[90%]"
+            className=" mx-auto w-[90%] border rounded md:p-8 p-2 shadow "
         >
             <AccordionItem value="item-1">
-                <AccordionTrigger>Edit Personal Information </AccordionTrigger>
+                <AccordionTrigger className='text-3xl' >Edit Personal Information </AccordionTrigger>
                 <AccordionContent>
                     <Input
                         placeholder='Old Password '

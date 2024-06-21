@@ -1,7 +1,5 @@
-import { mkdir } from 'fs'
 import { createToken } from '../../../middlewares/auth.js'
 import bcrypt from 'bcrypt'
-import { resolve } from "path"
 
 import userModel from '../../../model/userModel.js'
 import generalModel from '../../../model/generalModel.js'
@@ -86,11 +84,7 @@ export default async function signUp(req, res) {
     }
     const savedUser = await user.save()
 
-    mkdir(resolve("Files/", userName), { recursive: true }, err => {
-      if (err) console.log('error while creating folder')
-      else console.log('Folder created successfully')
-    })
-
+  
     const token = createToken(user._id.toString())
     return (
       res.cookie('login', token, {

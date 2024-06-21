@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ColorRing } from "react-loader-spinner"
 
@@ -28,22 +28,24 @@ const ForgotPassword = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const location = useLocation()
     const { toast } = useToast()
-    const form = useForm<z.infer<typeof Schema>>({
-        resolver: zodResolver(Schema),
+    const form = useForm<z.infer<typeof EmailSchema>>({
+        resolver: zodResolver(EmailSchema),
         defaultValues: {
             email: location.state,
         }
     })
 
-    async function onSubmit(values: z.infer<typeof Schema>) {
+    async function onSubmit(values: z.infer<typeof EmailSchema>) {
         try {
             setIsLoading(true)
+
             const baseUrl = import.meta.env.VITE_BaseUrl
             let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/users/send-otp", {
-                body: JSON.stringify({
-                    email: values.email,
-                }),
-                method: "POST"
+                body: JSON.stringify(values),
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
             })
             let json = await res.json()
             setIsLoading(false)
@@ -51,7 +53,7 @@ const ForgotPassword = () => {
             if (res.ok) {
                 toast({
                     title: "Success",
-                    description: json.msg,
+                    description: "opt sent to your email",
                 })
                 navigate("/verify-otp", { state: values.email })
             }
@@ -61,7 +63,7 @@ const ForgotPassword = () => {
                 description: json.msg,
                 variant: "destructive"
             })
-        } catch (error) {
+        } catch (error: any) {
             setIsLoading(false)
             toast({
                 title: "error",
@@ -96,7 +98,7 @@ const ForgotPassword = () => {
                         >Send Code </Button>
                         :
                         <Button >Sending otp ... <ColorRing height={"200%"} /> </Button>}
-                   
+
                 </form>
             </Form>
 
@@ -109,7 +111,7 @@ const ForgotPassword = () => {
 export default ForgotPassword
 
 
-const Schema = z.object({
+const EmailSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }) // email format validation and message
 
 })

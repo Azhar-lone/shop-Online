@@ -14,9 +14,9 @@ export default async function getAllProduct(req, res) {
 
         const products = await productModel
             .find()
-            .sort({ timeStamp: -1 })
-            .limit(limit)
+            .sort({ timestamp: -1 })
             .skip((pageNumber - 1) * limit)
+            .limit(limit)
 
         if (products) {
             return res.status(200).json({

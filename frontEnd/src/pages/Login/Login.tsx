@@ -5,6 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ColorRing } from "react-loader-spinner"
+
+// Icons
+import { Eye, EyeOff } from "lucide-react"
+
+
 // importing components
 import { useToast } from "@/components/ui/use-toast"
 import { Button } from '@/components/ui/button';
@@ -26,6 +31,7 @@ const Login = () => {
     const navigate = useNavigate()
     const { toast } = useToast()
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -57,7 +63,7 @@ const Login = () => {
             setIsLoading(false)
 
             if (response.ok) {
-                localStorage.setItem("userName", json.user.userName)
+                localStorage.setItem("userName", json.userName)
                 return navigate("/")
             }
 
@@ -87,23 +93,45 @@ const Login = () => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
-                    {loginFormArray.map((field1, i) => (
-                        <FormField
-                            control={form.control}
-                            name={(field1.name)}
-                            key={i}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{field1.name}</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder={field1.placeHolder} {...field} className="bg-input" />
-                                    </FormControl>
+                    <FormField
+                        control={form.control}
+                        name={"email"}
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={"YourEmail@domain.com"} {...field} className="bg-input" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    ))}
+                    {/* Password */}
+
+                    <FormField
+                        control={form.control}
+                        name={"password"}
+                        render={({ field }) => (
+                            <FormItem
+                                className='relative'
+                            >
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <input placeholder="*********" {...field} className="bg-input px-2 py-6"
+                                        type={!showPassword ? "password" : "text"}
+                                    />
+                                </FormControl>
+                                <div
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    className='absolute right-3 bottom-3'
+                                >
+                                    {!showPassword ? <Eye /> : <EyeOff />}
+                                </div>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
                     <div className='flex justify-between w-[100%]'>
                         <p></p>
@@ -149,8 +177,3 @@ const loginSchema = z.object({
 
 
 
-
-const loginFormArray = [
-    { name: "email", placeHolder: "email@domain.com " },
-    { name: "password", placeHolder: "*********" }
-]

@@ -17,7 +17,7 @@ import { ProductsProvider } from "@/components/context/products-provider"
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <LoadingProvider>
       <ProductsProvider>
         <UserProvider >
@@ -28,5 +28,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </UserProvider>
       </ProductsProvider>
     </LoadingProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

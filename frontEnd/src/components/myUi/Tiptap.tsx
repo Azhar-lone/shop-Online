@@ -49,7 +49,7 @@ const Tiptap = ({ setHtml }: TiptapProps) => {
             </div>
             <div className='border shadow-2xl rounded blog bg-background' >
                 <EditorContent editor={editor} />
-                <SendHorizonal className='w-fit' />
+                <SendHorizonal className='w-fit first:' />
 
             </div>
 

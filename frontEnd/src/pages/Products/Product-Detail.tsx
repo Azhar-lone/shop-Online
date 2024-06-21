@@ -9,9 +9,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 // custom Components
 import Container from "@/components/myUi/Container"
 //Types 
-import productType from "@/types/product"
+import productType, { productCardType } from "@/types/product"
 import reviewType from "@/types/Review"
 
+// context
+import useProducts from "@/components/context/products-provider"
 // pages
 import Reviews from "@/pages/Reviews/Reviews"
 
@@ -20,74 +22,21 @@ const ProductDetail = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const { toast } = useToast()
-    const [reviews, setRevews] = useState<reviewType[]>([
-        {
-            owner: {
-                name: "Linux Torvard Linux",
-                userName: "linus-torvards",
-                profilePic: "/StaticData/imgs/linux.jpg"
-            },
-            rating: 4.5,
-            review: "this is a review",
-            date: (new Date(Date.now()))
-
-        },
-        {
-            owner: {
-                name: "Linux Torvard Linux",
-                userName: "linus-torvards",
-                profilePic: "/StaticData/imgs/linux.jpg"
-            },
-            rating: 2.5,
-            review: "this is a review  ipsum dolor sit amet consectetur adipisicing elit. Labore, esse consequuntur?"
-            , date: (new Date(Date.now()))
-
-        },
-        {
-            owner: {
-                name: "Linux Torvard Linux",
-                userName: "linus-torvards",
-                profilePic: "/StaticData/imgs/linux.jpg"
-            },
-            rating: 1.5,
-            review: "this is a review  ipsum dolor sit amet consectetur adipisicing elit. Labore, esse consequuntur?"
-            , date: (new Date(Date.now()))
-
-        },
-        {
-            owner: {
-                name: "Spider Man",
-                userName: "spiderman",
-                profilePic: "/StaticData/imgs/spiderman.jpg"
-            },
-            rating: 5,
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet animi quos repudiandae dicta cum esse molestias consequatur ratione tempora obcaecati accusantium, dolorem id tenetur eligendi architecto unde. Blanditiis ratione veritatis itaque iste ducimus sed omnis aliquam ipsam, molestias quisquam praesentium maxime tempora deserunt, corrupti tenetur reiciendis saepe voluptatem fugiat qui quasi cum autem illo! Fugit dolorem neque natus? Dolor alias dolorem ab ea doloremque autem tenetur corrupti repudiandae blanditiis, minima quam necessitatibus inventore odio molestiae, dolores tempore doloribus adipisci quisquam? Alias laudantium a unde, dolorem, reiciendis nobis accusantium maxime nesciunt esse vero officiis aliquam fuga corporis aliquid modi beatae nulla ullam, assumenda fugiat. Eos sapiente quia consectetur, repudiandae sunt nemo! Vel tenetur corrupti assumenda, expedita dignissimos accusamus libero? Ullam, numquam. Nobis eos doloribus ut, eum officiis at dolore! Neque necessitatibus reprehenderit magni veniam eveniet ratione quisquam, harum repudiandae amet libero! Asperiores illo quidem exercitationem. Odit nihil quam pariatur, sequi earum nulla ipsa magni soluta, quae atque officiis sapiente! Voluptate cum magnam odio fugiat, unde itaque culpa minus architecto consequatur beatae rerum quos sint non id incidunt cupiditate. Inventore, eius sunt ab illo nam tenetur dignissimos, quaerat ratione in nobis deserunt quibusdam maxime, quidem autem laborum quas labore magnam. Omnis"
-            , date: (new Date())
-
-
-        },
-
-    ])
+    const [reviews, setRevews] = useState<reviewType[]>([])
+    const { setProducts } = useProducts()
     const [product, setProduct] = useState<productType>({
-        name: "Nodejs Notes for professionals",
-        price: 10,
-        imgs:
-            [
-                "/StaticData/imgs/test1.png",
-                "/StaticData/imgs/11.jpg",
-                "/StaticData/imgs/12.jpg",
-                "/StaticData/imgs/13.jpg",
-
-            ],
-        _id: "2",
-        likes: 10,
-        category: "Books",
-        discription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, esse consequuntur? Natus dolorum, corrupti, commodi eius nisi fuga neque placeat ipsum vero pariatur consequuntur voluptas distinctio suscipit hic sint provident culpa! Odit natus molestias ad aspernatur recusandae. Corrupti blanditiis, odio obcaecati earum unde labore ad temporibus optio, perferendis iusto molestias vero nihil culpa excepturi sed numquam modi amet dolore consequatur maxime dolor nemo eveniet aliquid? Quaerat, provident perferendis! Voluptatibus dolor, et repellendus architecto hic aut quae aperiam ab? Harum quasi eaque magnam ipsam natus assumenda sunt sapiente mollitia ducimus similique voluptatem ab eligendi distinctio, iure eius modi. Explicabo delectus ratione facilis ea consequuntur. Veniam, quisquam magnam. Dolorum omnis iusto consequatur sint suscipit, sapiente perferendis fuga quas, totam molestias veritatis repellendus! Error, sunt in? Dolorum incidunt voluptatem praesentium velit suscipit neque nulla rem assumenda eos cumque fugiat amet doloremque illum itaque quam saepe possimus, beatae veritatis minus officia voluptate dolore, nobis autem nemo. Iste non mollitia voluptatem facere tenetur quaerat assumenda veritatis facilis optio! Animi, ea ullam suscipit voluptates tempora earum. Consequatur, velit commodi! Magnam, laboriosam maiores doloribus accusantium exercitationem aut? Velit repellendus voluptatem quo unde necessitatibus excepturi, officia quia minus deleniti, eius nesciunt hic eveniet impedit obcaecati reiciendis ab omnis?",
-        inStock: 124,
+        name: "",
+        price: 0,
+        imgs: ["", "", ""],
+        _id: "",
+        likes: 0,
+        category: "",
+        discription: "",
+        inStock: 0,
         owner: {
-            name: "Linux Torvard Linux",
-            userName: "linus-torvards",
-            profilePic: "/StaticData/imgs/linux.jpg"
+            name: "",
+            userName: "",
+            profilePic: ""
         }
 
     })
@@ -112,6 +61,42 @@ const ProductDetail = () => {
             if (response.ok) {
 
                 setProduct(json.product)
+                return
+            }
+
+
+            return toast({
+                title: "error",
+                description: json.msg,
+                variant: "destructive"
+            })
+
+        } catch (error: any) {
+            toast({
+                title: "error",
+                description: error.message,
+                variant: "destructive"
+            })
+            setIsLoading(false)
+
+        }
+    }
+    async function getRelatedProducts() {
+        try {
+            setIsLoading(true)
+            const baseUrl = import.meta.env.VITE_BaseUrl
+            interface JsonType {
+                msg: string,
+                products: productCardType
+            }
+            let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/products/related/' + id)
+            let json: JsonType = await response.json()
+            setIsLoading(false)
+
+            if (response.ok) {
+
+                setProducts((prev) => [...prev, json.products])
+                return
             }
 
 
@@ -135,16 +120,16 @@ const ProductDetail = () => {
 
     return (
         <Container>
-            {!isLoading ?
+            {product.name !== '' && !isLoading ?
                 <div className="flex flex-col gap-4 p-5 overflow-hidden">
                     <div className="flex flex-col md:flex-row gap-2">
 
                         {/* Image Section */}
                         <div className="flex gap-4 flex-col md:w-[60%] ">
-                            <img src={bannerImg} alt="Banner Image" className="w-[100%] h-96 rounded transition-all hover:scale-105 " />
+                            <img src={bannerImg} alt="Banner Image" className="w-[100%] h-96 rounded transition-all hover:scale-105 border" />
                             <div className="flex gap-2 md:w-[100%]">
                                 {product.imgs.map((img: string, i: number) => (
-                                    <img src={img} alt={"img"} key={i} className="w-44 h-20 md:h-32 rounded transition-all hover:scale-105  hover:cursor-pointer" onClick={() => setBannerImg(img)} />
+                                    <img src={img} alt={"img"} key={i} className="w-44 h-20 md:h-32 rounded transition-all hover:scale-105 border  hover:cursor-pointer" onClick={() => setBannerImg(img)} />
                                 ))}
                             </div>
                         </div>

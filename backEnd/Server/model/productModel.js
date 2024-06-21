@@ -11,19 +11,22 @@ const schema = mongoose.Schema({
         min: 30,
         max: 250,
         required: true,
-
+        select: false
 
 
     },
     category: {
         type: String,
-        required: true
+        required: true,
+        select: false
+
 
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "userModel",
         required: true,
+        select: false
 
 
     },
@@ -41,20 +44,17 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     }],
-    timeStamp: {
-        type: Date,
-        default: Date.now()
-    },
+
     // if inStock =0 then outOfStock
     inStock: {
         type: Number,
         default: 1,
-
+        select: false
     },
 
 
 
-}, { timeStamps: true })
+}, { timestamps: true })
 
 
 const productModel = mongoose.model("productModel", schema)

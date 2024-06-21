@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import parse from "html-react-parser"
 
 // Icons
 import { ArrowBigUp } from "lucide-react"
@@ -9,7 +10,7 @@ import {
     AvatarImage
 } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 // context
 import useLoading from "@/components/context/loading-provider"
 // custom Compoents
@@ -40,7 +41,7 @@ export default function AboutUs() {
 
     document.title = "About us"
 
-    let [aboutusBlog, setAboutusBlog] = useState<string>("")
+    let [aboutusBlog, setAboutusBlog] = useState<string>(``)
     let [ourTeam, setOurTeam] = useState<ourTeamType[]>([])
     const { setIsLoading, isLoading } = useLoading()
     useEffect(() => {
@@ -52,28 +53,52 @@ export default function AboutUs() {
         try {
 
             // what function is going to return
-            setIsLoading(false)
-            interface JsonType {
-                blog: string
+            setIsLoading(true)
+            interface OurteamJsonType {
                 msg: string
                 ourTeam: ourTeamType[]
 
             }
+            interface blogJsonType {
+                msg: string
+                blog: string
+
+            }
+
             const baseUrl = import.meta.env.VITE_BaseUrl
-            let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "general/aboutus")
-            let toJson: JsonType = await res.json()
+            let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/general/aboutus")
+            let blogRes = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/blogs/about-us")
+
+            let toJson: OurteamJsonType = await res.json()
+            let blogJson: blogJsonType = await blogRes.json()
+
+            setIsLoading(false)
             if (res.ok) {
                 setOurTeam(toJson.ourTeam)
-                setAboutusBlog(toJson.blog)
+            }
+            else {
+                toast({
+                    title: "error while fetching our team info",
+                    description: toJson.msg,
+                    variant: "destructive"
+                })
+            }
+            if (blogRes.ok) {
+                setAboutusBlog(blogJson.blog)
                 return
             }
-            setIsLoading(false)
 
+            setIsLoading(false)
+            return toast({
+                title: "error while fetching blog",
+                description: blogJson.msg,
+                variant: "destructive"
+            })
 
         } catch (error: any) {
             setIsLoading(false)
             return toast({
-                title: "error",
+                title: "error while fetching ourteam",
                 description: error.message,
                 variant: "destructive"
             })
@@ -88,12 +113,17 @@ export default function AboutUs() {
         <Container
             className="flex flex-col p-5"
         >
-            {!isLoading ? <>
+            {aboutusBlog !== '' && !isLoading ? <>
                 <div className="blog">
-                    {aboutusBlog}
+                    {parse(aboutusBlog, {
+                        htmlparser2:
+                            { lowerCaseAttributeNames: true, withEndIndices: true, withStartIndices: true }
+
+
+                    })}
                 </div>
                 <>
-                    <h3 className="border-b-4 p-3 w-[50%] mx-auto text-4xl font-extrabold">OurTeam</h3>
+                    <h1 className="border-b-4 p-3 w-[50%] mx-auto text-4xl font-extrabold text-center">OurTeam</h1>
 
 
                     <div className="flex flex-wrap gap-4  p-2 ">
@@ -111,7 +141,7 @@ export default function AboutUs() {
                                 </Avatar>
                                 <h1 className="text-xl p-1 border-b-2">{element.name}</h1>
                                 <h1 className="text-2xl p-1  " >{element.role}</h1>
-                                <p className="h-36 overflow-auto text-light">{element.discription}</p>
+                                <ScrollArea className="h-36 overflow-auto text-light">{element.discription}</ScrollArea>
                                 <ArrowBigUp className="left-10 text-red-600 relative p-3 size-5" />
                             </div>
                         ))

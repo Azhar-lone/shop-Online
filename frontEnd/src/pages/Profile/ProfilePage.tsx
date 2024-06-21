@@ -5,26 +5,20 @@ import { useParams } from 'react-router-dom'
 // components
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useToast } from '@/components/ui/use-toast'
 // icons
 import { Edit2, Plus, MessageCircle } from "lucide-react"
 
 // custom components
 import Container from "@/components/myUi/Container"
 import ProductsList from '../Products/ProductsList'
-import Product from "@/components/myUi/Product"
 
 // importing context
 import useLoading from "@/components/context/loading-provider"
-import useUser from "@/components/context/user-provider"
+import useUser from '@/components/context/user-provider'
 
-// importing Types
-import productType from "../../types/product"
-import User from '../../types/user'
-
-// imoprting static Data for Testing 
-import { user as userData } from "../../../StaticData/userData"
-import { products as productsData } from "../../../StaticData/productData"
-
+// types
+import User from '@/types/user'
 
 
 
@@ -32,41 +26,75 @@ import { products as productsData } from "../../../StaticData/productData"
 
 const ProfilePage = () => {
     // all states here
-    let { user: loggedInUser } = useUser()
-    const { isLoading } = useLoading()
+    const { toast } = useToast()
+    const { isLoading, setIsLoading } = useLoading()
     const [isSelf, setIsSelf] = useState<boolean>(false)
-    const [isFollowing, setIsFollowing] = useState<boolean>(false)
-    const [products, setProducts] = useState<productType[]>(productsData)
-    const [user, setUser] = useState<User>(userData)
-    let params = useParams()
-
-
-
+    const [isFollowing, setFollowing] = useState<boolean>(false)
+    const { user, isLogin } = useUser()
+    const [thisUser, setThisUser] = useState<User>()
+    const { username } = useParams()
 
 
 
 
 
     useEffect(() => {
+        // if it is current logged in user 
+        if (user.userName === username) {
+            setThisUser(user)
+            setIsSelf(true)
+            return
+        }
+        else {
+            getProfile()
+            if (!isLogin) {
+                return
+            }
+            let found = user.following.find((value) => (
+                thisUser!._id === value
+            ))
+            if (found) {
+                setFollowing(true)
+            }
 
-        //    check if it is current user
-        // if (loggedInUser.userName === params.userName) {
-            // setIsSelf(true)
-        // }
-        // Check the following array of loggedIn user
-        // if user is not following this user then 
-        // show follow button else show unfollow button
+        }
 
-        // else if (!isFollowing) {
-
-            // setIsFollowing(true)
-        // }
-
-        // getUserByUserName((params.userName), setUser)
-
-        // userProducts(setProducts, 1)
     }, [])
 
+
+    async function getProfile() {
+        try {
+            setIsLoading(true)
+            const baseUrl = import.meta.env.VITE_BaseUrl
+            interface JsonType {
+                msg: string,
+                user: User
+            }
+
+            let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/' + username)
+            let json: JsonType = await response.json()
+            setIsLoading(false)
+
+            if (response.ok) {
+                return setThisUser(json.user)
+            }
+
+
+            return toast({
+                title: " error",
+                description: json.msg,
+                variant: "destructive"
+            })
+
+        } catch (error: any) {
+            setIsLoading(false)
+            toast({
+                title: "error",
+                description: error.message,
+                variant: "destructive"
+            })
+        }
+    }
 
 
     return (
@@ -76,20 +104,24 @@ const ProfilePage = () => {
             >
                 <>
                     <div className='w-[100%]  flex items-center gap-3  sm:gap-10'>
-                        <img src={user.profilePic} alt="Profile image"
+                        <img src={thisUser!.profilePic} alt="Profile image"
                             className='w-[20%] h-[20%] rounded-full '
 
                         />
                         <div className='flex items-center flex-col md:text-xl'>
                             <h1>Followers</h1>
-                            <h1>0</h1>
+                            <h1>{thisUser!.followers.length}</h1>
                         </div>
                         <div className='flex items-center flex-col md:text-xl'>
                             <h1>Following</h1>
-                            <h1>0</h1>
+                            <h1>{thisUser!.following.length}</h1>
+                        </div>
+                        <div className='flex items-center flex-col md:text-xl'>
+                            <h1>products</h1>
+                            <h1>{thisUser!.products.length}</h1>
                         </div>
                     </div>
-                    <h1>{user.userName}</h1>
+                    <h1>{thisUser!.userName}</h1>
 
 
                     {isSelf ? <div className='flex gap-5'>
@@ -105,7 +137,7 @@ const ProfilePage = () => {
                             Edit Profile <Edit2 /> </Button>
 
                     </div> : <div className='flex gap-5'>
-                        {isFollowing ?
+                        {isLogin && !isFollowing ?
                             <Button>Follow</Button>
 
                             : <Button>unFollow</Button>
@@ -115,11 +147,11 @@ const ProfilePage = () => {
                     <ProductsList
 
                     >
-                        {products.map((product, index) => (
-                            <Product product={product} key={index} />
+                        <></>
+                        {/* {/* {products.map((product, index) => (
+                            <Product product={product} key={index} /> */}
 
-                        ))}
-
+                        {/* )) */}
                     </ProductsList>
                 </>
             </div>)

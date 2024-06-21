@@ -10,6 +10,7 @@ export default async function getProduct(req, res) {
         const id = req.params.id
 
         const product = await productModel.findById(id)
+            .select("*")
         if (product) {
             return res.status(200).json({
                 product: product

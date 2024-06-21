@@ -1,6 +1,4 @@
-import { resolve } from "path"
 import userModel from "../../../../model/userModel.js"
-import { rm } from "fs"
 export default async function deleteUser(req, res) {
   try {
 
@@ -15,10 +13,7 @@ export default async function deleteUser(req, res) {
       })
     }
 
-    rm(resolve("Files/", user.userName), { recursive: true }, err => {
-      if (err) console.log('error while deleted folder', err)
-      else console.log('Folder deleted successfully')
-    })
+  
 
     res.cookie("login", "", {
       httpOnly: true,
@@ -26,7 +21,6 @@ export default async function deleteUser(req, res) {
       sameOrigin: 'none'
     }).status(200).end()
 
-    //delete here
   } catch (error) {
     console.log(error)
     return res.status(500).json({

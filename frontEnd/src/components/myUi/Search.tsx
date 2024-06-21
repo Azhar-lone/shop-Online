@@ -1,5 +1,5 @@
-import { SearchIcon, XIcon } from "lucide-react"
 import { useState } from "react";
+import { SearchIcon, XIcon, UsersRound, Boxes } from "lucide-react"
 
 
 interface PropsTypes {
@@ -22,12 +22,12 @@ const Search: React.FC<PropsTypes> = ({
             <input
                 type="text"
                 placeholder="Search product here"
-                className={`md:block py-4  p-2 bg-input`}
+                className={`md:block py-4  p-2 bg-input `}
                 onChange={(e) => setTerm(e.target.value)}
                 value={term}
 
             />
-            <div className="absolute right-8 " >
+            <div className={`absolute md:right-3 ${term.length > 0 && "hidden"}`} >
                 {(term.length > 0) ?
                     <XIcon onClick={() => setTerm("")} />
                     : < SearchIcon />

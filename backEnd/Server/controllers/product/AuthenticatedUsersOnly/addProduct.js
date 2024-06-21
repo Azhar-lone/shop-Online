@@ -1,7 +1,6 @@
 //importing dependencies
 import multer from "multer";
-import fs from "fs"
-import path from "path";
+import { resolve } from "path"
 // Importing Models
 import productModel from "../../../model/productModel.js"
 import userModel from "../../../model/userModel.js";
@@ -14,47 +13,17 @@ const allowedMimeTypes = {
 
 
 
-
 const storage = multer.diskStorage({
-    destination: async (req, file, cb) => {
+    destination: (req, file, cb) => {
         try {
-
-
-            if (!allowedMimeTypes[file.mimetype]) {
-                return cb('Invalid file type. Only PNG, JPEG, or JPG images allowed')
-            }
-            let product = new productModel({})
-
-            let user = await userModel.findById(req.currentUserId)
-                .select("userName -_id")
-
-            //create a folder for current product using its id
-            // it will be effecient to delete or update these
-            // files later
-            // do it sync so it will stop further code execution
-            // cause next step depends on this operation
-
-            let userFolder = path.resolve("Files/", user.userName, "/")
-            fs.mkdirSync(userFolder + product._id, { recursive: true })
-            req.product = product
-            cb(null, userFolder + product._id)
-        } catch (error) {
-            cb(error.message)
-
-        }
-
-
-    },
-    filename: (req, file, cb) => {
-        try {
-            cb(null, `${Date.now()}.${allowedMimeTypes[file.mimetype]}`)
-
-
+            cb(null, resolve("Files"))
         } catch (error) {
             cb(error.message)
         }
     }
+
 })
+
 
 
 export const uploadProduct_multer = multer({
@@ -64,6 +33,13 @@ export const uploadProduct_multer = multer({
         files: 5, //files
         parts: 10//file+non-file feilds
     },
+    fileFilter: ((req, file, cb) => {
+        console.log("testing 1")
+        if (!allowedMimeTypes[file.mimetype]) {
+            return cb("invalid file type")
+        }
+        cb(null, true)
+    })
 })
 
 
@@ -73,7 +49,8 @@ export const uploadProduct_multer = multer({
 
 export default async function addProduct(req, res) {
     try {
-
+        console.log("\nbody", req.body)
+        console.log("\nfiles", req.files)
 
         product = await req.product.save()
 

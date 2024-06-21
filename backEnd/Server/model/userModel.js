@@ -48,10 +48,25 @@ const schema = mongoose.Schema({
 
     }],
     cartItems: [{
-        type: mongoose.Types.ObjectId,
-        ref: "productModel",
-        // select: false
+        cart: {
+            type: mongoose.Types.ObjectId,
+            ref: "productModel",
+            // select: false
+        },
 
+        addedOn: {
+            type: Date,
+            default: new Date(),
+            select: false
+        }
+    }],
+    followers: [{
+        type: mongoose.Types.ObjectId,
+        ref: "userModel"
+    }],
+    following: [{
+        type: mongoose.Types.ObjectId,
+        ref: "userModel"
     }],
     country: {
         type: String,
@@ -64,7 +79,7 @@ const schema = mongoose.Schema({
     ,
     role: {
         type: String,
-    enum:["user","seller","buyer","admin","moderator"],
+        enum: ["user", "seller", "buyer", "admin", "moderator"],
         default: "user",
 
         // required:false,//only dataBase admin can change this feild

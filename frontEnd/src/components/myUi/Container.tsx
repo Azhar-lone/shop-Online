@@ -23,7 +23,7 @@ const Container: React.FC<ContainerProps> = ({
             className={`
             mt-[11vh] mb-[3vh] mx-auto border
             lg:w-[94%] lg:ml-auto
-            sm:w-[92%] sm:ml-[8%]
+            sm:w-[92%] sm:ml-[8%] p-2
             ${className}
             `}
         >{children}</div>

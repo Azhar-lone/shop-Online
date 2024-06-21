@@ -27,30 +27,28 @@ import useLoading from '@/components/context/loading-provider';
 
 // types
 import { productCardType } from '@/types/product';
+
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { products, setProducts, totalProducts, setTotalProducts } = useProducts();
     const { isLoading, setIsLoading } = useLoading();
-    const [homeBlog, setHomeBlog] = useState<string>()
     const { toast } = useToast();
-
-    const pagesCount = Math.ceil(totalProducts / 10); // Calculate total pages based on count
-
-
-    useEffect(() => {
-        getTotalProducts()
-    }, [])
-
+    const [pagesCount, setPagesCount] = useState<number>(0)
+    const [length, setLength] = useState<number>(10)
     useEffect(() => {
         setIsLoading(true);
+        setPagesCount(Math.ceil(totalProducts / 10))
+        if (pagesCount < 10) {
+            setLength(pagesCount)
+        }
+        getTotalProducts()
         getAllProducts(currentPage);
+    }, [])
 
-    }, [currentPage]);
 
 
     async function getTotalProducts() {
         try {
-            setIsLoading(true);
 
             // what function is going to return
             interface JsonType {
@@ -124,26 +122,24 @@ const Home = () => {
             setCurrentPage(page);
             getAllProducts(page);
         }
-        toast({
-            title: (pagesCount.toString()),
-            duration: 50000
-        });
+
     };
 
     return (
-        <Container className="p-2">
+        <Container className="gap-5 flex flex-col ">
             <Hero />
-            { }
-
-            {!isLoading ? (
-                <ProductsList>
-                    {products.map((product: productCardType, index: number) => (
-                        <Product product={product} key={index} />
-                    ))}
-                </ProductsList>
+            {products.length > 0 && !isLoading ? (
+                <>  
+                <h1 className='text-4xl'>Products</h1>
+                    <ProductsList>
+                        {products.map((product: productCardType, index: number) => (
+                            <Product product={product} key={index} />
+                        ))}
+                    </ProductsList>
+                </>
             ) : (
                 <div className={`flex flex-wrap gap-4 px-1 pb-10`}>
-                    {Array(4).fill(0).map((_, index: number) => (
+                    {Array(8).fill(0).map((_, index: number) => (
                         <Skeleton key={index} className="lg:h-[60vh] h-96 mt-2 sm:w-[48%] md:w-[31%] lg:w-[23%] w-[47%] hover:scale-105" />
                     ))}
                 </div>
@@ -151,24 +147,36 @@ const Home = () => {
 
             <Pagination>
                 <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious href="#" aria-disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
-                    </PaginationItem>
-                    {/* Render 5 page links around the current page */}
-                    {Array.from({ length: 5 }, (_, i) => (
-                        <PaginationItem key={i + 2}>
-                            <PaginationLink href="#" isActive={currentPage === i + 1} onClick={() => handlePageChange(i + 1)}>
+                    <PaginationPrevious onClick={() => {
+                        if (currentPage <= 1)
+                            return
+                        handlePageChange(currentPage - 1)
+                    }}
+                        className='hover:cursor-pointer '
+                    />
+                    {/* Render 10 page links around the current page */}
+                    {/* {if pages==50 } left side=12345 right side=4647484950*/}
+                    {
+
+                    }
+                    {Array(length).fill(0).map((_, i) => (
+                        <PaginationItem key={i}>
+
+                            <PaginationLink
+                                className={`${currentPage === i + 1 && "bg-primary text-primary-foreground "} hover:cursor-pointer`}
+                                onClick={() => handlePageChange((i + 1))}>
+
                                 {i + 1}
                             </PaginationLink>
                         </PaginationItem>
                     ))}
-                    <PaginationItem>
-                        <PaginationNext
-                            href="#"
-                            aria-disabled={isLoading || currentPage === pagesCount}
-                            onClick={() => handlePageChange(currentPage + 1)}
-                        />
-                    </PaginationItem>
+                    <PaginationNext
+                        onClick={() => {
+                            if (currentPage <= pagesCount)
+                                handlePageChange(currentPage + 1)
+                        }}
+                        className='hover:cursor-pointer'
+                    />
                 </PaginationContent>
             </Pagination>
         </Container>

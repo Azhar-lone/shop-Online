@@ -14,10 +14,13 @@ import validateId from "./database/mongoIdValidation.js";
 import updateProductValidation from "./product/updateProduct.js";
 import addProductValidation from "./product/addProduct.js";
 
+// blog validations
+import { validateSlug, validateCreateBlog } from "./blog/blogValidations.js";
 
 // general validations
 import paginationValidation from "./general/paginationValidation.js";
 import { categoriesValidation, aboutusValidation, countriesValidation } from "./general/GeneralValidations.js";
+
 
 export {
     //  user validations
@@ -36,6 +39,9 @@ export {
     updateProductValidation,
     addProductValidation,
 
+    // blog Validations
+    validateSlug,
+    validateCreateBlog,
     // general validations
     paginationValidation,
     categoriesValidation,

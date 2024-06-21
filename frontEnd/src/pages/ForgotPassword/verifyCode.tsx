@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -63,7 +63,7 @@ const VerifyCode = () => {
                 variant: "destructive"
             })
 
-        } catch (error) {
+        } catch (error: any) {
             setIsLoading(false)
             toast({
                 title: "error",

@@ -7,7 +7,7 @@ const AddBlog = () => {
 
     return (
         <Container>
-            <Tiptap />
+            <Tiptap setHtml={setHtml} />
             {parse(html)}
         </Container>
     )

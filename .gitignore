@@ -1,0 +1,12 @@
+# BackEnd
+backEnd/node_modules
+backEnd/Files
+
+# FrontEnd
+frontEnd/node_modules
+
+
+
+# ignore all text and .env files
+*.txt
+*.env

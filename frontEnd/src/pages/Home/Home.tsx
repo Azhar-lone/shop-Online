@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/pagination";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/components/ui/use-toast";
 
 // custom components
 import Container from "@/components/myUi/Container";
@@ -29,10 +28,9 @@ import useLoading from '@/components/context/loading-provider';
 import { productCardType } from '@/types/product';
 
 const Home = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const { products, setProducts, totalProducts, setTotalProducts } = useProducts();
+    const [currentPage, setCurrentPage] = useState(0);
+    const { products, totalProducts } = useProducts();
     const { isLoading, setIsLoading } = useLoading();
-    const { toast } = useToast();
     const [pagesCount, setPagesCount] = useState<number>(0)
     const [length, setLength] = useState<number>(10)
     useEffect(() => {
@@ -41,86 +39,83 @@ const Home = () => {
         if (pagesCount < 10) {
             setLength(pagesCount)
         }
-        getTotalProducts()
-        getAllProducts(currentPage);
     }, [])
 
 
 
-    async function getTotalProducts() {
-        try {
+    // async function getTotalProducts() {
+    //     try {
 
-            // what function is going to return
-            interface JsonType {
-                totalProducts: number;
-                msg: string;
-            }
+    //         // what function is going to return
+    //         interface JsonType {
+    //             totalProducts: number;
+    //             msg: string;
+    //         }
 
-            const baseUrl = import.meta.env.VITE_BaseUrl;
-            let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/products/count");
-            let json: JsonType = await res.json();
+    //         const baseUrl = import.meta.env.VITE_BaseUrl;
+    //         let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/products/count");
+    //         let json: JsonType = await res.json();
 
-            if (res.ok) {
-                setTotalProducts(json.totalProducts)
-                return
-            } else {
-                toast({
-                    title: 'Error',
-                    description: json.msg,
-                    variant: 'destructive',
-                });
-            }
+    //         if (res.ok) {
+    //             setTotalProducts(json.totalProducts)
+    //             return
+    //         } else {
+    //             toast({
+    //                 title: 'Error',
+    //                 description: json.msg,
+    //                 variant: 'destructive',
+    //             });
+    //         }
 
-            setIsLoading(false);
-        } catch (error: any) {
-            setIsLoading(false);
-            toast({
-                title: 'Error',
-                description: error.message,
-                variant: 'destructive',
-            });
-        }
-    }
+    //         setIsLoading(false);
+    //     } catch (error: any) {
+    //         setIsLoading(false);
+    //         toast({
+    //             title: 'Error',
+    //             description: error.message,
+    //             variant: 'destructive',
+    //         });
+    //     }
+    // }
 
-    async function getAllProducts(page: number) {
-        try {
-            setIsLoading(true);
+    // async function getAllProducts(page: number) {
+    //     try {
+    //         setIsLoading(true);
 
-            // what function is going to return
-            interface JsonType {
-                products: productCardType[];
-                msg: string;
-            }
+    //         // what function is going to return
+    //         interface JsonType {
+    //             products: productCardType[];
+    //             msg: string;
+    //         }
 
-            const baseUrl = import.meta.env.VITE_BaseUrl;
-            let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/products/?page=" + page);
-            let json: JsonType = await res.json();
+    //         const baseUrl = import.meta.env.VITE_BaseUrl;
+    //         let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "/products/?page=" + page);
+    //         let json: JsonType = await res.json();
 
-            if (res.ok) {
-                setProducts((prev) => [...prev, ...json.products]);
-            } else {
-                toast({
-                    title: 'Error',
-                    description: json.msg,
-                    variant: 'destructive',
-                });
-            }
+    //         if (res.ok) {
+    //             setProducts((prev) => [...prev, ...json.products]);
+    //         } else {
+    //             toast({
+    //                 title: 'Error',
+    //                 description: json.msg,
+    //                 variant: 'destructive',
+    //             });
+    //         }
 
-            setIsLoading(false);
-        } catch (error: any) {
-            setIsLoading(false);
-            toast({
-                title: 'Error',
-                description: error.message,
-                variant: 'destructive',
-            });
-        }
-    }
+    //         setIsLoading(false);
+    //     } catch (error: any) {
+    //         setIsLoading(false);
+    //         toast({
+    //             title: 'Error',
+    //             description: error.message,
+    //             variant: 'destructive',
+    //         });
+    //     }
+    // }
 
     const handlePageChange = (page: number) => {
         if (page > 0 && page <= pagesCount) {
             setCurrentPage(page);
-            getAllProducts(page);
         }
 
     };

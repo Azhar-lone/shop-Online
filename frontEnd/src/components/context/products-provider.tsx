@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react';
 
+import { Products } from '@/static/Products';
 
 // Types
 import { productCardType } from '@/types/product';
@@ -12,7 +13,7 @@ interface productProviderState {
 }
 const initialState: productProviderState = {
     totalProducts: 0,
-    products: [],
+    products: Products,
     setProducts: () => ([]), // Implement setUser logic here
     setTotalProducts: () => { }
 };
@@ -29,7 +30,7 @@ interface Props {
 
 
 export function ProductsProvider({ children }: Props) {
-    const [products, setProducts] = useState<productCardType[]>([]);
+    const [products, setProducts] = useState<productCardType[]>(Products);
     const [totalProducts, setTotalProducts] = useState<number>(0)
     return (
         <ProductsContext.Provider value={{ products, setProducts, totalProducts, setTotalProducts }}>

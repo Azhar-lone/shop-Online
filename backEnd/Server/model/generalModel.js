@@ -17,6 +17,8 @@ let schema = mongoose.Schema({
     }],
     productsCategories: [String],
     countries: [String],
+    allowedEmails: [String],
+
 
 }, { timestamps: true })
 

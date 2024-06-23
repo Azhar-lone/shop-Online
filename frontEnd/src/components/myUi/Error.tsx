@@ -1,7 +1,7 @@
 import { useRouteError, useNavigate, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 export default function ErrorPage() {
-  const error = useRouteError();
+  const error:any = useRouteError();
   let navigate = useNavigate()
   let [counter, SetCounter] = useState<number>(30)
 

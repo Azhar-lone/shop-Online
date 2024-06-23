@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SearchIcon, XIcon, UsersRound, Boxes } from "lucide-react"
+import { SearchIcon, XIcon } from "lucide-react"
 
 
 interface PropsTypes {

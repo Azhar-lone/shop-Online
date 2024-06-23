@@ -4,7 +4,7 @@ export default interface User {
     lastName: string;
     country: string;
     profilePic: string;
-    timeStamp: string;
+    // timeStamp: string;
     products: string[];
     cartItems: string[];
     followers: string[],

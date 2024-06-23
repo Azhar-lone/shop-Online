@@ -44,20 +44,17 @@ productRouter
     .get("/", paginationValidation, validationError, getAllProducts)
     .get("user/:id", validateId, paginationValidation, validationError, getUsersProducts)
     .get("/count", getProductsCount)
-    
+
 //Routes Only authenticated user can access
 // productRouter.use(UserAuth)
 
 productRouter
     .patch("like/:id", validateId, validationError, likeProduct)
     .patch("buy/:id", isBuyer, buyProduct)
-
-    .post("/",
-        uploadProduct_multer.array("images", 5),
+    .post("/", isSeller,
+        // uploadProduct_multer.array("images", 5),
         addProductValidation, validationError,
         addProduct)//TODO
-
-
 //Routes only owners can access
 productRouter
     .route(":id", validateId, validationError)

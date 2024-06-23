@@ -1,5 +1,7 @@
 import { createToken } from '../../../middlewares/auth.js'
 import bcrypt from 'bcrypt'
+import { lookup } from "dns"
+
 
 import userModel from '../../../model/userModel.js'
 import generalModel from '../../../model/generalModel.js'
@@ -36,20 +38,41 @@ export default async function signUp(req, res) {
     const { email, firstName, lastName, phoneNumber, password, country, userName } = req.body
 
 
+    // check dns if it is valid mail or not
+    lookup(email, (err, adress) => {
+      if (err) {
+        return res.status(401).json({
+          msg: "invalid email address"
+        })
+      }
+    })
+
+
     // check if country feild exist on db 
     // if yes it is validCountry else not valid
-    let countries = await generalModel.find().select("countries -_id")
-    let validCountry = countries[0].countries.find((value) => {
+    let data = await generalModel.findOne().select("countries allowedEmails -_id")
+    let validCountry = data.countries.find((value) => {
       if (country === value) {
         return true
       }
     })
     if (!validCountry) {
       return res.status(401).json({
-        msg: "invalid requesd"
+        msg: "invalid country"
       })
     }
 
+    let emailDomain = email.split("@")
+    let validEmail = data.allowedEmails.find((value) => {
+      if (emailDomain[1] === value) {
+        return true
+      }
+    })
+    if (!validEmail) {
+      return res.status(401).json({
+        msg: "invalid email"
+      })
+    }
 
     const taken = await userModel.findOne({ "$or": [{ email }, { userName }] }).select("userName -_id")
     if (taken) {
@@ -66,7 +89,7 @@ export default async function signUp(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 5)
-    let user = await new userModel({
+    let user = await userModel.create({
       email,
       phoneNumber,
       password: hashedPassword.toString(),
@@ -82,9 +105,8 @@ export default async function signUp(req, res) {
         msg: 'error creating user',
       })
     }
-    const savedUser = await user.save()
 
-  
+
     const token = createToken(user._id.toString())
     return (
       res.cookie('login', token, {
@@ -92,7 +114,7 @@ export default async function signUp(req, res) {
         secure: true,
         sameOrigin: 'none'
       }).status(200).json({
-        user: savedUser.userName,
+        userName: user.userName,
       }))
   } catch (error) {
     console.log(error)

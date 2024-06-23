@@ -36,7 +36,10 @@ const addProductValidation = [
         .exists().withMessage("product inStock is required")
         .isNumeric().withMessage("not a valid in stock")
         .escape(),
-
+    // images
+    body("images")
+        .exists().withMessage("images required")
+        .isArray({ max: 5, min: 1 }).withMessage("images should be an array")
 
 
 ]

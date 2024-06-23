@@ -38,6 +38,8 @@ const Tiptap = ({ setHtml }: TiptapProps) => {
         return null
     }
 
+
+
     return (
         <div className='md:p-4 flex flex-col '>
             <div className='flex gap-1 justify-end border-b'>
@@ -50,7 +52,6 @@ const Tiptap = ({ setHtml }: TiptapProps) => {
             <div className='border shadow-2xl rounded blog bg-background' >
                 <EditorContent editor={editor} />
                 <SendHorizonal className='w-fit first:' />
-
             </div>
 
         </div>
@@ -92,7 +93,7 @@ const Headings: React.FC<HeadingProps> = ({ editor }) => {
             </div>
             <DropdownMenuContent>
                 <  DropdownMenuSeparator />
-                {Array(6).fill(0).map((_, i) => (
+                {Array(6).fill(0).map((_, i: number) => (
                     <div key={i}>
                         <DropdownMenuItem
                             className='gap-2 cursor-pointer mr-5 p-4 bg-background shadow-2xl'

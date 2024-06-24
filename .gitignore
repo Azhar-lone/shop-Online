@@ -1,6 +1,5 @@
 # BackEnd
-backEnd/node_modules
-backEnd/Files
+backEnd
 
 # FrontEnd
 frontEnd/node_modules

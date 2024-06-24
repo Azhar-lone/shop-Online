@@ -20,7 +20,7 @@ import { toast } from "@/components/ui/use-toast"
 // importing aboutUs css
 
 // import Static Data
-
+import { aboutUsBlog } from "@/static/Blogs"
 interface ourTeamType {
     picture?: string,
     name: string,
@@ -41,7 +41,7 @@ export default function AboutUs() {
 
     document.title = "About us"
 
-    let [aboutusBlog, setAboutusBlog] = useState<string>(``)
+    let [aboutusBlog, setAboutusBlog] = useState<string>(aboutUsBlog)
     let [ourTeam, setOurTeam] = useState<ourTeamType[]>([])
     const { setIsLoading, isLoading } = useLoading()
     useEffect(() => {
@@ -124,8 +124,6 @@ export default function AboutUs() {
                 </div>
                 <>
                     <h1 className="border-b-4 p-3 w-[50%] mx-auto text-4xl font-extrabold text-center">OurTeam</h1>
-
-
                     <div className="flex flex-wrap gap-4  p-2 ">
 
                         {ourTeam.map((element: ourTeamType, i: number) => (

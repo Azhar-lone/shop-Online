@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 // components
 import {
     Pagination,
@@ -33,12 +32,16 @@ const Home = () => {
     const { isLoading, setIsLoading } = useLoading();
     const [pagesCount, setPagesCount] = useState<number>(0)
     const [length, setLength] = useState<number>(10)
+
+
     useEffect(() => {
         setIsLoading(true);
         setPagesCount(Math.ceil(totalProducts / 10))
         if (pagesCount < 10) {
             setLength(pagesCount)
         }
+
+
     }, [])
 
 

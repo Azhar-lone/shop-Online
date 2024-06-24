@@ -15,31 +15,21 @@ import reviewType from "@/types/Review"
 // context
 import useProducts from "@/components/context/products-provider"
 // pages
-import Reviews from "@/pages/Reviews/Reviews"
+import Reviews from "../Reviews/Reviews"
+
+// Static data
+import { staticProduct } from "@/static/Products"
+import { reviews as ReviewsData } from "@/static/Reviews"
+
 
 const ProductDetail = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const { toast } = useToast()
-    const [reviews, setRevews] = useState<reviewType[]>([])
+    const [reviews, setRevews] = useState<reviewType[]>(ReviewsData)
     const { setProducts } = useProducts()
-    const [product, setProduct] = useState<productType>({
-        name: "",
-        price: 0,
-        imgs: ["", "", ""],
-        _id: "",
-        likes: 0,
-        category: "",
-        discription: "",
-        inStock: 0,
-        owner: {
-            name: "",
-            userName: "",
-            profilePic: ""
-        }
-
-    })
+    const [product, setProduct] = useState<productType>(staticProduct)
     const [bannerImg, setBannerImg] = useState<string>(product.imgs[0])
 
     useEffect(() => {
@@ -81,41 +71,7 @@ const ProductDetail = () => {
 
         }
     }
-    async function getRelatedProducts() {
-        try {
-            setIsLoading(true)
-            const baseUrl = import.meta.env.VITE_BaseUrl
-            interface JsonType {
-                msg: string,
-                products: productCardType
-            }
-            let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/products/related/' + id)
-            let json: JsonType = await response.json()
-            setIsLoading(false)
 
-            if (response.ok) {
-
-                setProducts((prev) => [...prev, json.products])
-                return
-            }
-
-
-            return toast({
-                title: "error",
-                description: json.msg,
-                variant: "destructive"
-            })
-
-        } catch (error: any) {
-            toast({
-                title: "error",
-                description: error.message,
-                variant: "destructive"
-            })
-            setIsLoading(false)
-
-        }
-    }
 
 
     return (

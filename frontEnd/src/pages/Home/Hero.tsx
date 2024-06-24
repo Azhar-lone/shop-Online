@@ -7,9 +7,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 // context 
 import useLoading from '@/components/context/loading-provider'
 
+
+// Static data for testing 
+import { homeBlog as HomeBlog} from '@/static/Blogs'
+
 const Hero = () => {
 
-  const [homeBlog, setHomeBlog] = useState<string>(``)
+  const [homeBlog, setHomeBlog] = useState<string>(HomeBlog)
   const { setIsLoading, isLoading } = useLoading()
 
 

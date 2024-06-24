@@ -155,7 +155,7 @@ const Signup = () => {
 
 
     <div className='md:w-[60%] w-[100%] mx-auto mt-5 p-5 flex flex-col gap-5  bg-background shadow-2xl md:border'>
-      <h3 className='text-3xl  text-center '>Create An Account</h3>
+      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">Create An Account</h3>
 
 
       <Form {...form}>

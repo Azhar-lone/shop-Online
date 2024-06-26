@@ -29,11 +29,10 @@ import { useToast } from "@/components/ui/use-toast";
 
 // custom components
 import Container from "@/components/myUi/Container"
-import Search from "@/components/myUi/Search";
 import Hint from "@/components/myUi/Hint"
 import Product from "@/components/myUi/Product"
 import ProductsList from './ProductsList';
-
+import SearchProducts from './SearchProducts';
 // importing Providers
 import useProducts from '@/components/context/products-provider';
 import useLoading from '@/components/context/loading-provider';
@@ -181,10 +180,10 @@ const AllProducts = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </Hint>
-                    <Search />
+                    <SearchProducts />
                 </div>
 
-                {products.length>0&&!isLoading ? <div className='w-[100%] border  md:p-4 text-xl flex items-center flex-col'>
+                {products.length > 0 && !isLoading ? <div className='w-[100%] border  md:p-4 text-xl flex items-center flex-col'>
                     <ProductsList >
                         {products.map((product: productCardType, index: number) => (
                             <Product product={product} key={index} />

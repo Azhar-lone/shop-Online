@@ -21,6 +21,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+// Custom components
+import { ModeToggle } from '@/components/myUi/mode-toggle'
 
 
 const ForgotPassword = () => {
@@ -74,7 +76,9 @@ const ForgotPassword = () => {
     }
 
     return (
-        <div className='md:w-[60%] w-[100%] mt-[10vh] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl md:border'>
+        <div className='md:w-[60%] w-[100%] mt-[10vh] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary'>
+            <ModeToggle />
+
             <h3>Send code </h3>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -86,7 +90,7 @@ const ForgotPassword = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={"enter Your email"} {...field} className="bg-input" />
+                                    <Input placeholder={"enter Your email"} {...field}  />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

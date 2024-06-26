@@ -1,8 +1,8 @@
 // importing dependencies
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-    HomeIcon, ShoppingCart, ShoppingBasket, UserCircle2,
-    Boxes, InfoIcon,
+    HomeIcon, ShoppingCart, ShoppingBasket,
+    Boxes, InfoIcon
 } from "lucide-react";
 
 // importing Shadcn Components
@@ -14,8 +14,10 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { ModeToggle } from "@/components/myUi/mode-toggle";
 import ProfileButton from "../../Profile/ProfileButton"
 import Hint from "@/components/myUi/Hint"
-import Search from "@/components/myUi/Search";
 import Slider from "@/components/myUi/Slider"
+import { SideBar, TopBar } from "@/components/myUi/NavComponents";
+import FullSearch from "./FullSearch";
+
 
 // context
 import useUser from "@/components/context/user-provider"
@@ -26,33 +28,38 @@ import { useToast } from "@/components/ui/use-toast";
 import User from "@/types/user";
 
 
-let navItems = [
 
-    {
-        To: "/",
-        Text: "Home",
-        Icon: <HomeIcon />
-    },
-    {
-        To: "/aboutus",
-        Text: "About Us",
-        Icon: <InfoIcon />
-    },
-    {
-        To: "/products",
-        Text: "Products",
-        Icon: <Boxes />
-    },
-
-]
+interface navItemsType {
+    To: string,
+    Text: string,
+    Icon: React.ReactNode
+}
 
 
 const Nav: React.FC = () => {
-    let { isLogin, setIsLogin, setUser, cart, user } = useUser()
+    let { isLogin, setIsLogin, setUser, cart } = useUser()
     let navigate = useNavigate()
     const { toast } = useToast()
     const { setIsLoading } = useLoading()
+    const [navItems, setNavItems] = useState<navItemsType[]>([
 
+        {
+            To: "/",
+            Text: "Home",
+            Icon: <HomeIcon />
+        },
+        {
+            To: "/aboutus",
+            Text: "AboutUs",
+            Icon: <InfoIcon />
+        },
+        {
+            To: "/products",
+            Text: "Products",
+            Icon: <Boxes />
+        },
+
+    ])
 
     useEffect(() => {
 
@@ -63,26 +70,7 @@ const Nav: React.FC = () => {
             setIsLogin(true)
         }
 
-        if (isLogin) {
-            navItems = [
-                {
-                    To: "/",
-                    Text: "Home",
-                    Icon: <HomeIcon />
-                },
-                {
-                    To: `/${userName}`,
-                    Text: "Profile",
-                    Icon: <UserCircle2 />
-                },
-                {
-                    To: "/products",
-                    Text: "Products",
-                    Icon: <Boxes />
-                },
 
-            ]
-        }
 
     }, [])
     async function getProfile(username: string) {
@@ -123,101 +111,95 @@ const Nav: React.FC = () => {
 
 
     return (
-        <div className=" bg-background w-full h-[10vh]  border-b flex gap-2 flex-col shadow-2xl  top-0 fixed sm:justify-start justify-around pt-2" >
 
 
-            {/* <Search
-                className="sm:hidden  h-[4vh] ml-[30%] px-2 "
-            /> */}
-
-            <div className="     flex justify-around items-center gap-2  sm:h-[100%] "
-            >
-
-                <div className="flex gap-5">
-                    <Button className="sm:flex hidden gap-1">
-                        <ShoppingBasket />
-                        <h1>Shop-Online</h1>
-
-                    </Button>
-                    <Search
-                        // className="hidden sm:flex"
-                        onClickSearch={() => alert("im clicked search")}
-
-                    />
-                </div>
-
-                <ul
-                    className=" lg:flex hidden justify-around gap-5"
+        <>
+            <TopBar>
+                <div className="flex justify-around items-center gap-2  sm:h-[100%] "
                 >
-                    {navItems.map((element, index) => (
+
+                    <div className="flex gap-5">
+                        <Button className="flex gap-1">
+                            <ShoppingBasket />
+                            <h1 className="hidden sm:block" >Shop-Online</h1>
+                        </Button>
+                        <FullSearch />
+                    </div>
+
+                    <ul
+                        className=" lg:flex hidden justify-around gap-5"
+                    >
+                        {navItems.map((element, index) => (
 
 
-                        <NavLink
-                            className="flex gap-2 items-center    hover:pb-2 "
-                            key={index}
+                            <NavLink
+                                className="flex gap-2 items-center    hover:pb-2 "
+                                key={index}
 
-                            to={element.To}
-                        >
-                            {element.Icon}
-
-                            {element.Text}
-                        </NavLink >
-
-                    ))}
-
-
-                </ul>
-                {isLogin ?
-                    <div className="flex gap-2">
-                        <div className="hidden sm:flex  gap-2 ">
-                            <Button
-                                variant="outline"
-
-                                onClick={() => navigate("/cart")}
+                                to={element.To}
                             >
-                                <ShoppingCart />
-                                <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">{cart.length}</h1>
-                            </Button>
-                            <Hint
-                                label={"Change Theme"}
-                            >
-                                <ModeToggle />
+                                {element.Icon}
 
-                            </Hint>
+                                {element.Text}
+                            </NavLink >
 
+                        ))}
+
+
+                    </ul>
+                    {isLogin ?
+                        <div className="flex gap-2">
+                            <div className="  sm:flex  gap-2 ">
+                                <Button
+                                    variant="outline"
+
+                                    onClick={() => navigate("/cart")}
+                                >
+                                    <ShoppingCart />
+                                    <h1 className="bg-red-500 px-2 rounded-full mb-5 text-white">{cart.length}</h1>
+                                </Button>
+                                <Hint
+                                    label={"Change Theme"}
+                                >
+                                    <ModeToggle />
+
+                                </Hint>
+
+
+                            </div>
+
+                            <ProfileButton />
 
                         </div>
+                        : <div className="flex gap-2 ">
+                            <ModeToggle />
 
-                        <ProfileButton />
+                            <Button
+                                variant={"ghost"}
+                                className="flex gap-1"
 
-                    </div>
-                    : <div className="flex gap-2 ">
-                        <ModeToggle />
-
-                        <Button
-                            variant={"ghost"}
-                            className="flex gap-1"
-
-                        >
-                            <NavLink
-                                to={"/login"}
                             >
-                                Login
-                            </NavLink >
-                        </Button>
-                        <Button
-                            // variant={"ghost"}
-                            className="flex gap-1"
+                                <NavLink
+                                    to={"/login"}
+                                >
+                                    Login
+                                </NavLink >
+                            </Button>
+                            <Button
+                                // variant={"ghost"}
+                                className="flex gap-1"
 
-                        >
-                            <NavLink
-                                to={"/signup"}
                             >
-                                Signup
-                            </NavLink >
-                        </Button>
-                    </div>}
-                <Slider side="right">
+                                <NavLink
+                                    to={"/signup"}
+                                >
+                                    Signup
+                                </NavLink >
+                            </Button>
+                        </div>}
+
+
+                        <Slider side="right">
                     <div className="flex items-center flex-col gap-5">
                         {navItems.map((element, index) => (
                             <NavLink
@@ -231,53 +213,41 @@ const Nav: React.FC = () => {
                                 {element.Text}
                             </NavLink >
                         ))}
-
-                        {isLogin && <div className="flex  gap-2 ">
-                            <div
-                                onClick={() => navigate("/cart")}
-                                className="flex flex-col h-[20%]"
-                            >
-                                <h1 className="bg-red-500 px-2 rounded-full  text-white">{cart.length}</h1>
-                                <ShoppingCart />
-                                <h1 className="mt-2">Cart</h1>
-                            </div>
-
-
-                        </div>}
                     </div>
                 </Slider>
-            </div >
-            <div className=" fixed   hidden sm:flex lg:hidden w-[8%] h-[88vh] bg-background border-r  left-0 top-[10vh]  gap-4   justify-center backdrop-blur-sm items-start">
+                </div >
+
+             
+
+
+            </TopBar>
+
+
+            <SideBar>
                 <ul
                     className=" flex  flex-col justify-start gap-5  p-8"
                 >
 
                     {navItems.map((element, index) => (
-                        <Button
-                            variant={"ghost"}
-                            className="  h-[8%] flex flex-col  gap-1"
-                            key={index}
-
-                        >
+                        <Hint label={element.Text} key={index}   >
                             <NavLink
+                                className="flex flex-col gap-2 items-center   hover:border-b-4 border-primary hover:pt-2  "
+
+
                                 to={element.To}
                             >
                                 {element.Icon}
-
-                                <div className="md:block hidden"> {element.Text}</div>
                             </NavLink >
-
-                        </Button>
-
+                        </Hint>
                     ))}
 
 
                 </ul>
+            </SideBar>
 
-            </div>
 
 
-        </div>
+        </>
     )
 }
 

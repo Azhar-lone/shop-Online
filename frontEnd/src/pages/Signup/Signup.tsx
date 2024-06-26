@@ -36,6 +36,10 @@ import {
 import { Input } from "@/components/ui/input"
 
 
+// Custom components
+import { ModeToggle } from '@/components/myUi/mode-toggle';
+
+// Types
 import { ObjectString } from '../../types/General';
 
 
@@ -154,8 +158,10 @@ const Signup = () => {
   return (
 
 
-    <div className='md:w-[60%] w-[100%] mx-auto mt-5 p-5 flex flex-col gap-5  bg-background shadow-2xl md:border'>
-      <h3 className='text-3xl  text-center '>Create An Account</h3>
+    <div className='md:w-[60%] w-[100%] mx-auto mt-5 p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary'>
+      <ModeToggle />
+
+      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">Create An Account</h3>
 
 
       <Form {...form}>
@@ -168,7 +174,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="YourEmail@domain.com" {...field} className="bg-input" />
+                  <Input placeholder="YourEmail@domain.com" {...field}  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,11 +188,11 @@ const Signup = () => {
             name={"password"}
             render={({ field }) => (
               <FormItem
-              className='relative'
+                className='relative'
               >
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <input placeholder="*********" {...field} className="bg-input px-2 py-6"
+                  <Input placeholder="*********" {...field} 
                     type={!showPassword ? "password" : "text"}
                   />
                 </FormControl>
@@ -215,7 +221,7 @@ const Signup = () => {
               >
                 <FormLabel>Confirm Password </FormLabel>
                 <FormControl>
-                  <input placeholder="*********" {...field} className="bg-input px-2 py-6 "
+                  <Input placeholder="*********" {...field} 
                     type={!showConfirmPassword ? "password" : "text"}
                   />
                 </FormControl>
@@ -240,7 +246,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>First Name </FormLabel>
                 <FormControl>
-                  <Input placeholder="john" {...field} className="bg-input" />
+                  <Input placeholder="john" {...field}  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -255,7 +261,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Last Name </FormLabel>
                 <FormControl>
-                  <Input placeholder="doe" {...field} className="bg-input" />
+                  <Input placeholder="doe" {...field}  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -270,7 +276,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="john-doe" {...field} className="bg-input" />
+                  <Input placeholder="john-doe" {...field}  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,6 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
+//import Icons
+import { User } from "lucide-react"
+
 //shadcn  components
 import {
     DropdownMenu,
@@ -80,6 +83,14 @@ const ProfileButton: React.FC = () => {
             <DropdownMenuContent>
                 <DropdownMenuLabel>{user.userName}</DropdownMenuLabel>
                 <  DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                    className='gap-2 cursor-pointer'
+                    onClick={() => navigate(`/${user.userName}`)}
+                >
+                    <User />   Profile
+
+                </DropdownMenuItem>
 
                 <DropdownMenuItem
                     className='gap-2 cursor-pointer'

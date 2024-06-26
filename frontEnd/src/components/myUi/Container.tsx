@@ -21,7 +21,7 @@ const Container: React.FC<ContainerProps> = ({
         // third is for small screen 
         <div
             className={`
-            mt-[11vh] mb-[3vh] mx-auto border
+            mt-[11vh] mb-[3vh] mx-auto shadow-lg shadow-primary
             lg:w-[94%] lg:ml-auto
             sm:w-[92%] sm:ml-[8%] p-2
             ${className}

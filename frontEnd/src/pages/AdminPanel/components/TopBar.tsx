@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/breadcrumb"
 
 // custom components
-import Search from "@/components/myUi/Search"
 import Exit from "@/components/myUi/Exit"
 import Slider from "@/components/myUi/Slider"
 import { ModeToggle } from "@/components/myUi/mode-toggle";
@@ -125,7 +124,6 @@ const TopBar = () => {
                 />
             </div> */}
             <div className='flex gap-4'>
-                <Search />
                 <ModeToggle />
                 <Exit mode="Admin" />
             </div>

@@ -4,7 +4,7 @@
 
 
 .blog {
-    @apply flex flex-col gap-4 border-b shadow-lg bg-background border rounded-lg p-2
+    @apply flex flex-col gap-4 border-b shadow-lg shadow-foreground bg-background border rounded-lg p-2
 }
 
 .blog h1 {

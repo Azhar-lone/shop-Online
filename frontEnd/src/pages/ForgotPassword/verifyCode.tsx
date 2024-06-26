@@ -24,6 +24,9 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 
+// Custom Comonents
+import { ModeToggle } from '@/components/myUi/mode-toggle'
+
 const VerifyCode = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     let navigate = useNavigate()
@@ -74,7 +77,9 @@ const VerifyCode = () => {
     }
 
     return (
-        <div className='lg:w-[60%] w-[90%] mt-[10vh] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl md:border items-center'>
+        <div className='lg:w-[60%] w-[90%] mt-[10vh] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary items-center'>
+            <ModeToggle />
+
             <h3>verify otp</h3>
 
             <Form {...form}>
@@ -103,10 +108,12 @@ const VerifyCode = () => {
                         )}
                     />
 
-                    <Button
-                        type="submit"
-                        className="w-[100%]"
-                    >Verify Code </Button>
+                    {!isLoading ?
+                        <Button
+                            type="submit"
+                        >Verify Code </Button>
+                        :
+                        <Button >Sending otp ... <ColorRing height={"200%"} /> </Button>}
                 </form>
             </Form>
 

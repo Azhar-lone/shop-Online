@@ -22,6 +22,9 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+// imporring my components
+import { ModeToggle } from "@/components/myUi/mode-toggle"
+
 
 // importing context
 
@@ -87,8 +90,8 @@ const Login = () => {
 
     return (
         // <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5 items-center bg-background shadow-2xl md:border  mt-[20vh]'>
-        <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl md:border mt-[5vh]'>
-
+        <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary mt-[5vh]'>
+            <ModeToggle />
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">Log in to your Account</h3>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -100,7 +103,7 @@ const Login = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={"YourEmail@domain.com"} {...field} className="bg-input" />
+                                    <Input placeholder={"YourEmail@domain.com"} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -118,7 +121,7 @@ const Login = () => {
                             >
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <input placeholder="*********" {...field} className="bg-input px-2 py-6"
+                                    <Input placeholder="*********" {...field}
                                         type={!showPassword ? "password" : "text"}
                                     />
                                 </FormControl>

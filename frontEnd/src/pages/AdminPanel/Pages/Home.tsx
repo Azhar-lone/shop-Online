@@ -1,4 +1,3 @@
-import React from "react"
 
 import {
     ChevronLeft,
@@ -6,18 +5,9 @@ import {
     Copy,
     CreditCard,
     File,
-    Home,
-    LineChart,
     ListFilter,
     MoreVertical,
-    Package,
-    Package2,
-    PanelLeft,
-    Search,
-    Settings,
-    ShoppingCart,
     Truck,
-    Users2,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"

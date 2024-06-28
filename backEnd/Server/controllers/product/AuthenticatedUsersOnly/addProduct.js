@@ -1,9 +1,10 @@
 //importing dependencies
-// import multer from "multer";
-// import { resolve } from "path"
+import multer from "multer";
+import { resolve } from "path"
+import { mkdirSync } from "fs"
+
 // Importing Models
 import productModel from "../../../model/productModel.js"
-// import userModel from "../../../model/userModel.js";
 
 
 
@@ -15,16 +16,18 @@ import productModel from "../../../model/productModel.js"
 
 
 
-// const storage = multer.diskStorage({
-//     destination: async (req, file, cb) => {
-//         try {
-//             let user = await userModel.findById(req.currentUserId).select("userName -_id")
-//             let product = new productModel({})
-//             cb(null, resolve("Files/", user.userName, product._id))//files/username/id
-//         } catch (error) {
-//             cb(error.message)
-//         }
-//     }
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        try {
+
+            let product = new productModel({})
+            req.product = product
+            mkdirSync(resolve("Files/" + product._id), { recursive: true })
+            cb(null, resolve("Files/", product._id))
+        } catch (error) {
+            cb(error.message)
+        }
+    }
 
 // })
 
@@ -53,26 +56,21 @@ import productModel from "../../../model/productModel.js"
 
 export default async function addProduct(req, res) {
     try {
+        const { name, discription, category, price, inStock } = req.body
 
+        let images = []
+        // push all file paths to images
+        req.files.forEach(file => {
+            images.push(file.path)
+        });
+        req.product = {
+            ...req.product,
+            name, discription, category, price, inStock,//All from body
+            owner: req.currentUserId, //attached by middleware
+            images//file urls
 
-        const {
-            name,
-            discription,
-            category,
-            price,
-            inStock,
-            images
-        } = req.body
-
-        const product = await productModel.create({
-            name,
-            discription,
-            category,
-            price,
-            inStock,
-            images,
-            owner: req.currentUserId,
-        })
+        }
+        product = await req.product.save()
 
         if (product) {
             return res.status(200).json({

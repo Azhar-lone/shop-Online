@@ -16,7 +16,7 @@ const addProductValidation = [
     body("discription")
         .exists().withMessage("product discription is required")
         .isString().withMessage("not A valid discription")
-        .isLength({ max: 250, min: 80 }).withMessage("not a valid length")
+        .isLength({ max: 450, min: 50 }).withMessage("not a valid length")
         .escape(),
     // new passowrd
     body("category")
@@ -36,10 +36,7 @@ const addProductValidation = [
         .exists().withMessage("product inStock is required")
         .isNumeric().withMessage("not a valid in stock")
         .escape(),
-    // images
-    body("images")
-        .exists().withMessage("images required")
-        .isArray({ max: 5, min: 1 }).withMessage("images should be an array")
+   
 
 
 ]

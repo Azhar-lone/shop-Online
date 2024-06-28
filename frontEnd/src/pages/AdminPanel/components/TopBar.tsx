@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 
 
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import {
     Home,
     LineChart,
+    LogOut,
     Package,
     Package2,
     ShoppingCart,
@@ -22,10 +23,9 @@ import {
 } from "@/components/ui/breadcrumb"
 
 // custom components
-import Exit from "@/components/myUi/Exit"
 import Slider from "@/components/myUi/Slider"
 import { ModeToggle } from "@/components/myUi/mode-toggle";
-
+import ProfileButton from '@/pages/Profile/ProfileButton'
 
 const TopBar = () => {
     let [breadLogic, setBreadLogic] = useState<string[]>(window.location.toString().split("/").slice(3))
@@ -34,7 +34,7 @@ const TopBar = () => {
     })
     return (
         <header className=" bg-background w-full h-[10vh]  border-b flex gap-2  shadow-2xl  top-0 fixed  justify-around items-center pt-2 " >
-            <Slider>
+            <Slider side='left'>
                 <nav className="grid gap-6 text-lg font-medium">
                     <Link
                         to="#"
@@ -125,7 +125,11 @@ const TopBar = () => {
             </div> */}
             <div className='flex gap-4'>
                 <ModeToggle />
-                <Exit mode="Admin" />
+                <Link className='flex gap-1 border p-2 rounded-lg hover:cursor-pointer' to={"/"}>
+                    <h1 className='hidden md:block'>Exit </h1>
+                    <LogOut />
+                </Link>
+                <ProfileButton />
             </div>
 
         </header >

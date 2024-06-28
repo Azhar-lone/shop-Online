@@ -41,7 +41,7 @@ const Tiptap = ({ setHtml }: TiptapProps) => {
 
 
     return (
-        <div className='md:p-4 flex flex-col '>
+        <div className='md:p-4 flex flex-col justify-end'>
             <div className='flex gap-1 justify-end border-b'>
                 <TextManipulators editor={editor} />
                 <Button variant={"outline"} onClick={() => editor.chain().focus().toggleBold().run()} className='font-extrabold text-2xl'>B</Button>
@@ -49,12 +49,14 @@ const Tiptap = ({ setHtml }: TiptapProps) => {
                 <Headings editor={editor} />
 
             </div>
-            <div className='border shadow-2xl rounded blog bg-background' >
+            <div className='border shadow-2xl rounded blog bg-background flex flex-col' >
                 <EditorContent editor={editor} />
-                <SendHorizonal className='w-fit first:' />
             </div>
+            <SendHorizonal className='w-fit' />
 
         </div>
+
+
     )
 }
 

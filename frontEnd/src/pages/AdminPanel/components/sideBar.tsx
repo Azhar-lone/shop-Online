@@ -5,29 +5,31 @@ import { NavLink } from 'react-router-dom'
 import {
     Boxes,
     HomeIcon,
-    InfoIcon,
     SettingsIcon,
     Earth
 } from "lucide-react"
 
 // components
-
+import Hint from '@/components/myUi/Hint'
 let navItems = [
 
     {
         To: "/admin",
-        Text: "Home",
-        Icon: <HomeIcon />
+        Icon: <HomeIcon />,
+        Text:"Admin Home"
+
     },
     {
         To: "/admin/general",
-        Text: "web Setting",
-        Icon: <Earth />
+        Icon: <Earth />,
+        Text:"general"
+
     },
     {
         To: "/products",
-        Text: "Products",
-        Icon: <Boxes />
+        Icon: <Boxes />,
+        Text:"products"
+
     },
 
 ]
@@ -45,18 +47,17 @@ const SideBar = () => {
             <div className='flex flex-col gap-8 p-2  '>
                 {navItems.map((element, index) => (
 
-
-                    <NavLink
-                        to={element.To}
-                        className={"flex flex-col gap-1 items-center"}
+                    <Hint
+                        key={index}
+                        label={element.Text}
                     >
-                        {element.Icon}
-
-                        <h1 className='hidden lg:block text-center'>
-                            {element.Text}
-                        </h1>
-                    </NavLink >
-
+                        <NavLink
+                            to={element.To}
+                            className={"flex flex-col gap-1 items-center"}
+                        >
+                            {element.Icon}
+                        </NavLink >
+                    </Hint>
                 ))}
 
             </div>

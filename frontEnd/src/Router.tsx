@@ -31,6 +31,7 @@ import {
     General,
     AboutUs,
     ProductDetail,
+    UploadProduct,
     // Admin
     AdminHome,
     AddBlog
@@ -63,6 +64,8 @@ let Router = createBrowserRouter(
                 <Route path="products">
                     <Route path="" element={<AllProducts />} />
                     <Route path=":id" element={<ProductDetail />} />
+                    <Route path="upload" element={<UploadProduct />} />
+
                 </Route>
                 <Route path="settings" element={<UserProtected> <SettingsPage /></UserProtected>} />
                 <Route path="cart" element={<UserProtected><CartPage /></UserProtected>} />

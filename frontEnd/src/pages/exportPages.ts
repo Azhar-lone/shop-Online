@@ -15,7 +15,7 @@ import SettingsPage from "./Settings/SettingsPage"
 import CartPage from "./Cart/CartPage"
 import AboutUs from "./Aboutus/AboutUs"
 import ProductDetail from "./Products/Product-Detail"
-
+import UploadProduct from "./Products/UploadProduct"
 // Admins 
 import SideBar from "./AdminPanel/components/sideBar"
 import TopBar from "./AdminPanel/components/TopBar"
@@ -42,6 +42,7 @@ export {
     CartPage,
     AboutUs,
     ProductDetail,
+    UploadProduct,
     // Admin
     TopBar,
     SideBar,

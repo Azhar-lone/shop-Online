@@ -1,9 +1,10 @@
 //importing dependencies
 import multer from "multer";
 import { resolve } from "path"
+import { mkdirSync } from "fs"
+
 // Importing Models
 import productModel from "../../../model/productModel.js"
-import userModel from "../../../model/userModel.js";
 
 const allowedMimeTypes = {
     "image/png": "png",
@@ -16,7 +17,11 @@ const allowedMimeTypes = {
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         try {
-            cb(null, resolve("Files"))
+
+            let product = new productModel({})
+            req.product = product
+            mkdirSync(resolve("Files/" + product._id), { recursive: true })
+            cb(null, resolve("Files/", product._id))
         } catch (error) {
             cb(error.message)
         }
@@ -49,9 +54,20 @@ export const uploadProduct_multer = multer({
 
 export default async function addProduct(req, res) {
     try {
-        console.log("\nbody", req.body)
-        console.log("\nfiles", req.files)
+        const { name, discription, category, price, inStock } = req.body
 
+        let images = []
+        // push all file paths to images
+        req.files.forEach(file => {
+            images.push(file.path)
+        });
+        req.product = {
+            ...req.product,
+            name, discription, category, price, inStock,//All from body
+            owner: req.currentUserId, //attached by middleware
+            images//file urls
+
+        }
         product = await req.product.save()
 
         if (product) {

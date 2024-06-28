@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 //import Icons
-import { User } from "lucide-react"
+import { User, Upload, LayoutDashboard } from "lucide-react"
 
 //shadcn  components
 import {
@@ -91,7 +91,25 @@ const ProfileButton: React.FC = () => {
                     <User />   Profile
 
                 </DropdownMenuItem>
+                {user && user.role === "seller" || user.role === "admin" &&
+                    <DropdownMenuItem
+                        className='gap-2 cursor-pointer'
+                        onClick={() => navigate(`/products/upload`)}
+                    >
+                        <Upload />   Upload Product
 
+                    </DropdownMenuItem>
+                }
+
+                {user && user.role === "admin" &&
+                    <DropdownMenuItem
+                        className='gap-2 cursor-pointer'
+                        onClick={() => navigate(`/admin`)}
+                    >
+                        <LayoutDashboard />   Admin DashBoard
+
+                    </DropdownMenuItem>
+                }
                 <DropdownMenuItem
                     className='gap-2 cursor-pointer'
                     onClick={() => navigate("/settings")}

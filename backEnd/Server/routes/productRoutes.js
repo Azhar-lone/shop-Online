@@ -44,7 +44,7 @@ productRouter
     .get("/", paginationValidation, validationError, getAllProducts)
     .get("user/:id", validateId, paginationValidation, validationError, getUsersProducts)
     .get("/count", getProductsCount)
-    
+
 //Routes Only authenticated user can access
 // productRouter.use(UserAuth)
 

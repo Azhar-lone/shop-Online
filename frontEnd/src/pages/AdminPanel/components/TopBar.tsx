@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import {
     Home,
     LineChart,
+    LogOut,
     Package,
     Package2,
     ShoppingCart,
@@ -22,7 +23,6 @@ import {
 } from "@/components/ui/breadcrumb"
 
 // custom components
-import Exit from "@/components/myUi/Exit"
 import Slider from "@/components/myUi/Slider"
 import { ModeToggle } from "@/components/myUi/mode-toggle";
 import ProfileButton from '@/pages/Profile/ProfileButton'
@@ -125,7 +125,10 @@ const TopBar = () => {
             </div> */}
             <div className='flex gap-4'>
                 <ModeToggle />
-                <Exit mode="Admin" />
+                <Link className='flex gap-1 border p-2 rounded-lg hover:cursor-pointer' to={"/"}>
+                    <h1 className='hidden md:block'>Exit </h1>
+                    <LogOut />
+                </Link>
                 <ProfileButton />
             </div>
 

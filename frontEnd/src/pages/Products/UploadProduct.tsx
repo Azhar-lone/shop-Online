@@ -287,12 +287,25 @@ const productSchema = z.object({
 
 
 const ImagePicker = () => {
-    const [imgs, setImgs] = useState<string[]>([])
+    const [imgsPreview, setImgsPreview] = useState<string[]>([])
 
 
-    function imageHandler(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
+    function imageHandler(e: React.ChangeEvent<HTMLInputElement>) {
 
-        console.log(e.target)
+        const files = e.target.files
+        if (files) {
+
+            for (let i: number = 0; i < files.length; i++) {
+                const file = files[i]
+                const reader = new FileReader()
+                reader.onloadend = () => {
+
+                    setImgsPreview((prev) => [...prev, reader.result as string])
+                }
+                reader.readAsDataURL(file)
+            }
+
+        }
 
     }
 
@@ -302,10 +315,10 @@ const ImagePicker = () => {
         <label htmlFor="inp"  ><ImageUpIcon className='size-48 p-10 mx-auto hover:cursor-pointer ' /></label>
 
 
-        <input type='file' multiple id='inp' className='hidden' onClick={imageHandler} />
+        <input type='file' multiple id='inp' className='hidden' onChange={imageHandler} />
 
         <div className="flex gap-2 md:w-[100%]">
-            {imgs.map((src: string, i: number) => (
+            {imgsPreview.map((src: string, i: number) => (
                 <img src={src} alt={"img"} key={i} className="w-44 h-20 md:h-32 rounded transition-all hover:scale-105   hover:cursor-pointer" />
             ))}
         </div>

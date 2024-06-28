@@ -6,9 +6,8 @@ import "dotenv/config"
 import cors from "cors"
 import redis from "redis"
 import rateLimit from "express-rate-limit"
-import { Server } from "socket.io"
+// import { Server } from "socket.io"
 
-import {v2 as cloudinary} from "cloudinary"
 
 
 //importing Routers

@@ -22,7 +22,7 @@ import {
     updateMultipleProducts,
 
     //authenticated users Only
-    addProduct, uploadProduct_multer,
+    addProduct,// uploadProduct_multer,
     buyProduct,
     getUsersProducts,
     likeProduct,
@@ -53,9 +53,9 @@ productRouter
     .patch("buy/:id", isBuyer, buyProduct)
 
     .post("/",
-        uploadProduct_multer.array("images", 5),
+        isSeller,
         addProductValidation, validationError,
-        addProduct)//TODO
+        addProduct)
 
 
 //Routes only owners can access

@@ -12,7 +12,7 @@ import {
     logout,
     // follow,
     uploadProfile,
-    uploadProfile_multer,
+    // uploadProfile_multer,
     // Owners Only
     deleteUser,
     updateUser,
@@ -64,7 +64,8 @@ userRouter
     .use(UserAuth)
     .post('/logout', logout)
     //TODO:90% done 10% remain
-    .post('/upload-profile', uploadProfile_multer.single("image"), uploadProfile)
+    .post('/upload-profile', //uploadProfile_multer.single("image"),
+        uploadProfile)
 
     // Owners Only
     .delete("/delete", loginValidation, OTPValidations, validationError, verifyPassword, verifyOTP, deleteUser)

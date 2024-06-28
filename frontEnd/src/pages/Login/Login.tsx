@@ -90,7 +90,7 @@ const Login = () => {
 
     return (
         // <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5 items-center bg-background shadow-2xl md:border  mt-[20vh]'>
-        <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary mt-[5vh]'>
+        <div className='md:w-[60%] w-[100%] mx-auto p-5 flex flex-col gap-5  bg-background shadow-2xl shadow-primary mt-[5vh] animate-accordion-down '>
             <ModeToggle />
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">Log in to your Account</h3>
             <Form {...form}>

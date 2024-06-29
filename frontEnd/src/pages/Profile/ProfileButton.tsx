@@ -36,6 +36,9 @@ const ProfileButton: React.FC = () => {
 
     async function logout() {
         try {
+            localStorage.clear()
+            return location.reload()
+
             const baseUrl = import.meta.env.VITE_BaseUrl
             let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/logout', {
                 method: 'POST',
@@ -88,7 +91,7 @@ const ProfileButton: React.FC = () => {
                     className='gap-2 cursor-pointer'
                     onClick={() => navigate(`/${user.userName}`)}
                 >
-                    <User />   Profile
+                    <User /> {user.firstName + " " + user.lastName}
 
                 </DropdownMenuItem>
                 {user && user.role === "seller" || user.role === "admin" &&

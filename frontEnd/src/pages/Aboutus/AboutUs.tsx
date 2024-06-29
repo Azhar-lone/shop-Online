@@ -21,6 +21,8 @@ import { toast } from "@/components/ui/use-toast"
 
 // import Static Data
 import { aboutUsBlog } from "@/static/Blogs"
+import { outTeamData } from "@/static/General"
+
 interface ourTeamType {
     picture?: string,
     name: string,
@@ -42,7 +44,7 @@ export default function AboutUs() {
     document.title = "About us"
 
     let [aboutusBlog, setAboutusBlog] = useState<string>(aboutUsBlog)
-    let [ourTeam, setOurTeam] = useState<ourTeamType[]>([])
+    let [ourTeam, setOurTeam] = useState<ourTeamType[]>(outTeamData)
     const { setIsLoading, isLoading } = useLoading()
     useEffect(() => {
         getAboutUsInfo()
@@ -127,7 +129,7 @@ export default function AboutUs() {
                     <div className="flex flex-wrap gap-4  p-2 ">
 
                         {ourTeam.map((element: ourTeamType, i: number) => (
-                            <div className=" flex flex-col items-center text-center bg-background sm:w-[48%] shadow-2xl  lg:w-[23%] xl:w-[24%] h-96 rounded-2xl border hover:scale-105   duration-75" key={i}>
+                            <div className=" flex flex-col items-center text-center bg-background sm:w-[48%] shadow-lg  shadow-destructive lg:w-[23%] xl:w-[24%] h-96 rounded-2xl  hover:scale-105   duration-75" key={i}>
                                 {/* <img src={element.memberPic} className="  w-[0%] h-[40%] rounded-full" alt="Image" /> */}
                                 <Avatar
                                     className="size-36 "
@@ -137,10 +139,11 @@ export default function AboutUs() {
                                         src={element.picture}
                                     />
                                 </Avatar>
-                                <h1 className="text-xl p-1 border-b-2">{element.name}</h1>
+                                <h1 className="text-xl p-1 border-b-2 border-foreground">{element.name}</h1>
                                 <h1 className="text-2xl p-1  " >{element.role}</h1>
                                 <ScrollArea className="h-36 overflow-auto text-light">{element.discription}</ScrollArea>
                                 <ArrowBigUp className="left-10 text-red-600 relative p-3 size-5" />
+
                             </div>
                         ))
                         }

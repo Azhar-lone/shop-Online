@@ -31,70 +31,70 @@ const ProfilePage = () => {
     const [isSelf, setIsSelf] = useState<boolean>(false)
     const [isFollowing, setFollowing] = useState<boolean>(false)
     const { user, isLogin } = useUser()
-    const [thisUser, setThisUser] = useState<User>()
+    const [thisUser, setThisUser] = useState<User>(user)
     const { username } = useParams()
 
 
 
 
 
-    useEffect(() => {
-        // if it is current logged in user 
-        if (user.userName === username) {
-            setThisUser(user)
-            setIsSelf(true)
-            return
-        }
-        else {
-            getProfile()
-            if (!isLogin) {
-                return
-            }
-            let found = user.following.find((value) => (
-                thisUser!._id === value
-            ))
-            if (found) {
-                setFollowing(true)
-            }
+    // useEffect(() => {
+    //     // if it is current logged in user 
+    //     if (user.userName === username) {
+    //         setThisUser(user)
+    //         setIsSelf(true)
+    //         return
+    //     }
+    //     else {
+    //         getProfile()
+    //         if (!isLogin) {
+    //             return
+    //         }
+    //         let found = user.following.find((value) => (
+    //             thisUser!._id === value
+    //         ))
+    //         if (found) {
+    //             setFollowing(true)
+    //         }
 
-        }
+    //     }
 
-    }, [])
-
-
-    async function getProfile() {
-        try {
-            setIsLoading(true)
-            const baseUrl = import.meta.env.VITE_BaseUrl
-            interface JsonType {
-                msg: string,
-                user: User
-            }
-
-            let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/' + username)
-            let json: JsonType = await response.json()
-            setIsLoading(false)
-
-            if (response.ok) {
-                return setThisUser(json.user)
-            }
+    // }, [])
 
 
-            return toast({
-                title: " error",
-                description: json.msg,
-                variant: "destructive"
-            })
+    // async function getProfile() {
+    //     try {
+    //         setIsLoading(true)
+    //         const baseUrl = import.meta.env.VITE_BaseUrl
+    //         interface JsonType {
+    //             msg: string,
+    //             user: User
+    //         }
 
-        } catch (error: any) {
-            setIsLoading(false)
-            toast({
-                title: "error",
-                description: error.message,
-                variant: "destructive"
-            })
-        }
-    }
+    //         let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/' + username)
+    //         let json: JsonType = await response.json()
+    //         setIsLoading(false)
+
+    //         if (response.ok) {
+    //             return setThisUser(json.user)
+    //         }
+
+
+    //         return toast({
+    //             title: " error",
+    //             description: json.msg,
+    //             variant: "destructive"
+    //         })
+
+    //     } catch (error: any) {
+    //         setIsLoading(false)
+    //         toast({
+    //             title: "error",
+    //             description: error.message,
+    //             variant: "destructive"
+    //         })
+    //     }
+    // }
 
 
     return (
@@ -121,6 +121,8 @@ const ProfilePage = () => {
                             <h1>{thisUser!.products.length}</h1>
                         </div>
                     </div>
+                    <h1>{thisUser!.firstName +" "+ thisUser!.lastName}</h1>
+
                     <h1>{thisUser!.userName}</h1>
 
 

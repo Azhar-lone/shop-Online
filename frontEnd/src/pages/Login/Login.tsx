@@ -48,6 +48,9 @@ const Login = () => {
 
         try {
             setIsLoading(true)
+            localStorage.setItem("userName", "Azhar-lone")
+            return navigate("/")
+
             const baseUrl = import.meta.env.VITE_BaseUrl
             interface JsonType {
                 msg: string,

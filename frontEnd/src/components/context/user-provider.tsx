@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState } from 'react';
 
 // Types
 import User, { CartType } from "../../types/user"
-
+// Static Data
+import { userData } from '@/static/User';
 
 
 interface UserProviderState {
@@ -14,20 +15,7 @@ interface UserProviderState {
     setCart: (cart: CartType[]) => void
 }
 const initialState: UserProviderState = {
-    user: {
-        userName: '',
-        firstName: '',
-        lastName: '',
-        country: '',
-        profilePic: '',
-        timeStamp: '',
-        products: [],
-        cartItems: [],
-        followers: [],
-        following: [],
-        role: "admin",
-        _id: ""
-    },
+    user:userData,
     setUser: () => { }, // Implement setUser logic here
     isLogin: false,
     setIsLogin: () => { },

@@ -1,7 +1,7 @@
 import User from "@/types/user";
 
 
-export let user: User = {
+export let userData: User = {
     _id: "1",
     cartItems: ["1", "2", "3", "4", "5"],
     country: "pakistan",
@@ -13,4 +13,5 @@ export let user: User = {
     profilePic: "",
     role: "admin",
     userName: "azhar-lone"
+
 }

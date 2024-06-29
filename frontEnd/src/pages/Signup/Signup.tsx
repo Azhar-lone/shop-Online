@@ -52,7 +52,9 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
-  let [countries, setCountries] = useState<Array<ObjectString>>([{ value: "test" }])
+  let [countries, setCountries] = useState<Array<ObjectString>>([{ value: "Afganistan" },{value:"Pakistan"}
+    ,{value:"USA"},{value:"Arabia"}
+  ])
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),

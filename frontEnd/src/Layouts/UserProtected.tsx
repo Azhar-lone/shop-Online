@@ -10,7 +10,7 @@ interface ProtectedTypes {
 export default function UserProtected({ children }: ProtectedTypes) {
     let { isLogin } = useUser()
     const { toast } = useToast()
-    if (!isLogin) {
+    if (isLogin === false) {
         toast({
             title: "NOT Autherized",
             description: "invalid requested route",
@@ -28,7 +28,8 @@ export default function UserProtected({ children }: ProtectedTypes) {
 export function NoLoginProtected({ children }: ProtectedTypes) {
     let { isLogin } = useUser()
     const { toast } = useToast()
-    if (isLogin) {
+    if (isLogin === true) {
+        alert("don ")
         toast({
             title: "NOT Autherized",
             description: "invalid requested route",

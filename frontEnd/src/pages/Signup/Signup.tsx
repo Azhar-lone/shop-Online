@@ -40,7 +40,7 @@ import { Input } from "@/components/ui/input"
 import { ModeToggle } from '@/components/myUi/mode-toggle';
 
 // Types
-import { ObjectString } from '../../types/General';
+// import { ObjectString } from '../../types/General';
 
 
 
@@ -52,7 +52,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
-  let [countries, setCountries] = useState<Array<ObjectString>>([{ value: "test" }])
+  let [countries, setCountries] = useState<string[]>(["test"])
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -121,6 +121,7 @@ const Signup = () => {
         msg: string,
         userName: string
       }
+
       const baseUrl = import.meta.env.VITE_BaseUrl
       let response = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + '/users/signup', {
         method: 'POST',
@@ -135,6 +136,7 @@ const Signup = () => {
 
       if (response.ok) {
         localStorage.setItem("userName", json.userName)
+        alert(json.userName)//test
         navigate("/")
       }
       return toast({
@@ -174,7 +176,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="YourEmail@domain.com" {...field}  />
+                  <Input placeholder="YourEmail@domain.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -192,7 +194,7 @@ const Signup = () => {
               >
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="*********" {...field} 
+                  <Input placeholder="*********" {...field}
                     type={!showPassword ? "password" : "text"}
                   />
                 </FormControl>
@@ -221,7 +223,7 @@ const Signup = () => {
               >
                 <FormLabel>Confirm Password </FormLabel>
                 <FormControl>
-                  <Input placeholder="*********" {...field} 
+                  <Input placeholder="*********" {...field}
                     type={!showConfirmPassword ? "password" : "text"}
                   />
                 </FormControl>
@@ -246,7 +248,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>First Name </FormLabel>
                 <FormControl>
-                  <Input placeholder="john" {...field}  />
+                  <Input placeholder="john" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -261,7 +263,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Last Name </FormLabel>
                 <FormControl>
-                  <Input placeholder="doe" {...field}  />
+                  <Input placeholder="doe" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -276,7 +278,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>User Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="john-doe" {...field}  />
+                  <Input placeholder="john-doe" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -299,8 +301,8 @@ const Signup = () => {
                   </FormControl>
                   <SelectContent>
                     {countries.map((country, i) => (
-                      <SelectItem value={country.value} key={i}>
-                        {country.value}
+                      <SelectItem value={country} key={i}>
+                        {country}
                       </SelectItem>
                     ))}
                   </SelectContent>

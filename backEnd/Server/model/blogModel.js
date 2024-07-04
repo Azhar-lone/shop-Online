@@ -10,8 +10,16 @@ const schema = mongoose.Schema({
         min: [5, "slug must be atleast 5 charactors long"],
         max: [80, "slug must be maximax 80 charactors long"]
 
+    },
+    blog: {
+        type: String,
+        required: true
+    },
+    owner: {
+        type: mongoose.Types.ObjectId,
+        required: [true, "owner is required"],
+        ref: "userModel"
     }
-
 
 
 

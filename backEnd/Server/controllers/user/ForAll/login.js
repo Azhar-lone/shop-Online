@@ -29,7 +29,7 @@ export default async function login(req, res) {
         secure: true,
         sameOrigin: 'none'
       }).status(200).json({
-        user: req.user.userName
+        userName: req.user.userName
       }))
 
 

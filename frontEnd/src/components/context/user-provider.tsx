@@ -7,9 +7,9 @@ import User, { CartType } from "../../types/user"
 
 interface UserProviderState {
     user: User; // User can be null or a User object
-    setUser: (user: User) => void;
+    setUser: React.Dispatch<React.SetStateAction<User>>
     isLogin: boolean;
-    setIsLogin: (isLogin: boolean) => void
+    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>
     cart: CartType[],
     setCart: (cart: CartType[]) => void
 }
@@ -25,7 +25,7 @@ const initialState: UserProviderState = {
         cartItems: [],
         followers: [],
         following: [],
-        role: "admin",
+        role: "",
         _id: ""
     },
     setUser: () => { }, // Implement setUser logic here
@@ -38,7 +38,8 @@ const initialState: UserProviderState = {
 
 };
 
-const UserContext = createContext<UserProviderState>(initialState); // Initial value is null
+
+const UserContext = createContext<UserProviderState>(initialState); // Initial value 
 
 export default function useUser() {
     return useContext(UserContext);

@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt"
 import { validationResult } from "express-validator"
-import { redisClient } from '../../app.js'
 import userModel from '../model/userModel.js'
+
+import { redisClient } from './redisConnection.js'
+
+
 const { sign, verify } = jwt
 export function createToken(id) {
   let token = sign({ id }, process.env.UserSecretKey)
@@ -69,30 +72,6 @@ export async function isBuyer(req, res, next) {
   }
 }
 
-// export function isOwner(req, res, next) {
-
-//   try {
-
-//     const { id } = req.params
-
-//     if (req.currentUserId !== id) {
-//       return res.status(401).json({
-//         msg: "Not authorized",
-//         success: false,
-//       })
-//     }
-//     return next()
-
-//   } catch (error) {
-//     return res.status(500).json({
-//       msg: "internal server error",
-//       success: false,
-//       error: error
-//     })
-//   }
-
-
-// }
 
 export function UserAuth(req, res, next) {
   try {
@@ -194,7 +173,7 @@ export async function verifyPassword(req, res, next) {
 
     // Find user by email or phoneNumber and select password
     // dont select id
-    const user = await userModel.findOne({ email }).select('password userName')
+    let user = await userModel.findOne({ email }).select('password userName')
 
     // If user is not found, return a 401 Unauthorized response
     if (!user) {

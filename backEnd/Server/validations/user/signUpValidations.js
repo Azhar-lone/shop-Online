@@ -1,7 +1,11 @@
 import { body } from "express-validator"
+import dns from 'dns'
+import { promisify } from 'util'
+
+
 
 const allowedDomains = [
-    'test.com',
+    // 'test.com',
     'gmail.com',
     'hotmail.com',
     'outlook.com',
@@ -10,6 +14,19 @@ const allowedDomains = [
     'protonmail.com',
 ]
 
+const checkEmailDomain = (email) => {
+    const domain = email.split('@')[1];
+    return allowedDomains.includes(domain);
+}
+const lookupMxRecords = async (domain) => {
+    const resolveMx = promisify(dns.resolveMx);
+    try {
+        const addresses = await resolveMx(domain);
+        return addresses && addresses.length > 0;
+    } catch (err) {
+        return false;
+    }
+}
 
 
 const signUpValidation = [
@@ -17,7 +34,17 @@ const signUpValidation = [
     // email
     body("email")
         .exists().withMessage("email is required")
-        .isEmail().withMessage("not a valid email"),
+        .isEmail().withMessage("not a valid email")
+        .custom(async (value) => {
+            if (!checkEmailDomain(value)) {
+                throw new Error("not an allowed domain");
+            }
+            const domain = value.split('@')[1];
+            if (!(await lookupMxRecords(domain))) {
+                throw new Error("email domain does not have valid MX records");
+            }
+            return true;
+        }),
     // .isWhitelisted(allowedDomains).withMessage("not allowed domain"),
     // password
     // phoneNumber

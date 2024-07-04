@@ -1,10 +1,23 @@
-import { redisClient } from "../../../../app.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import userModel from "../../../model/userModel.js";
+
+
+import { redisClient } from "../../../middlewares/redisConnection.js";
 
 export default async function sendOTP(req, res) {
     try {
         const { email } = req.body;
+
+        // Check if user is Valid or not 
+        let user = await userModel.findOne({ email: email }).select("_id")
+        // if user is not found then return
+        if (!user) {
+            return res.status(401).json({
+                msg: "invalid email Address ",
+            })
+        }
+
 
         // Generate a secure random 6-digit OTP
         const otp = crypto.randomInt(100000, 999999).toString(); // Ensures 6 digits
@@ -24,9 +37,9 @@ export default async function sendOTP(req, res) {
             service: 'gmail',
             auth: {
                 user: process.env.EMAIL_Address,
-                pass: process.env.EMAIL_Pass,
+                pass: process.env.EMAIL_Password,
             },
-           
+
         });
 
         // Compose email content with clear instructions

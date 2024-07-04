@@ -38,13 +38,14 @@ export default async function signUp(req, res) {
 
     // check if country feild exist on db 
     // if yes it is validCountry else not valid
-    let countries = await generalModel.find().select("countries -_id")
-    let validCountry = countries[0].countries.find((value) => {
+    let countries = await generalModel.findOne().select("countries -_id")
+    let validCountry = countries.countries.find((value) => {
       if (country === value) {
         return true
       }
     })
     if (!validCountry) {
+      console.log(country)
       return res.status(401).json({
         msg: "invalid requesd"
       })
@@ -84,7 +85,7 @@ export default async function signUp(req, res) {
     }
     const savedUser = await user.save()
 
-  
+
     const token = createToken(user._id.toString())
     return (
       res.cookie('login', token, {
@@ -92,7 +93,7 @@ export default async function signUp(req, res) {
         secure: true,
         sameOrigin: 'none'
       }).status(200).json({
-        user: savedUser.userName,
+        userName: savedUser.userName,
       }))
   } catch (error) {
     console.log(error)

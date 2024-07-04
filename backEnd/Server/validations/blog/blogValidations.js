@@ -1,16 +1,21 @@
-import { param,body } from "express-validator"
+import { param, body } from "express-validator"
 
 let validateSlug = [
     param("slug")
         .isSlug().withMessage("not a valid slug")
-        .escape().trim()
+        .escape().trim(),
+
 
 ]
 
-let validateCreateBlog=[
+let validateCreateBlog = [
     body("slug")
-    .isSlug().withMessage("not a valid slug")
-    .escape().trim()
+        .exists().withMessage("slug is required")
+        .isSlug().withMessage("not a valid slug")
+        .escape().trim(),
+    body("blog")
+        .exists().withMessage("blog is required")
+        .isString().withMessage("blog should be string")
 ]
 
 

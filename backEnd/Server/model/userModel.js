@@ -73,7 +73,9 @@ const schema = mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: path.resolve('Backend/Files/static/profile.png')
+        default: path.normalize(
+            path.resolve('Backend/Files/static/profile.png')
+        )
 
     }
     ,

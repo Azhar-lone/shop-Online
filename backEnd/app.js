@@ -4,9 +4,7 @@ import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 import "dotenv/config"
 import cors from "cors"
-import redis from "redis"
 import rateLimit from "express-rate-limit"
-// import { Server } from "socket.io"
 
 
 
@@ -26,16 +24,9 @@ const port = process.env.PORT || 4000
 //listening
 app.listen(port, () => console.log(`listening on http://localhost:${port}`))
 
-
-cloudinary.config({
-  cloud_name: process.env.Cloudinary_Cloud_Name, 
-  api_key: process.env.Cloudinary_API_KEY, 
-  api_secret: process.env.Cloudinary_API_SECRET
-})
-
 // connecting to mongo database
 
-mongoose.connect(process.env.DB_URL).then(() => {
+mongoose.connect(process.env.MongoDB_URL).then(() => {
   console.log("connected to db")
 }).catch((err) => {
   console.log("error while connecting to db :", err.message)
@@ -77,23 +68,9 @@ app.use((req, res) => {
 
 })
 
-// Socket setup
-// const socket = new Server({
-//   cors: {
-//     credentials: true,
-//     origin: process.env.FrontEndUrl
-//   }
-// })
-
-// socket.on("connection", (socket) => {
-//   console.log(socket)
-// })
 
 
 
 
 
-// connnecting to redis db
-export let redisClient = redis.createClient({})
-redisClient.on("error", err => console.log("redis Error :", err))
-await redisClient.connect().then(() => console.log("connected to redis db"))
+

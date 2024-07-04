@@ -5,14 +5,15 @@ import blogModel from "../../../model/blogModel.js"
 export default async function createBlog(req, res) {
     try {
 
+        const { slug, blog } = req.body
 
-        let blog = await blogModel.create({
-
+        let blogSaved = await blogModel.create({
+            slug, blog
         })
 
         if (blog) {
             return res.status(201).json({
-                blog: blog
+                blog: blogSaved, owner: req.currentUserId
             })
         }
 

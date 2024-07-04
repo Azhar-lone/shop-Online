@@ -41,14 +41,15 @@ const ProfileButton: React.FC = () => {
                 method: 'POST',
                 credentials: 'include'
             })
-            let json = await response.json()
             if (response.ok) {
                 localStorage.clear()
                 location.reload()
+                return
             }
+            let json = await response.json()
 
             toast({
-                title: "error",
+                title: " server error",
                 description: json.msg,
                 variant: "destructive"
             })
@@ -58,7 +59,7 @@ const ProfileButton: React.FC = () => {
 
         } catch (error: any) {
             toast({
-                title: "error",
+                title: "client error",
                 description: error.message,
                 variant: "destructive"
             })

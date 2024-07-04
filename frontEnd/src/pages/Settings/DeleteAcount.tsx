@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { ColorRing } from "react-loader-spinner";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
+import { useState } from "react";
 
 // Icons
 
@@ -31,7 +32,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+
+import { Input } from "@/components/ui/input";
 
 // context
 
@@ -153,14 +155,14 @@ const DeleteAcount = () => {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <input placeholder={"enter Your email"} {...field} className="p-8" />
+                                            <Input placeholder={"enter Your email"} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                             <div
-                                className="right-5 bottom-3 absolute"
+                                className="right-5 bottom-1 absolute"
                             >
                                 {!isLoading ?
                                     <Button
@@ -189,7 +191,7 @@ const DeleteAcount = () => {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <input placeholder={"enter Password to confirm"} {...field} className="p-8" />
+                                            <Input placeholder={"enter Password to confirm"} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -200,6 +202,7 @@ const DeleteAcount = () => {
                                 name={"otp"}
                                 render={({ field }) => (
                                     <FormItem>
+                                        <FormLabel>OTP</FormLabel>
                                         <InputOTP maxLength={6} {...field}>
                                             <InputOTPGroup>
                                                 <InputOTPSlot index={0} />

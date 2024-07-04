@@ -4,13 +4,11 @@ export default async function getCountries(req, res) {
     try {
 
         let countries = await generalModel
-            .find()
+            .findOne()
             .select("countries -_id")
-
         if (countries) {
             return res.status(200).json({
-                msg: "countries fetched successfully",
-                countries: countries
+                countries: countries.countries
             })
         }
         return res.status(404).json({

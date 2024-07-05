@@ -3,7 +3,7 @@ import productModel from "../../../model/productModel.js";
 const getProductsCount = async (req, res) => {
   try {
     let count = await productModel.estimatedDocumentCount();
-    if (!count) {
+    if (count === null || count === undefined) {
       return res.status(404).json({
         msg: "failed to count documents",
       });

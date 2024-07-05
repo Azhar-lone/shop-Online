@@ -3,7 +3,7 @@
 export interface productCardType {
     name: String
     price: number,
-    imgs: string[],
+    images: string[],
     _id: String,
     likes: number
 }
@@ -13,7 +13,8 @@ export default interface productType extends productCardType {
     discription: String;
     category: String;
     owner: {
-        name: String,
+        firstName: String,
+        lastName: String,
         userName: String,
         profilePic: string
     };

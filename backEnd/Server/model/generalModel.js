@@ -7,7 +7,6 @@ import mongoose from "mongoose"
 
 let schema = mongoose.Schema({
 
-    aboutUs: String,
     ourTeam: [{
         picture: String,
         name: String,

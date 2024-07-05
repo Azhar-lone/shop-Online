@@ -1,39 +1,130 @@
-import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react';
-
+import React, {
+  createContext,
+  useContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
 
 // Types
-import { productCardType } from '@/types/product';
+import { productCardType } from "@/types/product";
 
-interface productProviderState {
-    totalProducts: number
-    setTotalProducts: (totalProducts: number) => void
-    products: productCardType[]; // User can be null or a User object
-    setProducts: Dispatch<SetStateAction<productCardType[]>>;
+interface ProductsContextType {
+  products: productCardType[];
+  setProducts: Dispatch<SetStateAction<productCardType[]>>;
+  totalPages: number;
+  setTotalPages: Dispatch<SetStateAction<number>>;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
 }
-const initialState: productProviderState = {
-    totalProducts: 0,
-    products: [],
-    setProducts: () => ([]), // Implement setUser logic here
-    setTotalProducts: () => { }
+
+const initialState: ProductsContextType = {
+  products: [],
+  setProducts: () => [],
+  totalPages: 0,
+  setTotalPages: () => {},
+  currentPage: 1,
+  setCurrentPage: () => {},
 };
 
-const ProductsContext = createContext<productProviderState>(initialState);
+const ProductsContext = createContext<ProductsContextType>(initialState);
 
 export default function useProducts() {
-    return useContext(ProductsContext);
+  return useContext(ProductsContext);
 }
 
-interface Props {
-    children: React.ReactNode;
+interface Provderprops {
+  children: React.ReactNode;
 }
 
+export const ProductsProvider: React.FC<Provderprops> = ({ children }) => {
+  const [products, setProducts] = useState<productCardType[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageCache, setPageCache] = useState<{
+    [key: number]: productCardType[];
+  }>({});
 
-export function ProductsProvider({ children }: Props) {
-    const [products, setProducts] = useState<productCardType[]>([]);
-    const [totalProducts, setTotalProducts] = useState<number>(0)
-    return (
-        <ProductsContext.Provider value={{ products, setProducts, totalProducts, setTotalProducts }}>
-            {children}
-        </ProductsContext.Provider>
-    );
-}
+  useEffect(() => {
+    fetchProducts(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchTotalProducts();
+  }, []);
+
+  const fetchTotalProducts = async () => {
+    try {
+      // what function is going to return
+      interface JsonType {
+        count: number;
+        msg: string;
+      }
+
+      const baseUrl = import.meta.env.VITE_BaseUrl;
+      let response = await fetch(
+        `${import.meta.env.VITE_BackendUrl}${baseUrl}/products/count`
+      );
+      let data: JsonType = await response.json();
+      if (response.ok) {
+        setTotalPages(data.count / 20);
+      } else {
+        throw new Error(data.msg);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  const fetchProducts = async (page: number) => {
+    try {
+      if (pageCache[page]) {
+        // If data is already cached, use cached data
+        setProducts(pageCache[page]);
+      } else {
+        // Fetch data from the server
+        // what function is going to return
+        interface JsonType {
+          products: productCardType[];
+          msg: string;
+        }
+
+        const baseUrl = import.meta.env.VITE_BaseUrl;
+        let response = await fetch(
+          `${
+            import.meta.env.VITE_BackendUrl
+          }${baseUrl}/products/?page=${page}&limit=20`
+        );
+        let data: JsonType = await response.json();
+        if (response.ok) {
+          const fetchedProducts = data.products;
+          setProducts(fetchedProducts);
+          setPageCache((prevCache) => ({
+            ...prevCache,
+            [page]: fetchedProducts,
+          }));
+        } else {
+          throw new Error(data.msg);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  return (
+    <ProductsContext.Provider
+      value={{
+        products,
+        setProducts,
+        setTotalPages,
+        totalPages,
+        currentPage,
+        setCurrentPage,
+      }}
+    >
+      {children}
+    </ProductsContext.Provider>
+  );
+};

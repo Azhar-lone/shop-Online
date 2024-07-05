@@ -1,26 +1,24 @@
 // importing Models
-import generalModel from "../../../model/generalModel.js"
+import generalModel from "../../../model/generalModel.js";
 
 export default async function getCategories(req, res) {
-    try {
-
-        let categories = await generalModel.find().select("productsCategories -_id")
-        if (categories) {
-            return res.status(200).json({
-                msg: "categories fetched successfully",
-                categories: categories
-            })
-        }
-        return res.status(404).json({
-            msg: "error while fetching categories"
-        })
-
-
-
+  try {
+    let categories = await generalModel
+      .findOne()
+      .select("productsCategories -_id");
+    console.log(categories.productsCategories);
+    if (categories) {
+      return res.status(200).json({
+        msg: "categories fetched successfully",
+        categories: categories.productsCategories,
+      });
     }
-    catch (error) {
-        return res.status(500).json({
-            msg: "internal server erorr"
-        })
-    }
+    return res.status(404).json({
+      msg: "error while fetching categories",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: "internal server erorr",
+    });
+  }
 }

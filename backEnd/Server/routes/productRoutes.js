@@ -43,6 +43,7 @@ const productRouter = express.Router({ strict: true });
 
 //Routes that everyOne can access
 productRouter
+  .get("/count", getProductsCount)
   .get("/:id", validateId, validationError, getProduct)
   .get("/", paginationValidation, validationError, getAllProducts)
   .get(
@@ -51,11 +52,10 @@ productRouter
     paginationValidation,
     validationError,
     getUsersProducts
-  )
-  .get("/count", getProductsCount);
+  );
 
 //Routes Only authenticated user can access
-// productRouter.use(UserAuth)
+productRouter.use(UserAuth)
 
 productRouter
   .patch("like/:id", validateId, validationError, likeProduct)

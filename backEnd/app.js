@@ -44,8 +44,8 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 
-// rate limiter for 
-app.use(rateLimit())
+// rate limiter 
+// app.use(rateLimit())
 
 //Routers
 const baseUrl = process.env.BaseUrl

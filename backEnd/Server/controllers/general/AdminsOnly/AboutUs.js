@@ -5,7 +5,7 @@ import generalModel from "../../../model/generalModel.js"
 
 export async function updateAboutus(req, res) {
     try {
-        const { aboutUs, ourTeam, newOurTeam, oldIndex } = req.body
+        const { ourTeam, newOurTeam, oldIndex } = req.body
 
 
         let done = await generalModel.find().select("aboutUs ourTeam")

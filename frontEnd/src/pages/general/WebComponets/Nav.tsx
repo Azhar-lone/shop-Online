@@ -55,7 +55,7 @@ const navItems: navItemsType[] = [
 ];
 
 const Nav: React.FC = () => {
-  let { isLogin, setIsLogin, setUser, cart, user } = useUser();
+  let { isLogin, setIsLogin, setUser, cart } = useUser();
   let navigate = useNavigate();
   const { toast } = useToast();
   const { setIsLoading } = useLoading();
@@ -86,7 +86,6 @@ const Nav: React.FC = () => {
 
       if (response.ok) {
         setUser(json.user);
-        console.log(user); //teste
         return;
       }
 

@@ -1,6 +1,6 @@
 // importing dependencies
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -23,8 +23,9 @@ import User from "@/types/user";
 const ProfilePage = () => {
   // all states here
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { isLoading, setIsLoading } = useLoading();
-  const [isSelf, setIsSelf] = useState<boolean>(false);
+  const [isSelf, setIsSelf] = useState<boolean>(true);
   const [isFollowing, setFollowing] = useState<boolean>(false);
   const { user, isLogin } = useUser();
   const [thisUser, setThisUser] = useState<User>(user);
@@ -36,10 +37,10 @@ const ProfilePage = () => {
 
     if (user.userName === username) {
       setThisUser(user);
-      setIsSelf(true);
       setIsLoading(false);
       return;
     } else {
+      setIsSelf(false);
       getProfile();
       if (!isLogin) {
         return;
@@ -90,23 +91,25 @@ const ProfilePage = () => {
       {!isLoading ? (
         <div className=" w-[99%]  p-4 mx-auto flex flex-col gap-6 justify-center">
           <>
-            <div className="w-[100%]  flex items-center gap-3  sm:gap-10">
+            <div className="w-[100%]  flex items-center md:flex-row flex-col gap-3  sm:gap-10">
               <img
                 src={thisUser.profilePic}
                 alt="Profile image"
-                className="w-[20%] h-[20%] rounded-full "
+                className="md:w-64 md:h-60 w-36 h-32 rounded-full "
               />
-              <div className="flex items-center flex-col md:text-xl">
-                <h1>Followers</h1>
-                <h1>{thisUser.followers.length}</h1>
-              </div>
-              <div className="flex items-center flex-col md:text-xl">
-                <h1>Following</h1>
-                <h1>{thisUser.following.length}</h1>
-              </div>
-              <div className="flex items-center flex-col md:text-xl">
-                <h1>products</h1>
-                <h1>{thisUser.products.length}</h1>
+              <div className="flex gap-5">
+                <div className="flex items-center flex-col md:text-xl">
+                  <h1>Followers</h1>
+                  <h1>{thisUser.followers.length}</h1>
+                </div>
+                <div className="flex items-center flex-col md:text-xl">
+                  <h1>Following</h1>
+                  <h1>{thisUser.following.length}</h1>
+                </div>
+                <div className="flex items-center flex-col md:text-xl">
+                  <h1>products</h1>
+                  <h1>{thisUser.products.length}</h1>
+                </div>
               </div>
             </div>
             <h1 className="text-foreground/80">{thisUser.userName}</h1>
@@ -117,11 +120,17 @@ const ProfilePage = () => {
             {isSelf ? (
               <div className="flex gap-5">
                 {thisUser.role === "seller" && (
-                  <Button className="flex gap-1">
+                  <Button
+                    className="flex gap-1"
+                    onClick={() => navigate("/products/upload")}
+                  >
                     Add Product <Plus />
                   </Button>
                 )}
-                <Button className="flex gap-1">
+                <Button
+                  className="flex gap-1"
+                  onClick={() => navigate("/settings")}
+                >
                   Edit Profile <Edit2 />
                 </Button>
               </div>

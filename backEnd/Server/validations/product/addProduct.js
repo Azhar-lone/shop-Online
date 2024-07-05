@@ -9,14 +9,13 @@ const addProductValidation = [
     body("name")
         .exists().withMessage("product Name is required")
         .isString().withMessage("not a valid Name")
-        .isLength({ max: 20 }).withMessage("not a valid length")
+        .isLength({ max: 30 }).withMessage("not a valid length")
         .escape(),
     // .isWhitelisted(allowedDomains).withMessage("not allowed domain"),
     // old password
     body("discription")
         .exists().withMessage("product discription is required")
         .isString().withMessage("not A valid discription")
-        .isLength({ max: 450, min: 50 }).withMessage("not a valid length")
         .escape(),
     // new passowrd
     body("category")

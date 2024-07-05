@@ -75,7 +75,7 @@ const ProfileButton: React.FC = () => {
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar>
-                    <AvatarFallback>{user.userName.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{user.userName.charAt(0).toUpperCase()}</AvatarFallback>
                     <AvatarImage
                         src={user.profilePic}
                     />

@@ -84,7 +84,7 @@ const MyPagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <Pagination>
+    <Pagination className="my-8">
       <PaginationContent>
         <PaginationPrevious
           onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}

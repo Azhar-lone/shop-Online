@@ -6,7 +6,6 @@ export default async function getCategories(req, res) {
     let categories = await generalModel
       .findOne()
       .select("productsCategories -_id");
-    console.log(categories.productsCategories);
     if (categories) {
       return res.status(200).json({
         msg: "categories fetched successfully",

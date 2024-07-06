@@ -41,7 +41,7 @@
   @apply p-2 text-lg;
 }
 .blog a {
-  @apply text-blue-600 hover:text-blue-400 hover:cursor-pointer;
+  @apply text-blue-600  hover:text-blue-400 hover:cursor-pointer;
 }
 
 .blog .highlight {

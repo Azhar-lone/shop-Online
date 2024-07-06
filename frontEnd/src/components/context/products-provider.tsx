@@ -10,6 +10,8 @@ import React, {
 // Types
 import { productCardType } from "@/types/product";
 
+import useLoading from "./loading-provider";
+
 interface ProductsContextType {
   products: productCardType[];
   setProducts: Dispatch<SetStateAction<productCardType[]>>;
@@ -39,6 +41,7 @@ interface Provderprops {
 }
 
 export const ProductsProvider: React.FC<Provderprops> = ({ children }) => {
+  let { setIsLoading } = useLoading();
   const [products, setProducts] = useState<productCardType[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -79,6 +82,8 @@ export const ProductsProvider: React.FC<Provderprops> = ({ children }) => {
 
   const fetchProducts = async (page: number) => {
     try {
+      setIsLoading(true);
+
       if (pageCache[page]) {
         // If data is already cached, use cached data
         setProducts(pageCache[page]);
@@ -97,6 +102,7 @@ export const ProductsProvider: React.FC<Provderprops> = ({ children }) => {
           }${baseUrl}/products/?page=${page}&limit=20`
         );
         let data: JsonType = await response.json();
+        setIsLoading(false);
         if (response.ok) {
           const fetchedProducts = data.products;
           setProducts(fetchedProducts);
@@ -105,6 +111,7 @@ export const ProductsProvider: React.FC<Provderprops> = ({ children }) => {
             [page]: fetchedProducts,
           }));
         } else {
+          setIsLoading(false);
           throw new Error(data.msg);
         }
       }

@@ -116,6 +116,9 @@ const ProfilePage = () => {
             <h1 className="text-2xl">
               {thisUser.firstName + " " + thisUser.lastName}
             </h1>
+            <h1 className="text-2xl text-foreground/50">
+              Joined {user.createdAt.toLocaleString()}
+            </h1>
 
             {isSelf ? (
               <div className="flex gap-5">

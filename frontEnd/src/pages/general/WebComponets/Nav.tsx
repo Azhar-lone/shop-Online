@@ -25,7 +25,6 @@ import FullSearch from "./FullSearch";
 import useUser from "@/components/context/user-provider";
 import useLoading from "@/components/context/loading-provider";
 import { useToast } from "@/components/ui/use-toast";
-import useProducts from "@/components/context/products-provider";
 
 // types
 import User from "@/types/user";
@@ -59,14 +58,12 @@ const Nav: React.FC = () => {
   let navigate = useNavigate();
   const { toast } = useToast();
   const { setIsLoading } = useLoading();
-  const { setTotalProducts } = useProducts();
   useEffect(() => {
     let userName = localStorage.getItem("userName");
 
     if (userName && typeof userName === "string") {
       getProfile(userName);
       setIsLogin(true);
-      getTotalProducts();
     }
   }, []);
   async function getProfile(username: string) {
@@ -98,42 +95,6 @@ const Nav: React.FC = () => {
       setIsLoading(false);
       toast({
         title: "error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function getTotalProducts() {
-    try {
-      // what function is going to return
-      interface JsonType {
-        totalProducts: number;
-        msg: string;
-      }
-
-      const baseUrl = import.meta.env.VITE_BaseUrl;
-      let res = await fetch(
-        import.meta.env.VITE_BackendUrl + baseUrl + "/products/count"
-      );
-      let json: JsonType = await res.json();
-
-      if (res.ok) {
-        setTotalProducts(json.totalProducts);
-        return;
-      } else {
-        toast({
-          title: "server Error",
-          description: json.msg,
-          variant: "destructive",
-        });
-      }
-
-      setIsLoading(false);
-    } catch (error: any) {
-      setIsLoading(false);
-      toast({
-        title: "Error",
         description: error.message,
         variant: "destructive",
       });

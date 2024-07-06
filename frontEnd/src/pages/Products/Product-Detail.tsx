@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 // components
 import { useToast } from "@/components/ui/use-toast";
@@ -8,21 +8,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // custom Components
 import Container from "@/components/myUi/Container";
 //Types
-import productType, { productCardType } from "@/types/product";
+import productType from "@/types/product";
 import reviewType from "@/types/Review";
 
 // context
-import useProducts from "@/components/context/products-provider";
+
 // pages
-import Reviews from "@/pages/Reviews/Reviews";
+// import Reviews from "@/pages/Reviews/Reviews";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
-  const [reviews, setReviews] = useState<reviewType[]>([]);
-  const { setProducts } = useProducts();
+  // const [reviews, setReviews] = useState<reviewType[]>([]);
   const [product, setProduct] = useState<productType>({
     name: "",
     price: 0,
@@ -38,11 +38,14 @@ const ProductDetail = () => {
       userName: "",
       profilePic: "",
     },
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
-  const [bannerImg, setBannerImg] = useState<string>(product.images[0]);
+  const [bannerImg, setBannerImg] = useState<string>(location.state.images[0]);
 
   useEffect(() => {
     getProduct();
+    // getReviewsOfProduct();
   }, []);
 
   async function getProduct() {
@@ -60,9 +63,10 @@ const ProductDetail = () => {
       setIsLoading(false);
 
       if (response.ok) {
-        setProduct(json.product);
-        alert();
-        console.log(json.product);
+        setProduct({
+          ...location.state,
+          ...json.product,
+        });
         return;
       }
 
@@ -80,39 +84,72 @@ const ProductDetail = () => {
       setIsLoading(false);
     }
   }
-  async function getRelatedProducts() {
-    try {
-      setIsLoading(true);
-      const baseUrl = import.meta.env.VITE_BaseUrl;
-      interface JsonType {
-        msg: string;
-        products: productCardType;
-      }
-      let response = await fetch(
-        import.meta.env.VITE_BackendUrl + baseUrl + "/products/related/" + id
-      );
-      let json: JsonType = await response.json();
-      setIsLoading(false);
+  // async function getRelatedProducts() {
+  //   try {
+  //     setIsLoading(true);
+  //     const baseUrl = import.meta.env.VITE_BaseUrl;
+  //     interface JsonType {
+  //       msg: string;
+  //       products: productCardType;
+  //     }
+  //     let response = await fetch(
+  //       import.meta.env.VITE_BackendUrl + baseUrl + "/products/related/" + id
+  //     );
+  //     let json: JsonType = await response.json();
+  //     setIsLoading(false);
 
-      if (response.ok) {
-        setProducts((prev) => [...prev, json.products]);
-        return;
-      }
+  //     if (response.ok) {
+  //       return;
+  //     }
 
-      return toast({
-        title: "error",
-        description: json.msg,
-        variant: "destructive",
-      });
-    } catch (error: any) {
-      toast({
-        title: "error",
-        description: error.message,
-        variant: "destructive",
-      });
-      setIsLoading(false);
-    }
-  }
+  //     return toast({
+  //       title: "error",
+  //       description: json.msg,
+  //       variant: "destructive",
+  //     });
+  //   } catch (error: any) {
+  //     toast({
+  //       title: "error",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //     setIsLoading(false);
+  //   }
+  // }
+
+  // async function getReviewsOfProduct() {
+  //   try {
+  //     setIsLoading(true);
+  //     const baseUrl = import.meta.env.VITE_BaseUrl;
+  //     interface JsonType {
+  //       msg: string;
+  //       reviews: reviewType[];
+  //     }
+  //     let response = await fetch(
+  //       import.meta.env.VITE_BackendUrl + baseUrl + "/products/related/" + id
+  //     );
+  //     let json: JsonType = await response.json();
+  //     setIsLoading(false);
+
+  //     if (response.ok) {
+  //       setReviews(json.reviews);
+  //       return;
+  //     }
+
+  //     return toast({
+  //       title: "error",
+  //       description: json.msg,
+  //       variant: "destructive",
+  //     });
+  //   } catch (error: any) {
+  //     toast({
+  //       title: "error",
+  //       description: error.message,
+  //       variant: "destructive",
+  //     });
+  //     setIsLoading(false);
+  //   }
+  // }
 
   return (
     <Container>
@@ -143,7 +180,10 @@ const ProductDetail = () => {
               <h1 className="text-3xl">{product.name}</h1>
               <h1 className="text-2xl font-light">{product.category}</h1>
               <h1 className="text-2xl  w-fit">
-                In Stock : {product.inStock.toString()} Items
+                {/* In Stock : {product.inStock.toString()} Items */}
+              </h1>
+              <h1 className="text-2xl ">
+                addedOn : {product.createdAt.toLocaleString()}
               </h1>
             </div>
           </div>
@@ -151,14 +191,18 @@ const ProductDetail = () => {
           <div className="flex md:gap-8 gap-3 items-center">
             <Avatar className="size-16">
               <AvatarFallback>
-                {product.owner.firstName.charAt(0)}
+                {product.owner.firstName.length > 0 &&
+                  product.owner.firstName.charAt(0)}
               </AvatarFallback>
               <AvatarImage
                 src={product.owner.profilePic}
                 onClick={() => navigate("/" + product.owner.userName)}
               />
             </Avatar>
-            <h1>{product.owner.firstName + " " + product.owner.lastName}</h1>
+            <div className="flex flex-col">
+              <h1>{product.owner.firstName + " " + product.owner.lastName}</h1>
+              <h1 className="text-foreground/50">{product.owner.userName}</h1>
+            </div>
           </div>
           {/* product discription */}
           <div>
@@ -167,7 +211,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Reviews */}
-          <Reviews reviews={reviews} />
+          {/* <Reviews reviews={reviews} /> */}
         </div>
       ) : (
         <div>

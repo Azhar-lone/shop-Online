@@ -57,11 +57,9 @@ const UploadProduct = () => {
       setIsLoading(true);
 
       const baseUrl = import.meta.env.VITE_BaseUrl;
-      alert(1)
       let res = await fetch(
         import.meta.env.VITE_BackendUrl + baseUrl + "/general/categories"
       );
-     console.log(  import.meta.env.VITE_BackendUrl + baseUrl + "/general/categories")
 
       let json = await res.json();
       setIsLoading(false);
@@ -245,20 +243,22 @@ const UploadProduct = () => {
           {/* images */}
           <ImagePicker></ImagePicker>
 
-          {<Button className="w-full">Upload</Button>}
-
-          {!isLoading ? (
-            <Button
-              type="submit"
-              // onClick={() => setStep(true)}
-              className="w-[100%]"
-            >
-              Upload
-            </Button>
-          ) : (
-            <Button>
-              Uploading ... <ColorRing height={"200%"} />
-            </Button>
+          {categories.length > 0 && (
+            <>
+              {!isLoading ? (
+                <Button
+                  type="submit"
+                  // onClick={() => setStep(true)}
+                  className="w-[100%]"
+                >
+                  Upload
+                </Button>
+              ) : (
+                <Button>
+                  Uploading ... <ColorRing height={"200%"} />
+                </Button>
+              )}
+            </>
           )}
         </form>
       </Form>

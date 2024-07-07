@@ -64,6 +64,8 @@ const Nav: React.FC = () => {
     if (userName && typeof userName === "string") {
       getProfile(userName);
       setIsLogin(true);
+    } else {
+      setIsLogin(false);
     }
   }, []);
   async function getProfile(username: string) {

@@ -37,7 +37,7 @@ export async function isSeller(req, res, next) {
     const seller = await userModel
       .findById(req.currentUserId)
       .select("role -_id");
-    if (seller && seller.role === "seller") {
+    if ((seller && seller.role === "seller") || seller.role === "admin") {
       return next();
     } else
       return res.status(401).json({

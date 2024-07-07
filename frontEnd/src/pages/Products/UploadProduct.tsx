@@ -49,6 +49,8 @@ const UploadProduct = () => {
   });
 
   useEffect(() => {
+    document.title = "UploadProduct|Shop-Online";
+
     getCategories();
   }, []);
 

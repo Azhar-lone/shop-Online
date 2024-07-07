@@ -26,7 +26,9 @@ app.listen(port, () => console.log(`listening on http://localhost:${port}`))
 
 // connecting to mongo database
 
-mongoose.connect(process.env.MongoDB_URL).then(() => {
+mongoose.connect(process.env.MongoDB_URL,{
+  appName:"shope-Online_DB"
+}).then(() => {
   console.log("connected to db")
 }).catch((err) => {
   console.log("error while connecting to db :", err.message)

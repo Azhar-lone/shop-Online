@@ -1,5 +1,5 @@
 // dependencies
-
+import { useEffect } from "react";
 //Icons
 import { ListFilter } from "lucide-react";
 
@@ -34,6 +34,10 @@ import { productCardType } from "@/types/product";
 const AllProducts = () => {
   const { isLoading } = useLoading();
   const { products, currentPage, totalPages, setTotalPages } = useProducts();
+
+  useEffect(() => {
+    document.title = "Products|Shop-Online";
+  }, []);
 
   return (
     <Container>

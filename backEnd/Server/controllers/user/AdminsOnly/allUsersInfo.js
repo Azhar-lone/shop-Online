@@ -1,26 +1,33 @@
-import userModel from "../../../model/userModel.js"
+import userModel from "../../../model/userModel.js";
+
 export default async function allUsersInfo(req, res) {
   try {
-    const limit = req.query.limit || 20
-    const pageNumber = req.query.page || 1
+    // Get limit and pageNumber from query parameters and provide default values
+    const limit = req.query.limit || 20;
+    const pageNumber = req.query.page || 1;
 
-    let users = await userModel.find()
+    // Fetch users with pagination
+    let users = await userModel
+      .find()
       .limit(limit)
-      .skip((pageNumber - 1) * limit)
+      .skip((pageNumber - 1) * limit);
 
-
-    if (!users) {
+    // Check if users were found
+    if (!users.length) {
       return res.status(404).json({
-        msg: 'no Users found',
-      })
+        msg: "No users found",
+      });
     }
+
+    // Send response with user data
     res.status(200).json({
       users: users,
-    })
+    });
   } catch (error) {
+    // Handle errors and send an error response
     res.status(500).json({
-      msg: 'internal server error',
-      error: error.message
-    })
+      msg: "Internal server error",
+      error: error.message,
+    });
   }
 }

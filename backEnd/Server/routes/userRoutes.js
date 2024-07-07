@@ -51,9 +51,9 @@ const userRouter = express.Router({ strict: true });
 
 // Public routes=For All
 userRouter
-  .post("/signup", signUpValidation, validationError, signUp)
-  .post("/login", loginValidation, validationError, verifyPassword, login)
-  .get("/:username", userInfoValidation, validationError, userInfo)
+  .post("/signup", signUpValidation, validationError, signUp) //done
+  .post("/login", loginValidation, validationError, verifyPassword, login) //done
+  .get("/:username", userInfoValidation, validationError, userInfo) //done
   .post("/send-otp", emailValidation, validationError, sendOTP) //TODO
   .post(
     "/forgot-password",
@@ -68,12 +68,11 @@ userRouter
 // Autherized Users Only
 userRouter
   .use(UserAuth)
-  .post("/logout", logout)
-  //TODO:90% done 10% remain
+  .post("/logout", logout) //done
   .post(
     "/upload-profile", //uploadProfile_multer.single("image"),
     uploadProfile
-  )
+  ) //Todo
 
   // Owners Only
   .delete(
@@ -84,9 +83,9 @@ userRouter
     verifyPassword,
     verifyOTP,
     deleteUser
-  )
-  .put("/update", updateUserValidation, validationError, updateUser)
-  .get("/cart", paginationValidation, validationError, getUsersCart)
+  ) //done
+  .put("/update", updateUserValidation, validationError, updateUser) //done
+  .get("/cart", paginationValidation, validationError, getUsersCart) //TODO
   .put(
     "/change-password",
     changePasswordValidation,
@@ -97,7 +96,7 @@ userRouter
 // Routes accessible only to admins
 userRouter
   .use(AdminAuthorized)
-  .delete("admin/multiple", deleteMultipleUsers)
-  .get("admin/all", paginationValidation, validationError, allUsersInfo);
+  .delete("admin/multiple", deleteMultipleUsers) //done
+  .get("admin/all", paginationValidation, validationError, allUsersInfo); //done
 
 export default userRouter;

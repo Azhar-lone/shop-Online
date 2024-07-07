@@ -33,7 +33,6 @@ const schema = mongoose.Schema({
     likedBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "userModel",
-        unique: [true, "alreadyLiked"],
     }],
 
     price: {

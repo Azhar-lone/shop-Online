@@ -43,7 +43,7 @@ const productRouter = express.Router({ strict: true });
 
 //Routes that everyOne can access
 productRouter
-  .get("/count", getProductsCount)
+  .get("/count", getProductsCount) //done
   .get("/:id", validateId, validationError, getProduct)
   .get("/", paginationValidation, validationError, getAllProducts)
   .get(
@@ -55,17 +55,17 @@ productRouter
   );
 
 //Routes Only authenticated user can access
-productRouter.use(UserAuth)
+productRouter.use(UserAuth);
 
 productRouter
-  .patch("like/:id", validateId, validationError, likeProduct)
-  .patch("buy/:id", isBuyer, buyProduct)
+  .patch("/like/:id", validateId, validationError, likeProduct)
+  .patch("/buy/:id", isBuyer, buyProduct)
 
   .post("/", isSeller, addProductValidation, validationError, addProduct);
 
 //Routes only owners can access
 productRouter
-  .route(":id", validateId, validationError)
+  .route("/:id", validateId, validationError)
   .delete(deleteProduct)
   .put(updateProductValidation, validationError, updateProduct); //small problem here
 

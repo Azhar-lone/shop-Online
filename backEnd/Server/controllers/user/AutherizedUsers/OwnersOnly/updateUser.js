@@ -1,77 +1,75 @@
-import userModel from '../../../../model/userModel.js'
-import bcrypt from "bcrypt"
-import fs from "fs"
-import { resolve } from 'path'
-//problems in this function
+import userModel from '../../../../model/userModel.js';
+import bcrypt from 'bcrypt';
+
+/**
+ * Updates user information.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 export default async function updateUser(req, res) {
   try {
+    const { email, oldPassword, newPassword, firstName, lastName, userName } = req.body;
 
-    let { email, oldPassword, newPassoword, firstName, lastName, userName } = req.body
-
-    // Find user by id and select password
-    // dont select id
-    const user = await userModel.findById(req.currentUserId).select("password -_id")
+    // Find user by ID and select the password for verification
+    const user = await userModel.findById(req.currentUserId).select('password');
+    
     if (!user) {
       return res.status(401).json({
-        msg: "failed to verify old password try again"
-      })
+        msg: 'Failed to verify old password. Please try again.'
+      });
     }
-    let isMatched = await bcrypt.compare(oldPassword, user.password)
+
+    // Verify the old password
+    const isMatched = await bcrypt.compare(oldPassword, user.password);
     if (!isMatched) {
       return res.status(401).json({
-        msg: "wrong old Password",
-      })
+        msg: 'Incorrect old password.'
+      });
     }
-    const found = await userModel.findOne({ "$or": [{ email }, { userName }] }).select("-_id userName")
+
+    // Check if the new email or username already exists in the database
+    const found = await userModel.findOne({ 
+      $or: [{ email }, { userName }], 
+      _id: { $ne: req.currentUserId } // Exclude current user's ID from the check
+    }).select('userName email');
 
     if (found) {
       return res.status(401).json({
-        msg: "userName or email or both already in use"
-      })
+        msg: 'Username or email is already in use.'
+      });
     }
 
+    // Hash the new password if it is being updated
+    const hashedPassword = newPassword ? await bcrypt.hash(newPassword, 5) : user.password;
 
-    let updatedUser = await userModel.findByIdAndUpdate(req.currentUserId,
+    // Update user information
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.currentUserId,
       {
         email,
-        password: newPassoword,
+        password: hashedPassword,
         firstName,
         lastName,
         userName
       },
-      { new: true })//return updated document
-    // rename users folder before responsing
-    fs.rename(resolve("/Files/", found.userName), resolve("/Files/", updatedUser.userName), (err) => {
-      if (err) {
-        console.log(err)
-      }
-    })
+      { new: true, select: '-password' } // Return updated document without password field
+    );
 
     if (updatedUser) {
       return res.status(200).json({
-        updatedUser: updatedUser
-      })
+        updatedUser
+      });
     }
-    return res.status(401).json({
-      msg: "failed to update user info"
-    })
 
+    return res.status(401).json({
+      msg: 'Failed to update user information.'
+    });
 
   } catch (error) {
-    console.log(error)
+    console.error(error);
     return res.status(500).json({
-      msg: "internal server error"
-    })
-
+      msg: 'Internal server error.'
+    });
   }
-
-
-
-
-
-
-
-
-
-
 }
+

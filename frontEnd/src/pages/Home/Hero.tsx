@@ -2,58 +2,37 @@
 import { useEffect, useState } from "react";
 import parse from "html-react-parser";
 // components
-import { toast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 // context
 import useLoading from "@/components/context/loading-provider";
-
+import useBlogs from "@/components/context/blogs-provider";
+import { blogType } from "@/types/General";
 const Hero = () => {
-  const [homeBlog, setHomeBlog] = useState<string>(``);
-  const { setIsLoading, isLoading } = useLoading();
+  // set Title
 
+  const [homeBlog, setHomeBlog] = useState<blogType>({
+    blog: "",
+    createdAt: new Date(Date.now()),
+    updatedAt: new Date(Date.now()),
+    owner: {
+      firstName: "",
+      lastName: "",
+      profilePic: "",
+      userName: "",
+    },
+    slug: "home-blog",
+  });
+  const { isLoading } = useLoading();
+  const { getBlog } = useBlogs();
   useEffect(() => {
-    getHomeBlog();
+    document.title = "Home|Shop-online";
+    getBlog("home-blog", setHomeBlog);
   }, []);
-
-  async function getHomeBlog() {
-    try {
-      // what function is going to return
-      setIsLoading(false);
-      interface blogJsonType {
-        msg: string;
-        blog: {
-          blog: string;
-        };
-      }
-      const baseUrl = import.meta.env.VITE_BaseUrl;
-      let res = await fetch(
-        import.meta.env.VITE_BackendUrl + baseUrl + "/blogs/home-blog"
-      );
-      let toJson: blogJsonType = await res.json();
-      if (res.ok) {
-        setHomeBlog(toJson.blog.blog);
-        return;
-      }
-      setIsLoading(false);
-      return toast({
-        title: "error",
-        description: toJson.msg,
-        variant: "destructive",
-      });
-    } catch (error: any) {
-      setIsLoading(false);
-      return toast({
-        title: "error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  }
 
   return (
     <div>
-      {homeBlog !== `` && !isLoading ? (
-        <div className="blog">{parse(homeBlog!)}</div>
+      {homeBlog.blog !== `` && !isLoading ? (
+        <div className="blog">{parse(homeBlog.blog!)}</div>
       ) : (
         // Loading skeleton
         <div className="flex flex-col gap-5">

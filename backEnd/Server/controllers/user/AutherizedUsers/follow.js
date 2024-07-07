@@ -1,43 +1,50 @@
-import userModel from "../../../model/userModel.js"
+import userModel from "../../../model/userModel.js";
+
 export default async function follow(req, res) {
   try {
-    let  recipientId  = req.body.id
-    let recipient = await userModel.findById(recipientId)
-    let sender = await userModel.findById(req.currentUserId)
-    if (!sender || !recipient) {
+    const recipientId = req.body.id;
+    const currentUserId = req.currentUserId;
+
+    const [recipient, sender] = await Promise.all([
+      userModel.findById(recipientId).select("followers"),
+      userModel.findById(currentUserId).select("following"),
+    ]);
+
+    if (!recipient || !sender) {
       return res.status(404).json({
-        msg: 'sender or reciever not found',
-      })
-    }
-    if (!recipient.followers.includes(currentUserId)) {
-      recipient.followers.push(req.currentUserId)
-      sender.following.push(recipientId)
-      let afterSender = await sender.save()
-      let afterRecipient = await recipient.save()
-      return res.status(200).json({
-        msg: 'followed successfully',
-        recipient: afterRecipient,
-        sender: afterSender
-      })
+        msg: "Sender or recipient not found",
+      });
     }
 
-    //use remove functions instead of pop .
+    const isFollowing = recipient.followers.some((follower) =>
+      follower.equals(currentUserId)
+    );
 
-    let reqIndex = recipient.followers.indexOf(req.currentUserId)
-    recipient.followers.splice(reqIndex, 1)
-    let sendIndex = sender.following.indexOf(recipientId)
-    sender.following.splice(sendIndex, 1)
-    let afterSender = await sender.save()
-    let afterRecipient = await recipient.save()
+    const recipientUpdate = isFollowing
+      ? { $pull: { followers: currentUserId } }
+      : { $addToSet: { followers: currentUserId } };
+    const senderUpdate = isFollowing
+      ? { $pull: { following: recipientId } }
+      : { $addToSet: { following: recipientId } };
+
+    const [updatedRecipient, updatedSender] = await Promise.all([
+      userModel
+        .findByIdAndUpdate(recipientId, recipientUpdate, { new: true })
+        .select("followers -_id"),
+      userModel
+        .findByIdAndUpdate(currentUserId, senderUpdate, { new: true })
+        .select("following -_id"),
+    ]);
+
     return res.status(200).json({
-      msg: 'unfollowed successfully',
-      recipient: afterRecipient,
-      sender: afterSender
-    })
+      msg: isFollowing ? "Unfollowed successfully" : "Followed successfully",
+      recipient: updatedRecipient,
+      sender: updatedSender,
+    });
   } catch (error) {
-    res.status(500).json({
-      msg: 'internal server error',
-      error: error.message
-    })
+    return res.status(500).json({
+      msg: "Internal server error",
+      error: error.message,
+    });
   }
 }

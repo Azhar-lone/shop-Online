@@ -32,6 +32,8 @@ const ProfilePage = () => {
   const { username } = useParams();
 
   useEffect(() => {
+    document.title = "Profile|Shop-Online";
+
     // if it is current logged in user
     setIsLoading(true);
 

@@ -1,105 +1,108 @@
-import { createToken } from '../../../middlewares/auth.js'
-import bcrypt from 'bcrypt'
+import { createToken } from '../../../middlewares/auth.js';
+import bcrypt from 'bcrypt';
+import userModel from '../../../model/userModel.js';
+import generalModel from '../../../model/generalModel.js';
 
-import userModel from '../../../model/userModel.js'
-import generalModel from '../../../model/generalModel.js'
 /**
- * Handles the login process.
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
+ * Suggests a related username if the original one is taken.
+ * @param {string} originalUsername - The original username.
+ * @returns {Promise<string>} - A unique related username.
  */
-
-
-// Function to suggest a related username if the original one is taken
-
 async function suggestRelatedUsername(originalUsername) {
-
-
   while (true) {
-    let number = Math.ceil(Math.random() * 100)
-    const relatedUsername = `${originalUsername}-${number}`
-    const existingUser = await userModel.findOne({ userName: relatedUsername })
+    // Generate a random number to append to the original username
+    let number = Math.ceil(Math.random() * 100);
+    const relatedUsername = `${originalUsername}-${number}`;
+    
+    // Check if the generated username already exists in the database
+    const existingUser = await userModel.findOne({ userName: relatedUsername }).select('_id');
 
+    // If the username does not exist, return it
     if (!existingUser) {
-      return relatedUsername // Return the suggested username when it's unique
+      return relatedUsername; 
     }
   }
 }
 
-
-
-
-//STEP1
+/**
+ * Handles the sign-up process.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 export default async function signUp(req, res) {
   try {
+    // Destructure the required fields from the request body
+    const { email, firstName, lastName, phoneNumber, password, country, userName } = req.body;
 
-    const { email, firstName, lastName, phoneNumber, password, country, userName } = req.body
+    // Check if the provided country exists in the database
+    const validCountry = await generalModel.exists({ countries: country });
 
-
-    // check if country feild exist on db 
-    // if yes it is validCountry else not valid
-    let countries = await generalModel.findOne().select("countries -_id")
-    let validCountry = countries.countries.find((value) => {
-      if (country === value) {
-        return true
-      }
-    })
+    // If the country is not valid, return an error response
     if (!validCountry) {
-      console.log(country)
+      console.log(country);
       return res.status(401).json({
-        msg: "invalid requesd"
-      })
+        msg: "Invalid request: Country not recognized"
+      });
     }
 
-
-    const taken = await userModel.findOne({ "$or": [{ email }, { userName }] }).select("userName -_id")
-    if (taken) {
-      if (userName === taken.userName) {
-        const suggestedUserName = await suggestRelatedUsername(userName)
+    // Check if the email or username is already taken
+    const existingUser = await userModel.findOne({ "$or": [{ email }, { userName }] }).select("userName email -_id");
+    
+    // If either the email or username is taken, handle the response accordingly
+    if (existingUser) {
+      if (existingUser.userName === userName) {
+        // If the username is taken, suggest a related username
+        const suggestedUserName = await suggestRelatedUsername(userName);
         return res.status(403).json({
-          msg: 'userName already taken',
-          suggestedUserName: suggestedUserName,
-        })
+          msg: 'Username already taken',
+          suggestedUserName,
+        });
       }
       return res.status(403).json({
-        msg: 'email already registered',
-      })
+        msg: 'Email already registered',
+      });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 5)
-    let user = await new userModel({
+    // Hash the password with a salt factor of 5
+    const hashedPassword = await bcrypt.hash(password, 5);
+
+    // Create a new user instance with the provided and hashed details
+    const user = new userModel({
       email,
       phoneNumber,
-      password: hashedPassword.toString(),
+      password: hashedPassword,
       userName,
       country,
       lastName,
       firstName
+    });
 
-    })
+    // Save the new user to the database
+    const savedUser = await user.save();
 
-    if (!user) {
-      return res.status(404).json({
-        msg: 'error creating user',
-      })
+    // If saving the user fails, return an error response
+    if (!savedUser) {
+      return res.status(500).json({
+        msg: 'Error creating user',
+      });
     }
-    const savedUser = await user.save()
 
+    // Create a JWT token for the newly created user
+    const token = createToken(savedUser._id.toString());
 
-    const token = createToken(user._id.toString())
-    return (
-      res.cookie('login', token, {
-        httpOnly: true,
-        secure: true,
-        sameOrigin: 'none'
-      }).status(200).json({
-        userName: savedUser.userName,
-      }))
+    // Send the token as a cookie in the response
+    return res.cookie('login', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
+    }).status(200).json({
+      userName: savedUser.userName,
+    });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
+    // Log the error and return a generic error response
+    console.error(error);
+    return res.status(500).json({
       msg: 'Internal server error',
-
-    })
+    });
   }
 }

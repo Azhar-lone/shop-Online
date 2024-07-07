@@ -33,12 +33,11 @@ interface ourTeamType {
 }
 
 export default function AboutUs() {
-  document.title = "About us";
-
   let [aboutusBlog, setAboutusBlog] = useState<string>(``);
   let [ourTeam, setOurTeam] = useState<ourTeamType[]>([]);
   const { setIsLoading, isLoading } = useLoading();
   useEffect(() => {
+    document.title = "AboutUs|Shop-Online";
     getAboutUsInfo();
   }, []);
 

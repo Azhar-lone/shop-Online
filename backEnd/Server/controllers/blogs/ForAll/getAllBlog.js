@@ -7,7 +7,7 @@ export default async function getAllBlogs(req, res) {
 
     let blogs = await blogModel
       .find()
-      .sort({ addedOn: -1, updatedOn: -1 }) // Sort by addedOn descending, then by updatedOn descending
+      .sort({ createdAt: -1, updatedAt: -1 }) // Sort by addedOn descending, then by updatedOn descending
       .skip((page - 1) * limit)
       .limit(limit);
 

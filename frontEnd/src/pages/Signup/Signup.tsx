@@ -63,6 +63,7 @@ const Signup = () => {
   });
 
   useEffect(() => {
+    document.title = "SignUp|Shop-Online";
     getContries();
   }, []);
 

@@ -52,7 +52,7 @@ export const BlogProvider: React.FC<Provderprops> = ({ children }) => {
       }
       const baseUrl = import.meta.env.VITE_BaseUrl;
       let res = await fetch(
-        import.meta.env.VITE_BackendUrl + baseUrl + "/blogs/home-blog"
+        import.meta.env.VITE_BackendUrl + baseUrl + "/blogs/" + slug
       );
       let data: blogJsonType = await res.json();
       if (res.ok) {

@@ -9,9 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 // context
 import useLoading from "@/components/context/loading-provider";
+import useBlogs from "@/components/context/blogs-provider";
 // custom Compoents
 import Container from "@/components/myUi/Container";
 import { toast } from "@/components/ui/use-toast";
+// Type
+import { blogType } from "@/types/General";
 
 // importing aboutUs css
 
@@ -33,12 +36,26 @@ interface ourTeamType {
 }
 
 export default function AboutUs() {
-  let [aboutusBlog, setAboutusBlog] = useState<string>(``);
+  let [aboutusBlog, setAboutusBlog] = useState<blogType>({
+    blog: "",
+    createdAt: new Date(Date.now()),
+    updatedAt: new Date(Date.now()),
+    owner: {
+      firstName: "",
+      lastName: "",
+      profilePic: "",
+      userName: "",
+    },
+    slug: "aboutus-blog",
+  });
   let [ourTeam, setOurTeam] = useState<ourTeamType[]>([]);
   const { setIsLoading, isLoading } = useLoading();
+  const { getBlog } = useBlogs();
+
   useEffect(() => {
     document.title = "AboutUs|Shop-Online";
     getAboutUsInfo();
+    getBlog("aboutus-blog", setAboutusBlog);
   }, []);
 
   async function getAboutUsInfo() {
@@ -49,24 +66,13 @@ export default function AboutUs() {
         msg: string;
         ourTeam: ourTeamType[];
       }
-      interface blogJsonType {
-        msg: string;
-        blog: {
-          blog: string;
-        };
-      }
 
       const baseUrl = import.meta.env.VITE_BaseUrl;
       let res = await fetch(
         import.meta.env.VITE_BackendUrl + baseUrl + "/general/aboutus"
       );
-      let blogRes = await fetch(
-        import.meta.env.VITE_BackendUrl + baseUrl + "/blogs/aboutus-blog"
-      );
 
       let toJson: OurteamJsonType = await res.json();
-      let blogJson: blogJsonType = await blogRes.json();
-
       setIsLoading(false);
       if (res.ok) {
         setOurTeam(toJson.ourTeam);
@@ -77,17 +83,6 @@ export default function AboutUs() {
           variant: "destructive",
         });
       }
-      if (blogRes.ok) {
-        setAboutusBlog(blogJson.blog.blog);
-        return;
-      }
-
-      setIsLoading(false);
-      return toast({
-        title: "error while fetching blog",
-        description: blogJson.msg,
-        variant: "destructive",
-      });
     } catch (error: any) {
       setIsLoading(false);
       return toast({
@@ -100,9 +95,9 @@ export default function AboutUs() {
 
   return (
     <Container className="flex flex-col p-5 gap-10">
-      {aboutusBlog !== "" && !isLoading ? (
+      {aboutusBlog.blog !== "" && !isLoading ? (
         <div className="blog">
-          {parse(aboutusBlog, {
+          {parse(aboutusBlog.blog, {
             htmlparser2: {
               lowerCaseAttributeNames: true,
               withEndIndices: true,

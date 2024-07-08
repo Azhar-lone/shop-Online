@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import path from "path";
 
 const schema = mongoose.Schema(
   {
@@ -77,7 +76,6 @@ const schema = mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: path.normalize(path.resolve("Backend/Files/static/profile.png")),
     },
     role: {
       type: String,

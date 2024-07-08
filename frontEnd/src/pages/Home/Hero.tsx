@@ -32,7 +32,7 @@ const Hero = () => {
   return (
     <div>
       {homeBlog.blog !== `` && !isLoading ? (
-        <div className="blog">{parse(homeBlog.blog!)}</div>
+        <div className="blog">{parse(homeBlog.blog)}</div>
       ) : (
         // Loading skeleton
         <div className="flex flex-col gap-5">

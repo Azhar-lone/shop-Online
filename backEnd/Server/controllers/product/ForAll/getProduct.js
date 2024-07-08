@@ -6,10 +6,16 @@ import productModel from "../../../model/productModel.js";
 export default async function getProduct(req, res) {
   try {
     const id = req.params.id;
+    // request full product
+    const full = req.query.full;
 
     const product = await productModel
       .findById(id)
-      .select(" discription owner -_id")
+      .select(
+        full === "full"
+          ? " name discription owner category price images inStock likedBy"
+          : " discription owner -_id"
+      )
       .populate({
         path: "owner",
         select: "firstName lastName profilePic userName -_id",

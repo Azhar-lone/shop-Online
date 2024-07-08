@@ -11,7 +11,7 @@ export default async function getAllProduct(req, res) {
     const products = await productModel
       .find()
       .select("-updatedAt")
-      .sort({ timestamp: -1 })
+      .sort({ createdAt: -1, updatedAt: -1 })
       .skip((pageNumber - 1) * limit)
       .limit(limit);
 

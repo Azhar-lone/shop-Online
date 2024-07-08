@@ -27,7 +27,7 @@ export default async function sendOTP(req, res) {
 
     if (!done) {
       return res.status(401).json({
-        msg: "Error while saving OTP. Please try again.",
+        msg: "Error while seding OTP. Please try again.",
       });
     }
 
@@ -42,7 +42,7 @@ export default async function sendOTP(req, res) {
 
     // Compose email content with clear instructions
     const mailOptions = {
-      from: '"Shop-Online" <your_email@example.com>', // Replace with your app name and email
+      from: `"Shop-Online" ${process.env.EMAIL_Address}`, // Replace with your app name and email
       to: email,
       subject: "Your One-Time Password (OTP)",
       text: `Your OTP for verification is: ${otp}

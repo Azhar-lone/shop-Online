@@ -19,32 +19,41 @@ import { validateSlug, validateCreateBlog } from "./blog/blogValidations.js";
 
 // general validations
 import paginationValidation from "./general/paginationValidation.js";
-import { categoriesValidation, aboutusValidation, countriesValidation } from "./general/GeneralValidations.js";
+import {
+  categoriesValidation,
+  aboutusValidation,
+  countriesValidation,
+} from "./general/GeneralValidations.js";
 
+// admin validate
+import { validateChangeRole } from "./user/adminValidations.js";
 
 export {
-    //  user validations
-    signUpValidation,
-    loginValidation,
-    updateUserValidation,
-    userInfoValidation,
-    emailValidation,
-    OTPValidations,
-    changePasswordValidation,
+  //  user validations
+  signUpValidation,
+  loginValidation,
+  updateUserValidation,
+  userInfoValidation,
+  emailValidation,
+  OTPValidations,
+  changePasswordValidation,
 
-    // database Validations
-    validateId,
+  // database Validations
+  validateId,
 
-    // product validations
-    updateProductValidation,
-    addProductValidation,
+  // product validations
+  updateProductValidation,
+  addProductValidation,
 
-    // blog Validations
-    validateSlug,
-    validateCreateBlog,
-    // general validations
-    paginationValidation,
-    categoriesValidation,
-    aboutusValidation,
-    countriesValidation,
-}
+  // blog Validations
+  validateSlug,
+  validateCreateBlog,
+  // general validations
+  paginationValidation,
+  categoriesValidation,
+  aboutusValidation,
+  countriesValidation,
+
+  // Admin
+  validateChangeRole,
+};

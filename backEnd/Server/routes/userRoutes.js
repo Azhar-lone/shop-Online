@@ -7,11 +7,12 @@ import {
   signUp,
   login,
   userInfo,
-  sendOTP,
+  // sendOTP,
   // Autherized Users Only
   logout,
   // follow,
-  uploadProfile,
+  // uploadProfile,
+  // generateURL,
   // uploadProfile_multer,
   // Owners Only
   deleteUser,
@@ -21,6 +22,7 @@ import {
   // Admins Only
   allUsersInfo,
   deleteMultipleUsers,
+  changeUserRole,
 } from "../controllers/user/userExports.js";
 
 //Importing Middlewares
@@ -43,7 +45,11 @@ import {
   changePasswordValidation,
   // general validations
   paginationValidation,
+  validateId,
   // database Validations
+
+  // admins
+  validateChangeRole,
 } from "../validations/exportValidations.js";
 
 // Initializing Router in Strict Mode
@@ -54,7 +60,7 @@ userRouter
   .post("/signup", signUpValidation, validationError, signUp) //done
   .post("/login", loginValidation, validationError, verifyPassword, login) //done
   .get("/:username", userInfoValidation, validationError, userInfo) //done
-  .post("/send-otp", emailValidation, validationError, sendOTP) //TODO
+  // .post("/send-otp", emailValidation, validationError, sendOTP) //done
   .post(
     "/forgot-password",
     OTPValidations,
@@ -69,10 +75,11 @@ userRouter
 userRouter
   .use(UserAuth)
   .post("/logout", logout) //done
-  .post(
-    "/upload-profile", //uploadProfile_multer.single("image"),
-    uploadProfile
-  ) //Todo
+  // .get("general-upload_profile-url", generateURL)
+  // .post(
+  //   "/upload-profile", //uploadProfile_multer.single("image"),
+  //   uploadProfile
+  // ) //Todo
 
   // Owners Only
   .delete(
@@ -97,6 +104,12 @@ userRouter
 userRouter
   .use(AdminAuthorized)
   .delete("admin/multiple", deleteMultipleUsers) //done
-  .get("admin/all", paginationValidation, validationError, allUsersInfo); //done
-
+  .get("admin/all", paginationValidation, validationError, allUsersInfo) //done
+  .put(
+    "/admin/role",
+    validateId,
+    validateChangeRole,
+    validationError,
+    changeUserRole
+  );
 export default userRouter;

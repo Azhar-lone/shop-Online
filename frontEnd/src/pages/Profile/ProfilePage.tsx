@@ -37,7 +37,10 @@ const ProfilePage = () => {
     // if it is current logged in user
     setIsLoading(true);
 
-    if (user.userName === username) {
+    if (
+      localStorage.getItem("userName") === username ||
+      user.userName === username
+    ) {
       setThisUser(user);
       setIsLoading(false);
       return;
@@ -53,7 +56,7 @@ const ProfilePage = () => {
       }
       setIsLoading(false);
     }
-  }, []);
+  }, [thisUser, isSelf, isFollowing]);
 
   async function getProfile() {
     try {

@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Container from "@/components/myUi/Container";
 //Types
 import productType from "@/types/product";
-import reviewType from "@/types/Review";
+// import reviewType from "@/types/Review";
 
 // context
 
@@ -189,7 +189,10 @@ const ProductDetail = () => {
           </div>
           {/* Owner Info */}
           <div className="flex md:gap-8 gap-3 items-center">
-            <Avatar className="size-16">
+            <Avatar
+              className="size-16 hover:cursor-pointer"
+              onClick={() => navigate(`/${product.owner.userName}`)}
+            >
               <AvatarFallback>
                 {product.owner.firstName.length > 0 &&
                   product.owner.firstName.charAt(0)}

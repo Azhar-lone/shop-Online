@@ -3,8 +3,8 @@ backEnd/node_modules
 # backEnd/Files
 
 # FrontEnd
-frontEnd/node_modules
-frontEnd/src/static
+/frontEnd/node_modules
+/frontEnd/src/static
 
 
 

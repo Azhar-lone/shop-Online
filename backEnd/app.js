@@ -34,8 +34,6 @@ mongoose
     console.log("error while connecting to db :", err.message);
   });
 
-
-
 //middlewares for parsing json,cookies and body data
 
 app.use(express.json());

@@ -1,12 +1,13 @@
 export default interface reviewType {
-  owner: {
-    firstName: String;
-    lastName: String;
-    userName: String;
+  reviewBy: {
+    firstName: string;
+    lastName: string;
+    userName: string;
     profilePic: string;
+    _id: string;
   };
   createdAt: Date;
   updatedAt: Date;
   review: string;
-  rating?: number;
+  rating: number;
 }

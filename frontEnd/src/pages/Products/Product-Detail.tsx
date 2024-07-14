@@ -1,28 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 // components
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // custom Components
 import Container from "@/components/myUi/Container";
+import User from "@/components/myUi/User";
 //Types
 import productType from "@/types/product";
-// import reviewType from "@/types/Review";
 
 // context
 
 // pages
-// import Reviews from "@/pages/Reviews/Reviews";
+import Reviews from "@/pages/Reviews/Reviews";
+import AddReview from "../Reviews/AddReview";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
-  // const [reviews, setReviews] = useState<reviewType[]>([]);
   const [product, setProduct] = useState<productType>({
     name: "",
     price: 0,
@@ -37,6 +35,7 @@ const ProductDetail = () => {
       lastName: "",
       userName: "",
       profilePic: "",
+      _id: "",
     },
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -45,7 +44,6 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getProduct();
-    // getReviewsOfProduct();
   }, []);
 
   async function getProduct() {
@@ -117,40 +115,6 @@ const ProductDetail = () => {
   //   }
   // }
 
-  // async function getReviewsOfProduct() {
-  //   try {
-  //     setIsLoading(true);
-  //     const baseUrl = import.meta.env.VITE_BaseUrl;
-  //     interface JsonType {
-  //       msg: string;
-  //       reviews: reviewType[];
-  //     }
-  //     let response = await fetch(
-  //       import.meta.env.VITE_BackendUrl + baseUrl + "/products/related/" + id
-  //     );
-  //     let json: JsonType = await response.json();
-  //     setIsLoading(false);
-
-  //     if (response.ok) {
-  //       setReviews(json.reviews);
-  //       return;
-  //     }
-
-  //     return toast({
-  //       title: "error",
-  //       description: json.msg,
-  //       variant: "destructive",
-  //     });
-  //   } catch (error: any) {
-  //     toast({
-  //       title: "error",
-  //       description: error.message,
-  //       variant: "destructive",
-  //     });
-  //     setIsLoading(false);
-  //   }
-  // }
-
   return (
     <Container>
       {product.name !== "" && !isLoading ? (
@@ -187,26 +151,9 @@ const ProductDetail = () => {
               </h1>
             </div>
           </div>
-          {/* Owner Info */}
-          <div className="flex md:gap-8 gap-3 items-center">
-            <Avatar
-              className="size-16 hover:cursor-pointer"
-              onClick={() => navigate(`/${product.owner.userName}`)}
-            >
-              <AvatarFallback>
-                {product.owner.firstName.length > 0 &&
-                  product.owner.firstName.charAt(0)}
-              </AvatarFallback>
-              <AvatarImage
-                src={product.owner.profilePic}
-                onClick={() => navigate("/" + product.owner.userName)}
-              />
-            </Avatar>
-            <div className="flex flex-col">
-              <h1>{product.owner.firstName + " " + product.owner.lastName}</h1>
-              <h1 className="text-foreground/50">{product.owner.userName}</h1>
-            </div>
-          </div>
+
+          <User user={product.owner} />
+
           {/* product discription */}
           <div>
             <h3 className="text-3xl">Description</h3>
@@ -214,7 +161,8 @@ const ProductDetail = () => {
           </div>
 
           {/* Reviews */}
-          {/* <Reviews reviews={reviews} /> */}
+          <AddReview productId={product._id} />
+          <Reviews productId={product._id} />
         </div>
       ) : (
         <div>
@@ -261,34 +209,6 @@ const ProductDetail = () => {
             <Skeleton className=" h-48 w-[24%] " />
             <Skeleton className=" h-48 w-[24%] " />
             <Skeleton className=" h-48 w-[24%] " />
-          </div>
-          {/* product reviews */}
-          <div className="flex flex-wrap gap-4  p-2 ">
-            {Array(6)
-              .fill(0)
-              .map((_, i: number) => (
-                <div className="flex flex-col gap-2 w-[100%]" key={i}>
-                  {/* userInfo */}
-                  <div className="flex justify-between md:w-[20%]">
-                    {/* Profile picture */}
-                    <Skeleton className="h-16 w-16 rounded-full" />
-                    {/* starts or rating */}
-                    <div className="flex gap-1 items-center">
-                      <Skeleton className=" h-6 w-6 rounded-full " />
-                      <Skeleton className=" h-6 w-6 rounded-full" />
-                      <Skeleton className=" h-6 w-6 rounded-full" />
-                      <Skeleton className=" h-6 w-6 rounded-full" />
-                      <Skeleton className=" h-6 w-6 rounded-full" />
-                    </div>
-                  </div>
-                  {/* userName */}
-                  <Skeleton className=" h-10 w-[40%] " />
-                  {/* review line 1 */}
-                  <Skeleton className=" h-16 w-[90%] " />
-                  {/* review line 2 */}
-                  <Skeleton className=" h-28 w-[95%]" />
-                </div>
-              ))}
           </div>
         </div>
       )}

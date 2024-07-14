@@ -2,15 +2,18 @@ export default interface User {
   userName: string;
   firstName: string;
   lastName: string;
-  country: string;
   profilePic: string;
+  _id: string;
+}
+
+export interface UserFull extends User {
+  createdAt: Date;
   products: string[];
   cartItems: string[];
   followers: string[];
   following: string[];
   role: string;
-  _id: string;
-  createdAt: Date;
+  country: string;
 }
 
 export interface CartType {

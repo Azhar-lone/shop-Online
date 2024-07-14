@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Types
-import User, { CartType } from "../../types/user";
+import  { CartType,UserFull } from "../../types/user";
 
 interface UserProviderState {
-  user: User; // User can be null or a User object
-  setUser: React.Dispatch<React.SetStateAction<User>>;
+  user: UserFull; // User can be null or a User object
+  setUser: React.Dispatch<React.SetStateAction<UserFull>>;
   isLogin: boolean;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   cart: CartType[];
@@ -44,7 +44,7 @@ interface UserProps {
 }
 
 export function UserProvider({ children }: UserProps) {
-  const [user, setUser] = useState<User>(initialState.user);
+  const [user, setUser] = useState<UserFull>(initialState.user);
   const [isLogin, setIsLogin] = useState<boolean>(initialState.isLogin);
   const [cart, setCart] = useState<CartType[]>(initialState.cart);
   return (

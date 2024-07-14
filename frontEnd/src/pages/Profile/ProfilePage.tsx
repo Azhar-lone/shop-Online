@@ -6,19 +6,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 // icons
-import { Edit2, Plus, MessageCircle } from "lucide-react";
+import { Edit2, Plus, MessageCircle, CameraIcon } from "lucide-react";
 
 // custom components
 import Container from "@/components/myUi/Container";
 import ProductsList from "../Products/ProductsList";
-
+import Product from "@/components/myUi/Product";
+import Hint from "@/components/myUi/Hint";
 // importing context
 import useLoading from "@/components/context/loading-provider";
 import useUser from "@/components/context/user-provider";
 
 // types
-import User from "@/types/user";
+import { UserFull } from "@/types/user";
+import { productCardType } from "@/types/product";
 
 const ProfilePage = () => {
   // all states here
@@ -26,9 +30,10 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { isLoading, setIsLoading } = useLoading();
   const [isSelf, setIsSelf] = useState<boolean>(true);
+  const [products, setProducts] = useState<productCardType[]>([]);
   const [isFollowing, setFollowing] = useState<boolean>(false);
   const { user, isLogin } = useUser();
-  const [thisUser, setThisUser] = useState<User>(user);
+  const [thisUser, setThisUser] = useState<UserFull>(user);
   const { username } = useParams();
 
   useEffect(() => {
@@ -41,6 +46,7 @@ const ProfilePage = () => {
       localStorage.getItem("userName") === username ||
       user.userName === username
     ) {
+      alert();
       setThisUser(user);
       setIsLoading(false);
       return;
@@ -53,17 +59,19 @@ const ProfilePage = () => {
       let found = user.following.find((value) => thisUser!._id === value);
       if (found) {
         setFollowing(true);
+        return;
       }
+      setFollowing(false);
       setIsLoading(false);
     }
-  }, [thisUser, isSelf, isFollowing]);
+  }, [username]);
 
   async function getProfile() {
     try {
       const baseUrl = import.meta.env.VITE_BaseUrl;
       interface JsonType {
         msg: string;
-        user: User;
+        user: UserFull;
       }
 
       let response = await fetch(
@@ -73,11 +81,86 @@ const ProfilePage = () => {
       setIsLoading(false);
 
       if (response.ok) {
+        json.user.createdAt = new Date(json.user.createdAt);
         return setThisUser(json.user);
       }
 
       return toast({
         title: " error",
+        description: json.msg,
+        variant: "destructive",
+      });
+    } catch (error: any) {
+      setIsLoading(false);
+      toast({
+        title: "error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function FollowUser() {
+    try {
+      interface JsonType {
+        msg: string;
+      }
+      const baseUrl = import.meta.env.VITE_BaseUrl;
+      let response = await fetch(
+        import.meta.env.VITE_BackendUrl +
+          baseUrl +
+          "/users/follow/" +
+          thisUser._id,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+      let json: JsonType = await response.json();
+      setIsLoading(false);
+      if (response.ok) {
+        setFollowing((prev) => !prev);
+        return toast({
+          title: "Message",
+          description: json.msg,
+        });
+      }
+      return toast({
+        title: "error",
+        description: json.msg,
+        variant: "destructive",
+      });
+    } catch (error: any) {
+      setIsLoading(false);
+      toast({
+        title: "error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function getUsersProducts() {
+    try {
+      interface JsonType {
+        msg: string;
+        products: productCardType[];
+      }
+      const baseUrl = import.meta.env.VITE_BaseUrl;
+      let response = await fetch(
+        import.meta.env.VITE_BackendUrl +
+          baseUrl +
+          "/products/user/" +
+          thisUser._id
+      );
+      let json: JsonType = await response.json();
+      setIsLoading(false);
+      if (response.ok) {
+        setProducts(json.products);
+        return;
+      }
+      return toast({
+        title: "error",
         description: json.msg,
         variant: "destructive",
       });
@@ -97,11 +180,27 @@ const ProfilePage = () => {
         <div className=" w-[99%]  p-4 mx-auto flex flex-col gap-6 justify-center">
           <>
             <div className="w-[100%]  flex items-center md:flex-row flex-col gap-3  sm:gap-10">
-              <img
-                src={thisUser.profilePic}
-                alt="Profile image"
-                className="md:w-64 md:h-60 w-36 h-32 rounded-full "
-              />
+              {/* <div className="md:w-64 md:h-60 w-36 h-32 rounded-full relative border"> */}
+              {/* <img src={thisUser.profilePic} alt="Profile image" /> */}
+              <Avatar className="lg:size-96  size-64 relative">
+                <AvatarFallback>{thisUser.firstName}</AvatarFallback>
+                <AvatarImage src={thisUser.profilePic} />
+                {isSelf && (
+                  <>
+                    <label htmlFor="inp">
+                      <CameraIcon className="absolute bottom-2 right-6 hover:cursor-pointer hover:scale-105" />
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      id="inp"
+                      className="hidden"
+                      // onChange={imageHandler}
+                    />
+                  </>
+                )}
+              </Avatar>
+
               <div className="flex gap-5">
                 <div className="flex items-center flex-col md:text-xl">
                   <h1>Followers</h1>
@@ -121,8 +220,8 @@ const ProfilePage = () => {
             <h1 className="text-2xl">
               {thisUser.firstName + " " + thisUser.lastName}
             </h1>
-            <h1 className="text-2xl text-foreground/50">
-              Joined {user.createdAt.toLocaleString()}
+            <h1 className="text-2xl  font-bold">
+              Joined {thisUser.createdAt.toDateString()}
             </h1>
 
             {isSelf ? (
@@ -144,22 +243,35 @@ const ProfilePage = () => {
               </div>
             ) : (
               <div className="flex gap-5">
-                {isLogin && !isFollowing && <Button>Follow</Button>}
-                <Button>
-                  message <MessageCircle />
-                </Button>
+                {isLogin && (
+                  <>
+                    <Button onClick={FollowUser} variant={"outline"}>
+                      {isFollowing === false ? (
+                        <Hint label={"Follow"}>Follow </Hint>
+                      ) : (
+                        <Hint label={"unFollow"}> Following</Hint>
+                      )}
+                    </Button>
+                    <Button variant={"outline"}>
+                      message <MessageCircle />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
 
-            <h1 className="mx-auto text-center text-2xl border-b w-[50%] p-4">
-              Users Products
+            <h1
+              className="mx-auto text-center text-2xl border-b w-[fit] p-4 font-extrabold"
+              onClick={getUsersProducts}
+            >
+              Products
             </h1>
             <ProductsList>
               <></>
-              {/* {/* {products.map((product, index) => (
-                            <Product product={product} key={index} /> */}
-
-              {/* )) */}
+              {products.length > 0 &&
+                products.map((product, index) => (
+                  <Product product={product} key={index} />
+                ))}
             </ProductsList>
           </>
         </div>
@@ -181,3 +293,16 @@ const ProfilePage = () => {
 export default ProfilePage;
 
 // const page =
+
+// function MonthNumberToName(number: number): string {
+//   const monthNames = [
+//       "January", "February", "March", "April", "May", "June",
+//       "July", "August", "September", "October", "November", "December"
+//   ];
+
+//   if (number < 1 || number > 12) {
+//       throw new Error("Invalid month number. Please enter a number between 1 and 12.");
+//   }
+
+//   return monthNames[number - 1];
+// }

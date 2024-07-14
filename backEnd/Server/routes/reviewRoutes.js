@@ -32,6 +32,8 @@ import {
   // general validations
   paginationValidation,
   validateId,
+  // Review
+  addReviewValidation,
 } from "../validations/exportValidations.js";
 
 //initializing Router Strict routing enabled
@@ -52,8 +54,9 @@ reviewRouter
 reviewRouter.use(UserAuth);
 
 reviewRouter.post(
-  "/",
+  "/:id",
   isAllowedToAddReview,
+  addReviewValidation,
   validateId,
   validationError,
   addReview

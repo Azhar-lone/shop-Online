@@ -30,6 +30,7 @@ const ProfileButton: React.FC = () => {
   async function logout() {
     try {
       const baseUrl = import.meta.env.VITE_BaseUrl;
+      localStorage.clear();
       let response = await fetch(
         import.meta.env.VITE_BackendUrl + baseUrl + "/users/logout",
         {
@@ -38,7 +39,6 @@ const ProfileButton: React.FC = () => {
         }
       );
       if (response.ok) {
-        localStorage.clear();
         location.reload();
         return;
       }

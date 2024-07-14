@@ -1,5 +1,5 @@
 import reviewModel from "../../../../model/reviewsModel.js";
-
+import userModel from "../../../../model/userModel.js";
 // STEP 2
 // TODO: Cancel account deletion process scheduled on login
 // and set suspended state to false
@@ -14,6 +14,8 @@ export default async function addReview(req, res) {
     const { review, rating } = req.body;
     // productId
     const { id } = req.params;
+
+    console.log(review);
     let Review = await reviewModel.create({
       review,
       rating,
@@ -21,6 +23,7 @@ export default async function addReview(req, res) {
       reviewBy: req.currentUserId,
     });
 
+    console.log(Review);
     if (!Review) {
       return res.status(401).json({
         msg: "failed to add review",

@@ -84,6 +84,7 @@ const Nav: React.FC = () => {
       setIsLoading(false);
 
       if (response.ok) {
+        json.user.createdAt = new Date(json.user.createdAt);
         setUser(json.user);
         return;
       }

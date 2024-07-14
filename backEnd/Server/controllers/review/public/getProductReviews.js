@@ -10,7 +10,10 @@ export default async function getProductReviews(req, res) {
 
     const reviews = await reviewModel
       .find({ reviewOf: id })
-      .populate("reviewBy", "firstName lastName userName profilePic")
+      .populate({
+        path: "reviewBy",
+        select: "firstName lastName userName profilePic",
+      })
       .sort({ createdAt: -1, updatedAt: -1 })
       .skip((pageNumber - 1) * limit)
       .limit(limit);

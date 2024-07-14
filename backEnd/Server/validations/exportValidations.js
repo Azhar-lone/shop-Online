@@ -25,6 +25,9 @@ import {
   countriesValidation,
 } from "./general/GeneralValidations.js";
 
+// Review Validations
+import addReviewValidation from "./reviews/addReviews.js";
+
 // admin validate
 import { validateChangeRole } from "./user/adminValidations.js";
 
@@ -54,6 +57,8 @@ export {
   aboutusValidation,
   countriesValidation,
 
+  // Reviews
+  addReviewValidation,
   // Admin
   validateChangeRole,
 };

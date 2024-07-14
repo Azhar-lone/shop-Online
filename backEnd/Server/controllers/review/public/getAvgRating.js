@@ -12,7 +12,6 @@ export default async function getAverageRating(req, res) {
       { $group: { _id: null, averageRating: { $avg: "$rating" } } },
       { $project: { _id: 0, averageRating: 1 } }, // Project only the average rating
     ]);
-
     if (result.length > 0) {
       return res.status(200).json({ averageRating: result[0] });
     }

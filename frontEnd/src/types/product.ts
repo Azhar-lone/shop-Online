@@ -10,10 +10,11 @@ export interface productCardType {
 export default interface productType extends productCardType {
   discription: String;
   owner: {
-    firstName: String;
-    lastName: String;
-    userName: String;
+    firstName: string;
+    lastName: string;
+    userName: string;
     profilePic: string;
+    _id: string;
   };
   inStock: number;
   createdAt: Date;

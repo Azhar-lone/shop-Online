@@ -9,10 +9,9 @@ import rateLimit from "express-rate-limit";
 //importing Routers
 import userRouter from "./Server/routes/userRoutes.js";
 import productRouter from "./Server/routes/productRoutes.js";
-// import reviewRouter from "./Server/routes/reviewRoutes"
+import reviewRouter from "./Server/routes/reviewRoutes.js";
 import generalRouter from "./Server/routes/generalRoutes.js";
 import blogRouter from "./Server/routes/blogRouter.js";
-import searchRouter from "./Server/routes/searchRouter.js";
 
 //initializing express app
 const app = express();
@@ -39,6 +38,9 @@ mongoose
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
 // rate limiter
 
@@ -55,8 +57,7 @@ app.use(baseUrl + "/users", userRouter);
 app.use(baseUrl + "/products", productRouter);
 app.use(baseUrl + "/general", generalRouter);
 app.use(baseUrl + "/blogs", blogRouter);
-app.use(baseUrl + "/search", searchRouter);
-
+app.use(baseUrl + "/reviews", reviewRouter);
 //404 page
 app.use((req, res) => {
   try {
@@ -68,4 +69,12 @@ app.use((req, res) => {
       msg: "internal server error",
     });
   }
-});
+
+})
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ import { redisConnect } from "./redisConnection.js";
 
 const { sign, verify } = jwt;
 export function createToken(id) {
-  let token = sign({ id }, process.env.UserSecretKey);
+  let token = sign({ id }, process.env.UserSecretKey, { expiresIn: "30d" });
   return token;
 }
 
@@ -87,7 +87,7 @@ export function UserAuth(req, res, next) {
         });
       }
     } else {
-      return res.json({
+      return res.status(401).json({
         msg: "Operation not Allowed",
       });
     }

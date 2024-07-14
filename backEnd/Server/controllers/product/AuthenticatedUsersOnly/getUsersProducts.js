@@ -18,12 +18,12 @@ export default async function getUsersProducts(req, res) {
     const products = await userModel
       .findById(id)
       .select("products -_id")
-      .populate("products")
+      // .populate("products")
       .limit(limit)
       .skip((pageNumber - 1) * limit);
 
     // send only products fo user not id
-
+    console.log(products);
     if (products) {
       return res.status(200).json({
         products: products.products,

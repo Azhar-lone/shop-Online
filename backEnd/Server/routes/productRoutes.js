@@ -47,7 +47,7 @@ productRouter
   .get("/:id", validateId, validationError, getProduct)
   .get("/", paginationValidation, validationError, getAllProducts)
   .get(
-    "user/:id",
+    "/user/:id",
     validateId,
     paginationValidation,
     validationError,

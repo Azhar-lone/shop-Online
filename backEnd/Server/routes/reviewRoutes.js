@@ -5,29 +5,64 @@ import express from "express";
 import {
   AdminAuthorized,
   UserAuth,
-  isSeller,
-  isBuyer,
   validationError,
 } from "../middlewares/auth.js";
 
 //importing Controllers
 import {
   //for All
-  getReview,
+  // getReview,
   getProductReviews,
-  getReviewsCount,
+  getAverageRating,
+  // getReviewsCount,
 
   //Admins only
-  deleteMultipleReviews,
+  // deleteMultipleReviews,
   //authenticated users Only
   addReview,
-  likeProduct,
+  isAllowedToAddReview,
+  // likeProduct,
   //owners Only
-  deleteProduct,
-  updateProduct,
+  // deleteProduct,
+  // updateProduct,
 } from "../controllers/review/reviewExports.js";
+
+// Importing Validations
+import {
+  // general validations
+  paginationValidation,
+  validateId,
+  // Review
+  addReviewValidation,
+} from "../validations/exportValidations.js";
 
 //initializing Router Strict routing enabled
 const reviewRouter = express.Router({ strict: true });
+
+// Public
+reviewRouter
+  .get(
+    "/",
+    paginationValidation,
+    validateId,
+    validationError,
+    getProductReviews
+  )
+  .get("/average-rating/", validateId, validationError, getAverageRating);
+
+// users
+reviewRouter.use(UserAuth);
+
+reviewRouter.post(
+  "/:id",
+  isAllowedToAddReview,
+  addReviewValidation,
+  validateId,
+  validationError,
+  addReview
+);
+
+// Admins
+reviewRouter.use(AdminAuthorized);
 
 export default reviewRouter;

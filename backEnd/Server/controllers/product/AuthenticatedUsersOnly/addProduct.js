@@ -2,6 +2,7 @@
 
 // Importing Models
 import productModel from "../../../model/productModel.js";
+import userModel from "../../../model/userModel.js";
 
 export default async function addProduct(req, res) {
   try {
@@ -16,8 +17,11 @@ export default async function addProduct(req, res) {
       images,
       owner: req.currentUserId,
     });
+    let user = await userModel
+      .findByIdAndUpdate(req.currentUserId,{products})
+      .select("_id");
 
-    if (product) {
+    if (product && user) {
       return res.status(200).json({
         product: product,
       });

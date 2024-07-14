@@ -2,8 +2,14 @@ import userModel from "../../../model/userModel.js";
 
 export default async function follow(req, res) {
   try {
-    const recipientId = req.body.id;
+    const recipientId = req.params.id;
     const currentUserId = req.currentUserId;
+
+    if (recipientId === currentUserId) {
+      return res.status(401).json({
+        msg: "Invalid request",
+      });
+    }
 
     const [recipient, sender] = await Promise.all([
       userModel.findById(recipientId).select("followers"),
@@ -27,7 +33,7 @@ export default async function follow(req, res) {
       ? { $pull: { following: recipientId } }
       : { $addToSet: { following: recipientId } };
 
-    const [updatedRecipient, updatedSender] = await Promise.all([
+    await Promise.all([
       userModel
         .findByIdAndUpdate(recipientId, recipientUpdate, { new: true })
         .select("followers -_id"),
@@ -38,8 +44,6 @@ export default async function follow(req, res) {
 
     return res.status(200).json({
       msg: isFollowing ? "Unfollowed successfully" : "Followed successfully",
-      recipient: updatedRecipient,
-      sender: updatedSender,
     });
   } catch (error) {
     return res.status(500).json({

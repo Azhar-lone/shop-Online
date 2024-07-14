@@ -10,7 +10,7 @@ import {
   // sendOTP,
   // Autherized Users Only
   logout,
-  // follow,
+  follow,
   // uploadProfile,
   // generateURL,
   // uploadProfile_multer,
@@ -80,7 +80,7 @@ userRouter
   //   "/upload-profile", //uploadProfile_multer.single("image"),
   //   uploadProfile
   // ) //Todo
-
+  .put("/follow/:id", validateId, validationError, follow)
   // Owners Only
   .delete(
     "/delete",

@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import "dotenv/config";
 import rateLimit from "express-rate-limit";
-
 //importing Routers
 import userRouter from "./Server/routes/userRoutes.js";
 import productRouter from "./Server/routes/productRoutes.js";
@@ -44,18 +43,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // rate limiter
 
-app.use(express.static(path.resolve("ui/")));
-
-
+app.use(express.static(path.resolve(process.cwd() + "/ui/")));
 app.use(
   rateLimit({
     limit: 10,
   })
 );
-// Testing
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve("ui/index.html"));
-});
 
 //Routers
 const baseUrl = process.env.BaseUrl;

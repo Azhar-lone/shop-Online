@@ -50,6 +50,10 @@ app.use(
     limit: 10,
   })
 );
+// Testing
+app.get("/", (req, res) => {
+  res.send("<h1>HELLOW FROM BACKEND</h1>");
+});
 
 //Routers
 const baseUrl = process.env.BaseUrl;
@@ -69,12 +73,4 @@ app.use((req, res) => {
       msg: "internal server error",
     });
   }
-
-})
-
-
-
-
-
-
-
+});

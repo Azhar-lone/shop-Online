@@ -41,13 +41,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-// rate limiter
+// Static files middleware
+const uiPath = path.resolve(process.cwd(), "ui");
+console.log(`Serving static files from ${uiPath}`);
+app.use(express.static(uiPath));
 
-app.use(express.static(path.resolve(process.cwd() + "/ui")));
-
+// Rate limiter
 app.use(
   rateLimit({
-    limit: 10,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
   })
 );
 
@@ -58,6 +61,12 @@ app.use(baseUrl + "/products", productRouter);
 app.use(baseUrl + "/general", generalRouter);
 app.use(baseUrl + "/blogs", blogRouter);
 app.use(baseUrl + "/reviews", reviewRouter);
+
+// Catch-all handler to serve index.html for React routing
+app.get("*", (req, res) => {
+  res.sendFile(path.join(uiPath, "index.html"));
+});
+
 //404 page
 app.use((req, res) => {
   try {

@@ -44,6 +44,8 @@ app.use(express.urlencoded({ extended: false }));
 // rate limiter
 
 app.use(express.static(path.resolve(process.cwd() + "/ui/")));
+console.log(path.resolve(process.cwd() + "/ui/"));
+
 app.use(
   rateLimit({
     limit: 10,

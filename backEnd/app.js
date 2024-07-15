@@ -45,6 +45,8 @@ app.use(express.urlencoded({ extended: false }));
 // rate limiter
 
 app.use(express.static(path.resolve("ui/")));
+
+
 app.use(
   rateLimit({
     limit: 10,
@@ -52,7 +54,7 @@ app.use(
 );
 // Testing
 app.get("/", (req, res) => {
-  res.send("<h1>HELLOW FROM BACKEND</h1>");
+  res.sendFile(path.resolve("ui/index.html"));
 });
 
 //Routers

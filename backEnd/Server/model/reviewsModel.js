@@ -22,6 +22,12 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userModel",
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -31,7 +37,7 @@ export default reviewModel;
 
 const ReplySchema = mongoose.Schema(
   {
-    replyof: {
+    replyOf: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "reviewModel",
@@ -39,6 +45,11 @@ const ReplySchema = mongoose.Schema(
 
     reply: {
       type: String,
+      required: true,
+    },
+    replyBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userModel",
       required: true,
     },
   },

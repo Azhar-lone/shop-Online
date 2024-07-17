@@ -15,7 +15,22 @@ export default async function addReview(req, res) {
     // productId
     const { id } = req.params;
 
-    console.log(review);
+    // Check if already reviewed
+    let found = await reviewModel.findOne(
+      "$and"[
+        {
+          reviewOf: id,
+          reviewBy: req.currentUserId,
+        }
+      ]
+    );
+
+    if (found) {
+      return res.status(401).json({
+        msg: "you have already reviewed this product",
+      });
+    }
+
     let Review = await reviewModel.create({
       review,
       rating,

@@ -16,15 +16,13 @@ import {
   getAverageRating,
   // getReviewsCount,
 
-  //Admins only
-  // deleteMultipleReviews,
   //authenticated users Only
   addReview,
   isAllowedToAddReview,
-  // likeProduct,
+  likeReview,
   //owners Only
-  // deleteProduct,
-  // updateProduct,
+  updateReview,
+  deleteReview,
 } from "../controllers/review/reviewExports.js";
 
 // Importing Validations
@@ -34,6 +32,7 @@ import {
   validateId,
   // Review
   addReviewValidation,
+  updateReviewValidation,
 } from "../validations/exportValidations.js";
 
 //initializing Router Strict routing enabled
@@ -53,14 +52,24 @@ reviewRouter
 // users
 reviewRouter.use(UserAuth);
 
-reviewRouter.post(
-  "/:id",
-  isAllowedToAddReview,
-  addReviewValidation,
-  validateId,
-  validationError,
-  addReview
-);
+reviewRouter
+  .post(
+    "/:id",
+    isAllowedToAddReview,
+    addReviewValidation,
+    validateId,
+    validationError,
+    addReview
+  )
+  .put("/like/:id", validateId, validationError, likeReview)
+  .delete("/:id", validateId, validationError, deleteReview)
+  .put(
+    "/:id",
+    validateId,
+    updateReviewValidation,
+    validationError,
+    updateReview
+  );
 
 // Admins
 reviewRouter.use(AdminAuthorized);

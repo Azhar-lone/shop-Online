@@ -4,7 +4,7 @@ import redis from "redis";
 export async function redisConnect() {
   try {
     // Create Redis client
-    let redisClient = await redis.createClient();
+    let redisClient = await redis.createClient({url:process.env.RedisDBUrl});
 
     // Optional: Perform a connection check
     redisClient.on("connect", () => {

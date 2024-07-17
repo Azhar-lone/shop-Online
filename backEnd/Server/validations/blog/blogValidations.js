@@ -39,4 +39,29 @@ let validateCreateBlog = [
     }),
 ];
 
-export { validateSlug, validateCreateBlog };
+let validateUpdateBlog = [
+  body("slug")
+    .optional()
+    .isSlug()
+    .withMessage("not a valid slug")
+    .escape()
+    .trim(),
+  body("blog")
+    .optional()
+    .custom((value) => {
+      // Sanitize the HTML content against allowed tags and attributes
+      const sanitizedHtml = sanitizeHtml(value, {
+        allowedTags: allowedTags,
+        allowedAttributes: allowedAttributes,
+      });
+      // Check if the sanitized HTML matches the original (i.e., contains only allowed tags and attributes)
+      if (sanitizedHtml !== value) {
+        throw new Error("HTML contains disallowed tags or attributes");
+      }
+
+      // Return true to indicate validation passed
+      return true;
+    }),
+];
+
+export { validateSlug, validateCreateBlog,validateUpdateBlog };

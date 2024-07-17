@@ -12,6 +12,7 @@ import productRouter from "./Server/routes/productRoutes.js";
 import reviewRouter from "./Server/routes/reviewRoutes.js";
 import generalRouter from "./Server/routes/generalRoutes.js";
 import blogRouter from "./Server/routes/blogRouter.js";
+import replyReviewRouter from "./Server/routes/revplyReviewRouter.js";
 
 //initializing express app
 const app = express();
@@ -56,6 +57,8 @@ app.use(baseUrl + "/products", productRouter);
 app.use(baseUrl + "/general", generalRouter);
 app.use(baseUrl + "/blogs", blogRouter);
 app.use(baseUrl + "/reviews", reviewRouter);
+app.use(baseUrl + "/review-replies", replyReviewRouter);
+
 //404 page
 app.use((req, res) => {
   try {

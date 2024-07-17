@@ -15,7 +15,11 @@ import updateProductValidation from "./product/updateProduct.js";
 import addProductValidation from "./product/addProduct.js";
 
 // blog validations
-import { validateSlug, validateCreateBlog } from "./blog/blogValidations.js";
+import {
+  validateSlug,
+  validateCreateBlog,
+  validateUpdateBlog,
+} from "./blog/blogValidations.js";
 
 // general validations
 import paginationValidation from "./general/paginationValidation.js";
@@ -26,7 +30,15 @@ import {
 } from "./general/GeneralValidations.js";
 
 // Review Validations
-import addReviewValidation from "./reviews/addReviews.js";
+import addReviewValidation, {
+  updateReviewValidation,
+} from "./reviews/addReviews.js";
+
+// Repy Review
+import {
+  addReplyValidations,
+  updateReplyValidation,
+} from "./replyReview/index.js";
 
 // admin validate
 import { validateChangeRole } from "./user/adminValidations.js";
@@ -51,6 +63,7 @@ export {
   // blog Validations
   validateSlug,
   validateCreateBlog,
+  validateUpdateBlog,
   // general validations
   paginationValidation,
   categoriesValidation,
@@ -59,6 +72,11 @@ export {
 
   // Reviews
   addReviewValidation,
+  updateReviewValidation,
+
+  // Repy Review
+  addReplyValidations,
+  updateReplyValidation,
   // Admin
   validateChangeRole,
 };

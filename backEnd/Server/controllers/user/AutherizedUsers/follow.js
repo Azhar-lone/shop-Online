@@ -5,6 +5,7 @@ export default async function follow(req, res) {
     const recipientId = req.params.id;
     const currentUserId = req.currentUserId;
 
+    // Cant follow yourself
     if (recipientId === currentUserId) {
       return res.status(401).json({
         msg: "Invalid request",

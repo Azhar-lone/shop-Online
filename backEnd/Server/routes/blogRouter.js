@@ -27,6 +27,7 @@ import {
 import {
   validateSlug,
   validateCreateBlog,
+  validateUpdateBlog,
 } from "../validations/exportValidations.js";
 
 //initializing Router Strict routing enabled
@@ -43,7 +44,7 @@ blogRouter.use(UserAuth);
 blogRouter
   .use(AdminAuthorized)
   .post("/", validateCreateBlog, validationError, createBlog)
-  .put("/:slug", validateSlug, validationError, updateBlog)
+  .put("/:slug", validateUpdateBlog, validateSlug, validationError, updateBlog)
   .delete("/:slug", validateSlug, validationError, deleteBlog);
 
 export default blogRouter;

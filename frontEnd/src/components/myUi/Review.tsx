@@ -1,53 +1,119 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-
+import React from "react";
 // Icons
-import { Star } from 'lucide-react'
-// components
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Star, ChevronDownCircle, Edit2, DeleteIcon } from "lucide-react";
 
+// components
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+// Custom Components
+import User from "./User";
+
+// context
+import useUser from "../context/user-provider";
 
 // types
-import reviewType from '@/types/Review'
+import reviewType, { replyType } from "@/types/Review";
 
 interface review {
-    review: reviewType
+  review: reviewType;
 }
+
 const Review: React.FC<review> = ({ review }) => {
-    const navigate = useNavigate()
-    return (
-        <div className="flex md:gap-8 gap-2 flex-col w-[100%]">
+  const { user } = useUser();
 
-            {/* Owner Info */}
+  return (
+    <div className="flex md:gap-6 gap-2 flex-col w-[100%]">
+      {/* Owner Info */}
+      <User user={review.reviewBy} />
+      {/* if Current users product then show edit button*/}
 
-            <div className='flex justify-between md:w-[60%]'>
-                {/* profile Picture */}
-                <div className='flex gap-5 flex-col'>
-                    <Avatar className="size-16">
-                        <AvatarFallback  >{review.owner.name.charAt(0)}</AvatarFallback>
-                        <AvatarImage src={review.owner.profilePic} onClick={() => navigate("/" + review.owner.userName)} />
-                    </Avatar>
-                    <div>
-                        <h1 className='text-2xl'>{review.owner.name}</h1>
-                        <h1 className='font-serif '>{review.date.toLocaleString()}</h1>
-                    </div>
-                </div>
-                {/* Stars */}
-                {review.rating &&
-                    <div className="flex gap-1 items-center">
-
-                        {Array(5).fill(0).map((_, i: number) => (
-                            <>
-                                {review.rating && ((review.rating - 0.5) > i) && < Star key={i} />}
-
-                            </>
-                        ))}
-                    </div>
-                }
-            </div>
-            <p>{review.review}</p>
+      {user._id === review.reviewBy._id && (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ChevronDownCircle />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Edit <Edit2 />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Delete <DeleteIcon />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+      <div className="gap-2 flex flex-col">
+        <div className="flex gap-2 items-center ">
+          {Array(5)
+            .fill(0)
+            .map((_, i: number) => (
+              <>
+                <Star
+                  key={i}
+                  fill={review.rating > i + 1 ? "yellow" : "none"}
+                />
+              </>
+            ))}
         </div>
-    )
+
+        <div>
+          <h1>{new Date(review.createdAt).toDateString()}</h1>
+          {review.createdAt !== review.updatedAt && <h1>edited</h1>}
+        </div>
+        <p className="p-2">{review.review}</p>
+      </div>
+    </div>
+  );
+};
+
+export default Review;
+
+// reply
+
+interface reply {
+  reply: replyType;
 }
 
-export default Review
+const Reply: React.FC<reply> = ({ reply }) => {
+  const { user } = useUser();
+
+  return (
+    <div className="flex md:gap-6 gap-2 flex-col w-[100%]">
+      {/* Owner Info */}
+      <User user={reply.replyBy} />
+      {/* if Current users product then show edit button*/}
+
+      {user._id === reply.replyBy._id && (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ChevronDownCircle />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Edit <Edit2 />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              Delete <DeleteIcon />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+
+      <div>
+        <h1>{new Date(reply.createdAt).toDateString()}</h1>
+        {reply.createdAt !== reply.updatedAt && <h1>edited</h1>}
+      </div>
+      <p className="p-2">{reply.reply}</p>
+    </div>
+  );
+};

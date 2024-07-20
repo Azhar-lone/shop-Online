@@ -1,71 +1,41 @@
 // this component will render hero part of homePage
-import { useEffect, useState } from 'react'
-import parse from "html-react-parser"
+import { useEffect, useState } from "react";
+import parse from "html-react-parser";
 // components
-import { toast } from "@/components/ui/use-toast"
-import { Skeleton } from '@/components/ui/skeleton'
-// context 
-import useLoading from '@/components/context/loading-provider'
-
-
-// Static data for testing 
-import { homeBlog as HomeBlog} from '@/static/Blogs'
-
+import { Skeleton } from "@/components/ui/skeleton";
+// context
+import useLoading from "@/components/context/loading-provider";
+import useBlogs from "@/components/context/blogs-provider";
+import { blogType } from "@/types/General";
 const Hero = () => {
+  // set Title
 
-  const [homeBlog, setHomeBlog] = useState<string>(HomeBlog)
-  const { setIsLoading, isLoading } = useLoading()
-
-
+  const [homeBlog, setHomeBlog] = useState<blogType>({
+    blog: "",
+    createdAt: new Date(Date.now()),
+    updatedAt: new Date(Date.now()),
+    owner: {
+      firstName: "",
+      lastName: "",
+      profilePic: "",
+      userName: "",
+    },
+    slug: "home-blog",
+  });
+  const { isLoading } = useLoading();
+  const { getBlog } = useBlogs();
   useEffect(() => {
-    getHomeBlog()
-  }, [])
-
-  async function getHomeBlog() {
-
-    try {
-
-      // what function is going to return
-      setIsLoading(false)
-      interface blogJsonType {
-        msg: string
-        blog: string
-
-      }
-      const baseUrl = import.meta.env.VITE_BaseUrl
-      let res = await fetch(import.meta.env.VITE_BackendUrl + baseUrl + "blogs/home")
-      let toJson: blogJsonType = await res.json()
-      if (res.ok) {
-        setHomeBlog(toJson.blog)
-        return
-      }
-      setIsLoading(false)
-      return toast({
-        title: "error",
-        description: toJson.msg,
-        variant: "destructive"
-      })
-
-    } catch (error: any) {
-      setIsLoading(false)
-      return toast({
-        title: "error",
-        description: error.message,
-        variant: "destructive"
-      })
-    }
-  }
-
+    document.title = "Home|Shop-online";
+    getBlog("home-blog", setHomeBlog);
+  }, []);
 
   return (
     <div>
-      {((homeBlog !== ``) && !isLoading) ?
-        <div className="blog">
-          {parse(homeBlog!)}
-        </div>
-        :
+      {homeBlog.blog !== `` && !isLoading ? (
+        <div className="blog">{parse(homeBlog.blog)}</div>
+      ) : (
         // Loading skeleton
-        <div className='flex flex-col gap-5'>
+        <div className="flex flex-col gap-5">
           <Skeleton className=" h-24 " />
           <Skeleton className=" h-56 " />
           <Skeleton className=" h-14 w-[50%] " />
@@ -73,13 +43,9 @@ const Hero = () => {
           <Skeleton className=" h-96 " />
           <Skeleton className=" h-14 w-[50%] mx-auto" />
         </div>
+      )}
+    </div>
+  );
+};
 
-      }
-    </div >
-  )
-}
-
-
-export default Hero
-
-
+export default Hero;

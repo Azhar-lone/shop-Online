@@ -9,3 +9,4 @@ frontEnd/node_modules
 # ignore all text and .env files
 *.txt
 *.env
+*.log

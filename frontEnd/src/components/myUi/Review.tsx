@@ -1,6 +1,6 @@
 import React from "react";
 // Icons
-import { Star, ChevronDownCircle, Edit2, DeleteIcon } from "lucide-react";
+import { Star, Edit2, DeleteIcon, ReplyIcon, ThumbsUp } from "lucide-react";
 
 // components
 import {
@@ -13,7 +13,7 @@ import {
 
 // Custom Components
 import User from "./User";
-
+import Hint from "./Hint";
 // context
 import useUser from "../context/user-provider";
 
@@ -28,47 +28,60 @@ const Review: React.FC<review> = ({ review }) => {
   const { user } = useUser();
 
   return (
-    <div className="flex md:gap-6 gap-2 flex-col w-[100%]">
+    <div className="flex md:gap-2 gap-1 flex-col w-[100%] ">
       {/* Owner Info */}
       <User user={review.reviewBy} />
-      {/* if Current users product then show edit button*/}
 
-      {user._id === review.reviewBy._id && (
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <ChevronDownCircle />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Edit <Edit2 />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Delete <DeleteIcon />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-      <div className="gap-2 flex flex-col">
-        <div className="flex gap-2 items-center ">
-          {Array(5)
-            .fill(0)
-            .map((_, i: number) => (
-              <>
-                <Star
-                  key={i}
-                  fill={review.rating > i + 1 ? "yellow" : "none"}
-                />
-              </>
-            ))}
+      <div className="gap-2 flex flex-col bg-secondary p-2 rounded-lg">
+        <div className="flex justify-between">
+          <div className="flex gap-2 items-center ">
+            {Array(5)
+              .fill(0)
+              .map((_, i: number) => (
+                <>
+                  <Star
+                    key={i}
+                    fill={review.rating >= i + 1 ? "yellow" : "none"}
+                    className={review.rating >= i + 1 ? "text-yellow-500" : ""}
+                  />
+                </>
+              ))}
+            {/* if Current users product then show edit button*/}
+          </div>
+          {user._id === review.reviewBy._id && (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Edit2 />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem className="flex justify-between">
+                  Edit <Edit2 />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="flex justify-between">
+                  Delete <DeleteIcon />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
 
         <div>
           <h1>{new Date(review.createdAt).toDateString()}</h1>
-          {review.createdAt !== review.updatedAt && <h1>edited</h1>}
+          {review.createdAt !== review.updatedAt && (
+            <h1 className="text-foreground/60">edited</h1>
+          )}
         </div>
-        <p className="p-2">{review.review}</p>
+        <p>{review.review}</p>
+        <div className="flex justify-center p-3 gap-2 bg-background rounded-2xl w-fit">
+          <Hint label={"Like"}>
+            <ThumbsUp />
+          </Hint>
+
+          <Hint label={"Reply"}>
+            <ReplyIcon />
+          </Hint>
+        </div>
       </div>
     </div>
   );
@@ -93,9 +106,7 @@ const Reply: React.FC<reply> = ({ reply }) => {
 
       {user._id === reply.replyBy._id && (
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <ChevronDownCircle />
-          </DropdownMenuTrigger>
+          <DropdownMenuTrigger></DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

@@ -7,11 +7,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useLoading from "@/components/context/loading-provider";
 import useBlogs from "@/components/context/blogs-provider";
 import { blogType } from "@/types/General";
+
+// static Data
+import { homeBlog as blog } from "../../static/Blogs";
+
 const Hero = () => {
   // set Title
 
   const [homeBlog, setHomeBlog] = useState<blogType>({
-    blog: "",
+    blog: blog,
     createdAt: new Date(Date.now()),
     updatedAt: new Date(Date.now()),
     owner: {

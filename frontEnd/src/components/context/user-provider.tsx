@@ -24,7 +24,7 @@ const initialState: UserProviderState = {
     followers: [],
     following: [],
     role: "",
-    _id: "",
+    _id: "1",
   },
   setUser: () => {}, // Implement setUser logic here
   isLogin: false,

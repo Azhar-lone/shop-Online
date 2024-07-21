@@ -12,9 +12,12 @@ import Review from "@/components/myUi/Review";
 // Types
 import reviewType from "@/types/Review";
 
+// Data
+import { reviews as reviewData } from "@/static/reviews.ts";
+
 const Reviews: React.FC<{ productId: String }> = ({ productId }) => {
   const [averageRating, setAverageRating] = useState<number>(0);
-  const [reviews, setReviews] = useState<reviewType[]>([]);
+  const [reviews, setReviews] = useState<reviewType[]>(reviewData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
 

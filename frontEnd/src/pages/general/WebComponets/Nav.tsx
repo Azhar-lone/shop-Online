@@ -27,7 +27,7 @@ import useLoading from "@/components/context/loading-provider";
 import { useToast } from "@/components/ui/use-toast";
 
 // types
-import User from "@/types/user";
+import {UserFull} from "@/types/user";
 
 interface navItemsType {
   To: string;
@@ -74,7 +74,7 @@ const Nav: React.FC = () => {
       const baseUrl = import.meta.env.VITE_BaseUrl;
       interface JsonType {
         msg: string;
-        user: User;
+        user: UserFull;
       }
 
       let response = await fetch(

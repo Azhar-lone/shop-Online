@@ -47,7 +47,14 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  let [countries, setCountries] = useState<string[]>([]);
+  let [countries, setCountries] = useState<string[]>([
+    "Pakistan",
+    "Afghanistan",
+    "India",
+    "USA",
+    "UAE",
+    "Palestine",
+  ]);
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -162,9 +169,7 @@ const Signup = () => {
               </FormItem>
             )}
           />
-
           {/* Password */}
-
           <FormField
             control={form.control}
             name={"password"}
@@ -188,9 +193,7 @@ const Signup = () => {
               </FormItem>
             )}
           />
-
           {/* confirmPassword */}
-
           <FormField
             control={form.control}
             name={"confirmPassword"}
@@ -214,9 +217,7 @@ const Signup = () => {
               </FormItem>
             )}
           />
-
           {/* firstName */}
-
           <FormField
             control={form.control}
             name={"firstName"}
@@ -231,7 +232,6 @@ const Signup = () => {
             )}
           />
           {/* lastName */}
-
           <FormField
             control={form.control}
             name={"lastName"}
@@ -246,7 +246,6 @@ const Signup = () => {
             )}
           />
           {/* userName */}
-
           <FormField
             control={form.control}
             name={"userName"}
@@ -261,58 +260,51 @@ const Signup = () => {
             )}
           />
           {/* Countries */}
-          {countries.length < 1 ? (
-            <Button>
-              fetching countries... <ColorRing height={"200%"} />
-            </Button>
-          ) : (
-            <FormField
-              control={form.control}
-              name={"country"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Country</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a Country" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {countries.map((country, i) => (
-                        <SelectItem value={country} key={i}>
-                          {country}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          {countries.length > 0 && (
-            <>
-              {!isLoading ? (
-                <Button
-                  type="submit"
-                  // onClick={() => setStep(true)}
-                  className="w-[100%]"
+          <FormField
+            control={form.control}
+            name={"country"}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
                 >
-                  Sign Up
-                </Button>
-              ) : (
-                <Button>
-                  Signing Up ... <ColorRing height={"200%"} />{" "}
-                </Button>
-              )}
-            </>
-          )}
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a Country" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {countries.map((country, i) => (
+                      <SelectItem value={country} key={i}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* {countries.length > 0 && ( */}
+          <>
+            {!isLoading ? (
+              <Button
+                type="submit"
+                // onClick={() => setStep(true)}
+                className="w-[100%]"
+              >
+                Sign Up
+              </Button>
+            ) : (
+              <Button>
+                Signing Up ... <ColorRing height={"200%"} />{" "}
+              </Button>
+            )}
+          </>
+          {/* )} */}
           <div>
             already have an account
             <Link

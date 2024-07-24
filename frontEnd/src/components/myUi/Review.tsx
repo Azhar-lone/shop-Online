@@ -83,6 +83,19 @@ const Review: React.FC<review> = ({ review }) => {
           </Hint>
         </div>
       </div>
+      <div>
+        <Reply
+          reply={{
+            createdAt: new Date(Date.now()),
+            updatedAt: new Date(Date.now()),
+            reply: `some Reply
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum maxime odit enim aut tempora, molestiae, quod fugit porro aliquam eaque minima nam eum iste cupiditate dolorum. Fuga vel soluta architecto!
+            
+            `,
+            replyBy: review.reviewBy,
+          }}
+        />
+      </div>
     </div>
   );
 };
@@ -99,32 +112,35 @@ const Reply: React.FC<reply> = ({ reply }) => {
   const { user } = useUser();
 
   return (
-    <div className="flex md:gap-6 gap-2 flex-col w-[100%]">
+    <div className="flex md:gap-2 gap-1 flex-col w-[90%] ml-[10%] ">
       {/* Owner Info */}
       <User user={reply.replyBy} />
       {/* if Current users product then show edit button*/}
+      <div className="gap-2 flex flex-col bg-secondary p-2 rounded-lg">
+        {user._id === reply.replyBy._id && (
+          <DropdownMenu>
+            <DropdownMenuTrigger></DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                Edit <Edit2 />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                Delete <DeleteIcon />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
-      {user._id === reply.replyBy._id && (
-        <DropdownMenu>
-          <DropdownMenuTrigger></DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Edit <Edit2 />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Delete <DeleteIcon />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-
-      <div>
-        <h1>{new Date(reply.createdAt).toDateString()}</h1>
-        {reply.createdAt !== reply.updatedAt && <h1>edited</h1>}
+        <div>
+          <h1>{new Date(reply.createdAt).toDateString()}</h1>
+          {reply.createdAt !== reply.updatedAt && (
+            <h1 className="text-foreground/60">edited</h1>
+          )}
+        </div>
+        <p className="p-2">{reply.reply}</p>
       </div>
-      <p className="p-2">{reply.reply}</p>
     </div>
   );
 };

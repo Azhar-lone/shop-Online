@@ -23,7 +23,7 @@ const initialState: UserProviderState = {
     cartItems: [],
     followers: [],
     following: [],
-    role: "",
+    role: "admin",
     _id: "",
   },
   setUser: () => {}, // Implement setUser logic here

@@ -3,7 +3,7 @@ import productType, { productCardType } from "@/types/product";
 export let Products: productCardType[] = [
   {
     _id: "1",
-    images: ["/src/static/imgs/iphone12.jpg", "/src/static/imgs/iphone12.jpg"],
+    images: ["/public/imgs/iphone12.jpg", "/public/imgs/iphone12.jpg"],
     likes: 101,
     name: "Iphone 12",
     price: 1100,
@@ -12,10 +12,10 @@ export let Products: productCardType[] = [
   {
     _id: "2",
     images: [
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
     ],
     likes: 2012,
     name: "Dell Optiplex 12032",
@@ -25,9 +25,9 @@ export let Products: productCardType[] = [
   {
     _id: "3",
     images: [
-      "/src/static/imgs/macbook.jpg",
-      "/src/static/imgs/macbook2.jpg",
-      "/src/static/imgs/macbook3.jpg",
+      "/public/imgs/macbook.jpg",
+      "/public/imgs/macbook2.jpg",
+      "/public/imgs/macbook3.jpg",
     ],
     likes: 2012,
     name: "Apple MacBook Air",
@@ -36,7 +36,7 @@ export let Products: productCardType[] = [
   },
   {
     _id: "1",
-    images: ["/src/static/imgs/iphone12.jpg", "/src/static/imgs/iphone12.jpg"],
+    images: ["/public/imgs/iphone12.jpg", "/public/imgs/iphone12.jpg"],
     likes: 101,
     name: "Iphone 12",
     price: 1100,
@@ -45,10 +45,10 @@ export let Products: productCardType[] = [
   {
     _id: "2",
     images: [
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
     ],
     likes: 2012,
     name: "Dell Optiplex 12032",
@@ -58,9 +58,9 @@ export let Products: productCardType[] = [
   {
     _id: "3",
     images: [
-      "/src/static/imgs/macbook.jpg",
-      "/src/static/imgs/macbook2.jpg",
-      "/src/static/imgs/macbook3.jpg",
+      "/public/imgs/macbook.jpg",
+      "/public/imgs/macbook2.jpg",
+      "/public/imgs/macbook3.jpg",
     ],
     likes: 2012,
     name: "Apple MacBook Air",
@@ -69,7 +69,7 @@ export let Products: productCardType[] = [
   },
   {
     _id: "1",
-    images: ["/src/static/imgs/iphone12.jpg", "/src/static/imgs/iphone12.jpg"],
+    images: ["/public/imgs/iphone12.jpg", "/public/imgs/iphone12.jpg"],
     likes: 101,
     name: "Iphone 12",
     price: 1100,
@@ -78,10 +78,10 @@ export let Products: productCardType[] = [
   {
     _id: "2",
     images: [
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
     ],
     likes: 2012,
     name: "Dell Optiplex 12032",
@@ -91,9 +91,9 @@ export let Products: productCardType[] = [
   {
     _id: "3",
     images: [
-      "/src/static/imgs/macbook.jpg",
-      "/src/static/imgs/macbook2.jpg",
-      "/src/static/imgs/macbook3.jpg",
+      "/public/imgs/macbook.jpg",
+      "/public/imgs/macbook2.jpg",
+      "/public/imgs/macbook3.jpg",
     ],
     likes: 2012,
     name: "Apple MacBook Air",
@@ -102,7 +102,7 @@ export let Products: productCardType[] = [
   },
   {
     _id: "1",
-    images: ["/src/static/imgs/iphone12.jpg", "/src/static/imgs/iphone12.jpg"],
+    images: ["/public/imgs/iphone12.jpg", "/public/imgs/iphone12.jpg"],
     likes: 101,
     name: "Iphone 12",
     price: 1100,
@@ -111,10 +111,10 @@ export let Products: productCardType[] = [
   {
     _id: "2",
     images: [
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
-      "/src/static/imgs/laptop1.jpg",
-      "/src/static/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
+      "/public/imgs/laptop1.jpg",
+      "/public/imgs/laptop2.jpg",
     ],
     likes: 2012,
     name: "Dell Optiplex 12032",
@@ -124,9 +124,9 @@ export let Products: productCardType[] = [
   {
     _id: "3",
     images: [
-      "/src/static/imgs/macbook.jpg",
-      "/src/static/imgs/macbook2.jpg",
-      "/src/static/imgs/macbook3.jpg",
+      "/public/imgs/macbook.jpg",
+      "/public/imgs/macbook2.jpg",
+      "/public/imgs/macbook3.jpg",
     ],
     likes: 2012,
     name: "Apple MacBook Air",
@@ -138,9 +138,9 @@ export let Products: productCardType[] = [
 export let staticProduct: productType = {
   _id: "3",
   images: [
-    "/src/static/imgs/macbook.jpg",
-    "/src/static/imgs/macbook2.jpg",
-    "/src/static/imgs/macbook3.jpg",
+    "/public/imgs/macbook.jpg",
+    "/public/imgs/macbook2.jpg",
+    "/public/imgs/macbook3.jpg",
   ],
   likes: 2012,
   name: "Apple MacBook Air",

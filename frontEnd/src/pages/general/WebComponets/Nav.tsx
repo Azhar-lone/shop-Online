@@ -107,8 +107,8 @@ const Nav: React.FC = () => {
   return (
     <>
       <TopBar>
-        <div className="flex justify-around items-center gap-2  sm:h-[100%] ">
-          <div className="flex gap-5">
+        <div className="flex justify-around items-center gap-5  sm:h-[100%] ">
+          <div className="flex md:gap-5 gap-2 ">
             <Button className="flex gap-1">
               <ShoppingBasket />
               <h1 className="hidden sm:block">Shop-Online</h1>

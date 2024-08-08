@@ -14,7 +14,7 @@ const Product: React.FC<Type> = ({ product }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="lg:h-[70vh] h-96 mt-2  shadow-primary rounded-2xl  shadow-2xl bg-card  sm:w-[48%] md:w-[31%] lg:w-[23%] w-[47%] hover:scale-105 hover:cursor-pointer delay-75 transition-all ">
+    <div className="lg:h-[70vh] h-96 mt-2  shadow-primary rounded-2xl  shadow-2xl bg-card  sm:w-[48%] md:w-[31%] lg:w-[23%] w-[98%] hover:scale-105 hover:cursor-pointer delay-75 transition-all ">
       <img
         src={product.images[0]}
         alt="images"

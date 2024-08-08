@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -51,7 +49,6 @@
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -60,19 +57,14 @@
   body {
     @apply bg-background text-foreground;
   }
-
-
-
 }
 
-.active{
-  @apply  border-b-4 pb-2 border-primary 
+.active {
+  @apply border-b-4 pb-2 border-primary;
 }
-
-
 
 .blog {
-  @apply flex flex-col gap-4 border-b shadow-lg shadow-foreground bg-background border rounded-lg p-2;
+  @apply flex flex-col gap-4 border-b  bg-background rounded-lg p-2;
 }
 
 .blog h1 {
